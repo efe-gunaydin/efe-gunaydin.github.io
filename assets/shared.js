@@ -59,35 +59,63 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
   }
 });
-// --- PHANTOM TROUPE SPIDER BOT INTEGRATION ---
+// ══════════════════════════════════════════════
+// PHANTOM TROUPE SPIDER BOT INTEGRATION
+// ══════════════════════════════════════════════
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Bot Elementlerini Dinamik Olarak Sayfaya Ekle
+    // 1. Görsel Yolunu Dinamik Hesapla (Alt klasörlerdeki kırılmaları önler)
+    const isSubPage = window.location.pathname.includes('/deep/') || window.location.pathname.split('/').length > 2;
+    const imgPath = isSubPage ? "../gf-spider.png" : "gf-spider.png";
+
+    // 2. Elementleri DOM'a Enjekte Et
     const spiderBotHTML = `
         <div class="phantom-spider-container" id="phantomSpiderBot">
             <div class="spider-thread"></div>
-            <img src="image_704f8f.png" alt="Phantom Troupe Spider" class="phantom-spider">
+            <img src="${imgPath}" alt="Phantom Troupe Spider" class="phantom-spider" id="spiderImg">
         </div>
         <div class="spider-chatbox" id="spiderChatbox">
-            <div class="chat-header">🕷️ <span>Phantom Troupe AI Agent</span></div>
+            <div class="chat-header">🕷️ <span>[gf_spider_agent_1.5_flash]</span></div>
             <div class="chat-messages" id="spiderChatMessages">
-                <div class="chat-msg bot">Örümcek ağına takıldın. Bu backend sistemleri veya mimari hakkında ne bilmek istiyorsun? Sor, ama vaktimi çalma.</div>
+                <div class="chat-msg bot">Örümcek ağına yaklaştın. Sistem mimarisi veya backend araçları hakkında bir şey mi soracaksın? Hızlı ol, token harcama.</div>
             </div>
             <div class="chat-input-area">
-                <input type="text" id="spiderChatInput" placeholder="Sistem veya mimari hakkında bir şey sor...">
-                <button id="spiderSendBtn">Sor</button>
+                <input type="text" id="spiderChatInput" placeholder="Sorunu buraya bırak...">
+                <button id="spiderSendBtn">SOR</button>
             </div>
         </div>
     `;
     document.body.insertAdjacentHTML("beforeend", spiderBotHTML);
 
-    // Element Seçiciler
     const spiderContainer = document.getElementById("phantomSpiderBot");
     const chatbox = document.getElementById("spiderChatbox");
     const chatInput = document.getElementById("spiderChatInput");
     const sendBtn = document.getElementById("spiderSendBtn");
     const messagesContainer = document.getElementById("spiderChatMessages");
 
-    // Tıklanınca Chatbox Görünürlüğünü Değiştir
+    // --- SCROLL ANIMASYON MANTIĞI (YAYLANMA EFEKTİ) ---
+    let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    let scrollTimeout;
+
+    window.addEventListener("scroll", () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop) {
+            spiderContainer.classList.remove("scrolling-up");
+            spiderContainer.classList.add("scrolling-down");
+        } else if (scrollTop < lastScrollTop) {
+            spiderContainer.classList.remove("scrolling-down");
+            spiderContainer.classList.add("scrolling-up");
+        }
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            spiderContainer.classList.remove("scrolling-down", "scrolling-up");
+        }, 150); 
+    }, { passive: true });
+
+    // --- UI ETKİLEŞİMLERİ ---
     spiderContainer.addEventListener("click", () => {
         if (chatbox.style.display === "none" || chatbox.style.display === "") {
             chatbox.style.display = "flex";
@@ -97,7 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Mesaj Gönderme Tetikleyicileri
     sendBtn.addEventListener("click", sendSpiderMessage);
     chatInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") sendSpiderMessage();
@@ -107,14 +134,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const messageText = chatInput.value.trim();
         if (!messageText) return;
 
-        // Kullanıcı mesajını ekrana bas
         appendSpiderMessage("user", messageText);
         chatInput.value = "";
 
-        // Yükleniyor durumunu göster
-        const loadingDiv = appendSpiderMessage("bot", "Düşünüyor...");
-
-        // Gemini Flash API Entegrasyonu
+        const loadingDiv = appendSpiderMessage("bot", "Düşünülüyor...");
         callGeminiFlash(messageText, loadingDiv);
     }
 
@@ -124,41 +147,31 @@ document.addEventListener("DOMContentLoaded", () => {
         msg.innerText = text;
         messagesContainer.appendChild(msg);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        return msg; // Yükleniyor mesajını güncelleyebilmek için elementi döndürüyoruz
+        return msg;
     }
 
+    // --- GEMINI FLASH API ÇAĞRISI ---
     async function callGeminiFlash(prompt, loadingElement) {
-        // --- ADAPTE EDİLECEK ALAN (BACKEND ENDPOINT VEYA DİREKT API CALL) ---
-        // Not: API Key'i frontend'de ham olarak açıkta bırakmak güvenlik açığı oluşturur. 
-        // Gerçek projede bunu kendi mini backend (Node.js/Spring Boot vb.) endpoint'inden geçirmen en sağlıklısıdır.
-        
-        const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; // Eğer test için direkt kullanacaksan buraya yazabilirsin.
-        const SYSTEM_INSTRUCTION = "Sen Hunter x Hunter animesindeki Phantom Troupe (Örümcek Takımı) çetesinin gizli bir yapay zeka ajanısın. Görevin, kullanıcının bu web sitesinde bulunan backend mimarileri (BFF, Microservices, Dağıtık Sistemler, REST API, Redis, Grafana vb.) hakkındaki teknik sorularını yanıtlamaktır. Tarzın: Net, ciddi, hafif gizemli, elit ve doğrudan amaca yöneliktir. Gereksiz kibarlık formüllerinden kaçın, bir yazılım dehası gibi konuş.";
+        const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; 
+        const SYSTEM_INSTRUCTION = "Sen Hunter x Hunter evrenindeki Phantom Troupe çetesinin siber veri tabanısın. Görevin bu web sitesindeki mimariler (BFF, Microservices vb.) hakkında teknik cevaplar vermektir. Ciddi, mesafeli, akıllıca ve direkt sonuca odaklı konuş.";
 
         try {
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     contents: [{ parts: [{ text: prompt }] }],
                     systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
-                    generationConfig: {
-                        temperature: 0.7,
-                        maxOutputTokens: 250 // Kontür ve maliyet yememesi için yanıtı kısa tutuyoruz
-                    }
+                    generationConfig: { temperature: 0.6, maxOutputTokens: 200 }
                 })
             });
 
             const data = await response.json();
             const botResponse = data.candidates[0].content.parts[0].text;
-            
-            // "Düşünüyor..." yazısını gerçek cevapla değiştir
             loadingElement.innerText = botResponse;
         } catch (error) {
-            console.error("Gemini Hatası:", error);
-            loadingElement.innerText = "Bağlantı koptu. Ağları kontrol et.";
+            console.error(error);
+            loadingElement.innerText = "Ağ hatası. Sinyal kesildi.";
         }
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
