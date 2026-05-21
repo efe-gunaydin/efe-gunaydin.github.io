@@ -63,6 +63,33 @@ document.addEventListener('DOMContentLoaded', () => {
 // PHANTOM TROUPE SPIDER BOT INTEGRATION
 // ══════════════════════════════════════════════
 document.addEventListener("DOMContentLoaded", () => {
+    // Brand sembolünü mor örümcek SVG'ye çevir (tüm sayfalar)
+    const brandSymbol = document.querySelector('.brand-symbol');
+    if (brandSymbol) {
+        brandSymbol.innerHTML = `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="sp-glow">
+      <feGaussianBlur stdDeviation="1.1" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <line x1="20" y1="0" x2="20" y2="11" stroke="#9b7fb5" stroke-width="0.9" opacity="0.5"/>
+  <polyline points="16,13 11,8 7,5" stroke="#9b7fb5" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.85"/>
+  <polyline points="16,15.5 9,14.5 3,13.5" stroke="#9b7fb5" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.8"/>
+  <polyline points="16,17.5 9,18.5 3,20" stroke="#9b7fb5" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.75"/>
+  <polyline points="16.5,19.5 12,23 8,28" stroke="#9b7fb5" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.75"/>
+  <polyline points="24,13 29,8 33,5" stroke="#9b7fb5" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.85"/>
+  <polyline points="24,15.5 31,14.5 37,13.5" stroke="#9b7fb5" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.8"/>
+  <polyline points="24,17.5 31,18.5 37,20" stroke="#9b7fb5" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.75"/>
+  <polyline points="23.5,19.5 28,23 32,28" stroke="#9b7fb5" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.75"/>
+  <line x1="20" y1="19" x2="20" y2="20" stroke="#9b7fb5" stroke-width="2" opacity="0.65"/>
+  <ellipse cx="20" cy="15" rx="4.5" ry="4" fill="#9b7fb5" opacity="0.9" filter="url(#sp-glow)"/>
+  <ellipse cx="20" cy="25.5" rx="5.5" ry="6" fill="#9b7fb5" opacity="0.85" filter="url(#sp-glow)"/>
+  <circle cx="18.5" cy="14" r="0.9" fill="#1a1b1e"/>
+  <circle cx="21.5" cy="14" r="0.9" fill="#1a1b1e"/>
+</svg>`;
+    }
+
     // 1. Görsel Yolunu Dinamik Hesapla (Alt klasörlerdeki kırılmaları önler)
     const isSubPage = window.location.pathname.includes('/deep/') || window.location.pathname.split('/').length > 2;
     const imgPath = isSubPage ? "../gf-spider.png" : "gf-spider.png";
@@ -91,6 +118,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatInput = document.getElementById("spiderChatInput");
     const sendBtn = document.getElementById("spiderSendBtn");
     const messagesContainer = document.getElementById("spiderChatMessages");
+    const spiderThread = spiderContainer.querySelector(".spider-thread");
+
+    // --- RAPPEL ANİMASYONU (İNİP ÇIKMA) ---
+    // swingIn tamamlandıktan (2.2s) sonra periyodik rappel başlat
+    setTimeout(() => {
+        spiderThread.style.animation = "spiderRappel 15s cubic-bezier(0.45,0,0.55,1) infinite";
+    }, 2400);
 
     // --- SCROLL ANIMASYON MANTIĞI (YAYLANMA EFEKTİ) ---
     let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
