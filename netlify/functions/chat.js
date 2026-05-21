@@ -35,8 +35,9 @@ exports.handler = async function (event) {
       + 'Kisa ve net cevap ver. Turkce konuss. Max 3 cumle. '
       + 'Kullanici: ' + message;
 
+    // MODEL BURADA GEMINI-1.5-FLASH OLARAK GÜNCELLENDİ
     const geminiRes = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey,
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
