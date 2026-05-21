@@ -102,6 +102,7 @@
 .card:hover .card-arrow { opacity:1; transform:translateX(4px); }
 </style>
 <script src="assets/shared.js"></script>
+<script src="assets/spider.js"></script>
 </head>
 <body>
 
@@ -112,43 +113,25 @@
     <a class="brand" href="index.html">
       <!-- Phantom Troupe ilhamlı sembol -->
       <div class="brand-symbol">
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <filter id="ng">
-              <feGaussianBlur stdDeviation="1.2" result="b"/>
-              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-          </defs>
-          <!-- Dış halka -->
-          <circle cx="20" cy="20" r="17" stroke="#d4a574" stroke-width=".7" opacity=".25"/>
-          <!-- İç halka -->
-          <circle cx="20" cy="20" r="9" stroke="#d4a574" stroke-width=".7" opacity=".2"/>
-          <!-- 8 kol — asimetrik uzunluk (örümcek bacak hissi) -->
-          <line x1="20" y1="20" x2="20" y2="3"   stroke="#d4a574" stroke-width="1.1" opacity=".8"/>
-          <line x1="20" y1="20" x2="32" y2="8"   stroke="#d4a574" stroke-width="1.1" opacity=".7"/>
-          <line x1="20" y1="20" x2="37" y2="20"  stroke="#d4a574" stroke-width="1.1" opacity=".8"/>
-          <line x1="20" y1="20" x2="31" y2="33"  stroke="#d4a574" stroke-width="1.1" opacity=".6"/>
-          <line x1="20" y1="20" x2="20" y2="37"  stroke="#d4a574" stroke-width="1.1" opacity=".8"/>
-          <line x1="20" y1="20" x2="9"  y2="32"  stroke="#d4a574" stroke-width="1.1" opacity=".6"/>
-          <line x1="20" y1="20" x2="3"  y2="20"  stroke="#d4a574" stroke-width="1.1" opacity=".7"/>
-          <line x1="20" y1="20" x2="9"  y2="8"   stroke="#d4a574" stroke-width="1.1" opacity=".7"/>
-          <!-- Uç noktalar -->
-          <g fill="#d4a574" filter="url(#ng)">
-            <circle cx="20" cy="3"  r="2"/>
-            <circle cx="32" cy="8"  r="1.6"/>
-            <circle cx="37" cy="20" r="2"/>
-            <circle cx="31" cy="33" r="1.6"/>
-            <circle cx="20" cy="37" r="2"/>
-            <circle cx="9"  cy="32" r="1.6"/>
-            <circle cx="3"  cy="20" r="2"/>
-            <circle cx="9"  cy="8"  r="1.6"/>
-          </g>
-          <!-- Çapraz bağlar (ağ dokusu) -->
-          <polygon points="20,3 32,8 37,20 31,33 20,37 9,32 3,20 9,8"
-                   fill="none" stroke="#d4a574" stroke-width=".4" opacity=".15"/>
-          <!-- Merkez -->
-          <circle cx="20" cy="20" r="3.5" fill="#1a1b1e" stroke="#d4a574" stroke-width="1.2"/>
-          <circle cx="20" cy="20" r="1.2" fill="#d4a574" filter="url(#ng)"/>
+        <svg width="40" height="40" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <polyline points="122,92 95,72 68,55 42,32 22,16" stroke="#d4a574" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="115,106 85,96 55,85 28,76 8,62" stroke="#d4a574" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="113,126 82,124 52,130 26,142 10,158" stroke="#d4a574" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="118,144 90,156 68,175 50,202 42,228" stroke="#d4a574" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="178,92 205,72 232,55 258,32 278,16" stroke="#d4a574" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="185,106 215,96 245,85 272,76 292,62" stroke="#d4a574" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="187,126 218,124 248,130 274,142 290,158" stroke="#d4a574" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="182,144 210,156 232,175 250,202 258,228" stroke="#d4a574" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="150" cy="86" r="22" fill="transparent" stroke="#d4a574" stroke-width="3.5"/>
+          <path d="M 141,106 L 138,116 L 141,124 L 144,116 Z" fill="#d4a574"/>
+          <path d="M 159,106 L 162,116 L 159,124 L 156,116 Z" fill="#d4a574"/>
+          <path d="M 150,116 C 124,116 108,130 105,150 C 101,175 110,204 124,220 C 133,230 150,238 150,238 C 150,238 167,230 176,220 C 190,204 199,175 195,150 C 192,130 176,116 150,116 Z" fill="transparent" stroke="#d4a574" stroke-width="3.5"/>
+          <line x1="150" y1="148" x2="150" y2="200" stroke="#d4a574" stroke-width="2.5"/>
+          <line x1="124" y1="174" x2="176" y2="174" stroke="#d4a574" stroke-width="2.5"/>
+          <polygon points="150,148 144,160 156,160" fill="#d4a574"/>
+          <polygon points="150,200 144,188 156,188" fill="#d4a574"/>
+          <polygon points="124,174 136,168 136,180" fill="#d4a574"/>
+          <polygon points="176,174 164,168 164,180" fill="#d4a574"/>
         </svg>
       </div>
       <div class="brand-name">
