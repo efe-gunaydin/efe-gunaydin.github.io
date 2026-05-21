@@ -441,3 +441,162 @@ body.light-mode svg [class*="ec-sub"],
 body.light-mode svg [class*="ec-mini"],
 body.light-mode svg [class$="-tag"],
 body.light-mode svg [class$="-dim"] { fill:#6c757d; }
+/* --- PHANTOM TROUPE SPIDER BOT STYLES --- */
+
+/* Örümcek ve İp Konteyneri */
+.phantom-spider-container {
+    position: fixed;
+    top: -260px; /* Ekranın üstünde gizli başlar */
+    right: 8%;    /* Navigasyon barı veya kartları kapatmayacak şık bir sağ boşluk */
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    animation: spiderSwingIn 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Sallanan Örümcek Ağı (İp) */
+.spider-thread {
+    width: 2px;
+    height: 160px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 100%);
+}
+
+/* Örümcek Logosu */
+.phantom-spider {
+    width: 90px;
+    height: auto;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.1));
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.phantom-spider:hover {
+    transform: scale(1.1) translateY(8px);
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+}
+
+/* Spider-man esnek iniş animasyonu */
+@keyframes spiderSwingIn {
+    0% { top: -260px; }
+    65% { top: 10px; }    /* Biraz fazla salınsın */
+    85% { top: -10px; }   /* Yukarı sekme */
+    100% { top: 0px; }    /* Sabitlenme noktası */
+}
+
+/* Chatbox Arayüzü */
+.spider-chatbox {
+    position: fixed;
+    top: 200px;
+    right: 5%;
+    width: 350px;
+    height: 450px;
+    background: #111111;
+    border: 1px solid #222222;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+    display: none; /* İlk başta gizli, tıklamayla açılacak */
+    flex-direction: column;
+    z-index: 9998;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    animation: fadeInChat 0.3s ease;
+}
+
+@keyframes fadeInChat {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Chat Başlığı */
+.chat-header {
+    background: #161616;
+    padding: 12px 16px;
+    border-bottom: 1px solid #222222;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Mesaj Alanı */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #0d0d0d;
+}
+
+/* Mesaj Balonları */
+.chat-msg {
+    max-width: 85%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.chat-msg.bot {
+    background: #1a1a1a;
+    color: #e0e0e0;
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+    border: 1px solid #252525;
+}
+
+.chat-msg.user {
+    background: #ffffff;
+    color: #000000;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+}
+
+/* Girdi Alanı */
+.chat-input-area {
+    display: flex;
+    background: #141414;
+    border-top: 1px solid #222222;
+    padding: 8px;
+}
+
+.chat-input-area input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 10px 12px;
+    color: #ffffff;
+    font-size: 13px;
+    outline: none;
+}
+
+.chat-input-area button {
+    background: #222222;
+    color: #ffffff;
+    border: 1px solid #333333;
+    padding: 0 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.2s;
+}
+
+.chat-input-area button:hover {
+    background: #ffffff;
+    color: #000000;
+}
+
+/* Scrollbar Özelleştirme */
+.chat-messages::-webkit-scrollbar {
+    width: 4px;
+}
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 2px;
+}
