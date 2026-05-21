@@ -7,7 +7,6 @@ exports.handler = async function (event) {
     'Content-Type': 'application/json'
   };
 
-  /* Preflight */
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers, body: '' };
   }
@@ -24,7 +23,6 @@ exports.handler = async function (event) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: 'message bos' }) };
     }
 
-    // Netlify ortam değişkenlerinden anahtarı çeker, sakın buraya elle key yazma!
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       return { statusCode: 500, headers, body: JSON.stringify({ error: 'GEMINI_API_KEY tanimli degil' }) };
@@ -36,9 +34,9 @@ exports.handler = async function (event) {
       + 'Kisa ve net cevap ver. Turkce konuss. Max 3 cumle. '
       + 'Kullanici: ' + message;
 
-    // Hata veren URL düzeltildi: gemini-1.5-flash-latest kullanıldı
+    // DOĞRU VE GÜNCEL MODEL: gemini-2.0-flash
     const geminiRes = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' + apiKey,
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -50,7 +48,6 @@ exports.handler = async function (event) {
 
     const data = await geminiRes.json();
 
-    /* Hata durumunu logla */
     if (!geminiRes.ok) {
       console.error('Gemini error:', JSON.stringify(data));
       return { statusCode: 500, headers, body: JSON.stringify({ error: 'Gemini API hatasi: ' + (data?.error?.message || 'bilinmiyor') }) };
