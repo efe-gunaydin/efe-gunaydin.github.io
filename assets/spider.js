@@ -152,15 +152,38 @@
 
       /* API key: Netlify env var üzerinden inject edilir.
          Geliştirme için: window.SPIDER_API_KEY = 'key' */
-      /* Netlify Function'a istek at — key sunucuda saklı, HTML'de görünmez */
-      fetch('/api/chat', {
+      var key = window.SPIDER_API_KEY || '';
+      if (!key) {
+        thinking.textContent = 'API key eksik.';
+        sendBtn.disabled = false;
+        return;
+      }
+
+      fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text })
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + key
+        },
+        body: JSON.stringify({
+          model: 'llama3-8b-8192',
+          messages: [
+            {
+              role: 'system',
+              content: 'Sen be-rehber adli backend developer rehber sitesinin sp1der botusun. '
+                + 'Elasticsearch, Jenkins, Grafana, Argo CD, Redis, Swagger, Postman, DBeaver, Figma araclari ve '
+                + 'REST API, Protokoller, Monolith vs Mikroservis, Distributed Systems konularinda yardim edersin. '
+                + 'Kisa ve net cevap ver. Turkce konuss. Maksimum 3 cumle.'
+            },
+            { role: 'user', content: text }
+          ],
+          max_tokens: 200,
+          temperature: 0.7
+        })
       })
       .then(function (r) { return r.json(); })
       .then(function (d) {
-        thinking.textContent = d.reply || d.error || 'Yanit alinamadi.';
+        thinking.textContent = d?.choices?.[0]?.message?.content || d?.error?.message || 'Yanit alinamadi.';
       })
       .catch(function (e) {
         thinking.textContent = 'Baglanti hatasi: ' + e.message;
