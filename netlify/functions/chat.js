@@ -24,6 +24,7 @@ exports.handler = async function (event) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: 'message bos' }) };
     }
 
+    // Netlify ortam değişkenlerinden anahtarı çeker, sakın buraya elle key yazma!
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       return { statusCode: 500, headers, body: JSON.stringify({ error: 'GEMINI_API_KEY tanimli degil' }) };
@@ -35,9 +36,9 @@ exports.handler = async function (event) {
       + 'Kisa ve net cevap ver. Turkce konuss. Max 3 cumle. '
       + 'Kullanici: ' + message;
 
-    // MODEL BURADA GEMINI-1.5-FLASH OLARAK GÜNCELLENDİ
+    // Hata veren URL düzeltildi: gemini-1.5-flash-latest kullanıldı
     const geminiRes = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey,
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' + apiKey,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
