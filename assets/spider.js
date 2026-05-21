@@ -1,10 +1,9 @@
 (function () {
-
   var C = '#ffffff', SW = '6';
 
   function svg(w, h) {
     var s = '<svg width="'+w+'" height="'+h+'" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">';
-    var L = function(pts) { return '<polyline points="'+pts+'" stroke="'+C+'" stroke-width="'+SW+'" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'; };
+    var L = function(p){ return '<polyline points="'+p+'" stroke="'+C+'" stroke-width="'+SW+'" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'; };
     s += L('122,92 95,72 68,55 42,32 22,16');
     s += L('115,106 85,96 55,85 28,76 8,62');
     s += L('113,126 82,124 52,130 26,142 10,158');
@@ -28,15 +27,15 @@
   }
 
   function init() {
-
     /* Nav sembolü */
     var sym = document.querySelector('.brand-symbol');
     if (sym) sym.innerHTML = svg(40, 40);
 
-    /* Wrapper — tüm stil inline, CSS'e bağımlı değil */
+    /* ── SCROLL-FOLLOW: örümcek scroll ile birlikte hareket eder ──
+       position: absolute (değil fixed!) + JS ile top güncellenir    */
     var wrap = document.createElement('div');
     Object.assign(wrap.style, {
-      position: 'fixed',
+      position: 'absolute',   /* scroll ile hareket eder */
       top: '10px',
       right: '18px',
       zIndex: '99999',
@@ -44,23 +43,21 @@
       flexDirection: 'column',
       alignItems: 'center',
       pointerEvents: 'none',
-      filter: 'drop-shadow(0 0 10px rgba(192,57,43,0.6))'
+      filter: 'drop-shadow(0 0 10px rgba(192,57,43,0.7))'
     });
 
-    /* İp */
     var thread = document.createElement('div');
     Object.assign(thread.style, {
       width: '2px',
       height: '20px',
-      background: 'linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.1))',
+      background: 'linear-gradient(to bottom,rgba(255,255,255,0.8),rgba(255,255,255,0.1))',
       margin: '0 auto',
       flexShrink: '0'
     });
 
-    /* Gövde */
-    var body = document.createElement('div');
-    body.innerHTML = svg(72, 72);
-    Object.assign(body.style, {
+    var spBody = document.createElement('div');
+    spBody.innerHTML = svg(72, 72);
+    Object.assign(spBody.style, {
       pointerEvents: 'auto',
       cursor: 'pointer',
       flexShrink: '0',
@@ -68,13 +65,27 @@
     });
 
     wrap.appendChild(thread);
-    wrap.appendChild(body);
-    document.body.appendChild(wrap);
+    wrap.appendChild(spBody);
 
-    /* Chatbox */
+    /* body'nin en dış wrapper'ına ekle — scroll ile hareket etsin */
+    var container = document.body;
+    container.style.position = container.style.position || 'relative';
+    container.appendChild(wrap);
+
+    /* ── SCROLL TAKIBI: her scroll'da top güncelle ── */
+    function updatePos() {
+      var scrollY = window.scrollY || window.pageYOffset;
+      wrap.style.top = (scrollY + 10) + 'px';
+      /* Chatbox da güncelle */
+      if (chat) chat.style.top = (scrollY + 110) + 'px';
+    }
+    window.addEventListener('scroll', updatePos, { passive: true });
+    updatePos(); /* ilk yükleme */
+
+    /* ── Chatbox ── */
     var chat = document.createElement('div');
     Object.assign(chat.style, {
-      position: 'fixed',
+      position: 'absolute',
       top: '110px',
       right: '20px',
       width: '300px',
@@ -83,12 +94,12 @@
       border: '1px solid #1e1e1e',
       borderTop: '2px solid #c0392b',
       borderRadius: '12px',
-      boxShadow: '0 12px 40px rgba(0,0,0,.85)',
+      boxShadow: '0 12px 40px rgba(0,0,0,.9)',
       display: 'none',
       flexDirection: 'column',
       zIndex: '99998',
       overflow: 'hidden',
-      fontFamily: "'JetBrains Mono', monospace"
+      fontFamily: "'JetBrains Mono',monospace"
     });
     chat.innerHTML = ''
       + '<div style="background:#111;padding:10px 14px;border-bottom:1px solid #1e1e1e;font-size:12px;font-weight:700;color:#c0392b;display:flex;align-items:center;justify-content:space-between;">'
@@ -102,53 +113,47 @@
       + '<input id="sp-in" type="text" placeholder="Sor bana..." style="flex:1;background:#111;border:1px solid #1e1e1e;border-radius:7px;padding:7px 10px;font-size:12px;color:#ddd;font-family:inherit;outline:none;"/>'
       + '<button id="sp-btn" style="background:#c0392b;border:none;border-radius:7px;padding:7px 12px;font-size:11px;font-weight:700;color:#fff;cursor:pointer;">Sor</button>'
       + '</div>';
-    document.body.appendChild(chat);
+    container.appendChild(chat);
 
-    /* ── Sallanma animasyonu — requestAnimationFrame, CSS transform yok ── */
-    var angle = 0, dir = 1, speed = 0.025, max = 4;
+    /* ── Sallanma animasyonu ── */
+    var angle = 0, dir = 1;
     var introStart = null, introDone = false;
 
-    function swingLoop() {
-      angle += speed * dir;
-      if (Math.abs(angle) >= max) dir *= -1;
-      body.style.transform = 'rotate(' + angle + 'deg)';
-      requestAnimationFrame(swingLoop);
+    function swing() {
+      angle += 0.025 * dir;
+      if (Math.abs(angle) >= 4) dir *= -1;
+      spBody.style.transform = 'rotate(' + angle + 'deg)';
+      requestAnimationFrame(swing);
     }
 
-    function introLoop(ts) {
+    function intro(ts) {
       if (!introStart) introStart = ts;
       var t = Math.min((ts - introStart) / 4000, 1);
-      /* Sağdan gelir */
       var x = 70 * Math.pow(1 - t, 3);
-      /* İp uzar-kısalır */
-      var th = 20 + 60 * Math.sin(t * Math.PI);
-      body.style.transform = 'translateX(' + x + 'px)';
-      thread.style.height = th + 'px';
-      if (t < 1) {
-        requestAnimationFrame(introLoop);
-      } else {
-        body.style.transform = 'none';
+      thread.style.height = (20 + 60 * Math.sin(t * Math.PI)) + 'px';
+      spBody.style.transform = 'translateX(' + x + 'px)';
+      if (t < 1) { requestAnimationFrame(intro); }
+      else {
+        spBody.style.transform = 'none';
         thread.style.height = '20px';
-        introDone = true;
-        requestAnimationFrame(swingLoop);
+        requestAnimationFrame(swing);
       }
     }
 
-    setTimeout(function () { requestAnimationFrame(introLoop); }, 500);
+    setTimeout(function(){ requestAnimationFrame(intro); }, 500);
 
-    /* ── Tıklama: chatbox aç/kapat ── */
-    body.addEventListener('click', function (e) {
+    /* ── Tıklama ── */
+    spBody.addEventListener('click', function(e) {
       e.stopPropagation();
       var open = chat.style.display === 'flex';
       chat.style.display = open ? 'none' : 'flex';
     });
-    document.getElementById('sp-x').addEventListener('click', function () {
+    document.getElementById('sp-x').addEventListener('click', function(){
       chat.style.display = 'none';
     });
-    document.addEventListener('click', function (e) {
-      if (!chat.contains(e.target) && !body.contains(e.target)) {
+    document.addEventListener('click', function(e){
+      if (!chat.contains(e.target) && !spBody.contains(e.target))
         chat.style.display = 'none';
-      }
     });
 
     /* ── Groq API ── */
@@ -170,8 +175,7 @@
     function ask() {
       var txt = inp.value.trim();
       if (!txt) return;
-      inp.value = '';
-      btn.disabled = true;
+      inp.value = ''; btn.disabled = true;
       addMsg(txt, false);
       var t = addMsg('...', true);
       var key = window.SPIDER_API_KEY || '';
@@ -190,20 +194,16 @@
       })
       .then(function(r){return r.json();})
       .then(function(d){
-        t.textContent = d.choices && d.choices[0] ? d.choices[0].message.content : (d.error ? d.error.message : 'Yanit yok.');
+        t.textContent = d.choices&&d.choices[0] ? d.choices[0].message.content : (d.error?d.error.message:'Yanit yok.');
       })
       .catch(function(e){t.textContent='Hata: '+e.message;})
       .finally(function(){btn.disabled=false;});
     }
-
     btn.addEventListener('click', ask);
     inp.addEventListener('keydown', function(e){ if(e.key==='Enter') ask(); });
   }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-
+  } else { init(); }
 })();
