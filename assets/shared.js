@@ -98,7 +98,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const spiderBotHTML = `
         <div class="phantom-spider-container" id="phantomSpiderBot">
             <div class="spider-thread"></div>
-            <img src="${imgPath}" alt="Phantom Troupe Spider" class="phantom-spider" id="spiderImg">
+            <svg class="phantom-spider" id="spiderImg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" width="88" height="88">
+              <defs>
+                <filter id="ps-glow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <radialGradient id="ps-head" cx="50%" cy="35%" r="55%"><stop offset="0%" stop-color="#c9b8e8"/><stop offset="100%" stop-color="#6d4fa0"/></radialGradient>
+                <radialGradient id="ps-abd" cx="50%" cy="30%" r="55%"><stop offset="0%" stop-color="#b8a0d8"/><stop offset="100%" stop-color="#4a2d80"/></radialGradient>
+              </defs>
+              <polyline points="38,36 22,22 12,14" stroke="#9b7fb5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <polyline points="38,42 20,37 8,36" stroke="#9b7fb5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <polyline points="38,48 20,50 8,56" stroke="#9b7fb5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <polyline points="40,54 26,64 16,76" stroke="#9b7fb5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <polyline points="62,36 78,22 88,14" stroke="#9b7fb5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <polyline points="62,42 80,37 92,36" stroke="#9b7fb5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <polyline points="62,48 80,50 92,56" stroke="#9b7fb5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <polyline points="60,54 74,64 84,76" stroke="#9b7fb5" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="50" y1="51" x2="50" y2="57" stroke="#9b7fb5" stroke-width="4" opacity="0.65"/>
+              <ellipse cx="50" cy="38" rx="13" ry="12" fill="url(#ps-head)" filter="url(#ps-glow)"/>
+              <ellipse cx="50" cy="70" rx="16" ry="18" fill="url(#ps-abd)" filter="url(#ps-glow)"/>
+              <circle cx="44" cy="34" r="2.8" fill="#1a0a2e"/>
+              <circle cx="56" cy="34" r="2.8" fill="#1a0a2e"/>
+              <circle cx="44.8" cy="33.2" r="0.9" fill="rgba(255,255,255,0.55)"/>
+              <circle cx="56.8" cy="33.2" r="0.9" fill="rgba(255,255,255,0.55)"/>
+              <ellipse cx="50" cy="68" rx="6" ry="7.5" fill="none" stroke="rgba(155,127,181,0.28)" stroke-width="1.5"/>
+              <line x1="50" y1="60" x2="50" y2="76" stroke="rgba(155,127,181,0.2)" stroke-width="1"/>
+              <line x1="44" y1="68" x2="56" y2="68" stroke="rgba(155,127,181,0.2)" stroke-width="1"/>
+            </svg>
         </div>
         <div class="spider-chatbox" id="spiderChatbox">
             <div class="chat-header">🕷️ <span>[gf_spider_agent_1.5_flash]</span></div>
@@ -120,11 +144,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const messagesContainer = document.getElementById("spiderChatMessages");
     const spiderThread = spiderContainer.querySelector(".spider-thread");
 
-    // --- RAPPEL ANİMASYONU (İNİP ÇIKMA) ---
-    // swingIn tamamlandıktan (2.2s) sonra periyodik rappel başlat
+    // --- RAPPEL ANİMASYONU (sadece sayfa girişinde 1 kez) ---
+    // swingIn (2.2s) + 0.3s bekleme = 2.5s. Toplam 2.5+3=5.5s
     setTimeout(() => {
-        spiderThread.style.animation = "spiderRappel 15s cubic-bezier(0.45,0,0.55,1) infinite";
-    }, 2400);
+        spiderThread.style.animation = "spiderRappelOnce 3s ease-in-out 1 forwards";
+    }, 2500);
 
     // --- SCROLL ANIMASYON MANTIĞI (YAYLANMA EFEKTİ) ---
     let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
