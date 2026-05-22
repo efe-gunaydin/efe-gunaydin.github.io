@@ -20,7 +20,7 @@
 /* ── İnteraktif şema wrapper ── */
 .schema-wrapper {
   background:var(--bg-elevated); border:1px solid var(--border-soft);
-  border-radius:16px; overflow:hidden; margin:32px 0;
+  border-radius:16px; overflow:visible; margin:32px 0;
   position:relative;
 }
 .schema-wrapper.wide { max-width:100%; overflow-x:auto; }
@@ -81,22 +81,23 @@
 .node-name { font-size:13px; font-weight:700; color:var(--text-primary); margin-bottom:3px; }
 .node-role { font-family:var(--font-mono); font-size:10px; color:var(--text-muted); }
 
-/* Tooltip */
+/* Tooltip — fixed konumlu, viewport'tan çıkmaz */
 .node-tooltip {
-  display:none; position:absolute;
-  bottom:calc(100% + 10px); left:50%; transform:translateX(-50%);
+  display:none; position:fixed;
   background:var(--bg-base); border:1px solid var(--node-color, var(--border-medium));
-  border-radius:10px; padding:12px 14px;
-  width:220px; z-index:100;
-  box-shadow:0 8px 24px rgba(0,0,0,.4);
+  border-radius:8px; padding:12px 14px;
+  width:230px; z-index:9000;
+  box-shadow:0 8px 24px rgba(0,0,0,.5);
+  pointer-events:none;
 }
 .node-tooltip::after {
   content:''; position:absolute;
-  top:100%; left:50%; transform:translateX(-50%);
+  top:100%; left:var(--arrow-left, 50%); transform:translateX(-50%);
   border:6px solid transparent;
   border-top-color:var(--node-color, var(--border-medium));
 }
-.node:hover .node-tooltip { display:block; }
+/* CSS hover kaldırıldı — JS ile kontrol ediliyor */
+.node-tooltip.visible { display:block; }
 .tooltip-title {
   font-family:var(--font-mono); font-size:11px; font-weight:700;
   color:var(--node-color, var(--accent-amber));
@@ -758,5 +759,72 @@
 </footer>
 
 <script>window.SPIDER_API_KEY = "GROQ_KEY_BURAYA";</script>
+<script>
+/* ── Akıllı Tooltip Sistemi ── */
+(function() {
+  var tip = null;
+
+  function getOrCreateTip() {
+    if (tip) return tip;
+    tip = document.createElement('div');
+    tip.className = 'node-tooltip';
+    document.body.appendChild(tip);
+    return tip;
+  }
+
+  function showTip(node) {
+    var inner = node.querySelector('.node-tooltip');
+    if (!inner) return;
+
+    var t = getOrCreateTip();
+
+    // node-color özelliğini kopyala
+    var nodeColor = node.style.getPropertyValue('--node-color') ||
+                    getComputedStyle(node).getPropertyValue('--node-color');
+    t.style.setProperty('--node-color', nodeColor.trim() || 'var(--accent-amber)');
+    t.innerHTML = inner.innerHTML;
+
+    // Konumla: kartın üstüne hizala
+    var rect = node.getBoundingClientRect();
+    var tipW = 230;
+    var gap = 10;
+
+    // Başlangıç X: kartın merkezi
+    var left = rect.left + rect.width / 2 - tipW / 2;
+
+    // Viewport sınırlarını geç
+    var margin = 8;
+    if (left < margin) left = margin;
+    if (left + tipW > window.innerWidth - margin) left = window.innerWidth - margin - tipW;
+
+    // Y: position:fixed → viewport koordinatları (scrollY yok)
+    t.style.left = left + 'px';
+    t.style.top  = '0px';
+    t.classList.add('visible');
+
+    var tipH = t.offsetHeight;
+    var topPos = rect.top - tipH - gap;
+    // Ekranın üstünden taşarsa kartın altına al
+    if (topPos < margin) topPos = rect.bottom + gap;
+    t.style.top = topPos + 'px';
+
+    // Ok'un X konumunu kartın merkezine hizala
+    var arrowLeft = (rect.left + rect.width / 2) - left;
+    arrowLeft = Math.max(16, Math.min(tipW - 16, arrowLeft));
+    t.style.setProperty('--arrow-left', arrowLeft + 'px');
+  }
+
+  function hideTip() {
+    if (tip) tip.classList.remove('visible');
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.node').forEach(function(node) {
+      node.addEventListener('mouseenter', function() { showTip(node); });
+      node.addEventListener('mouseleave', hideTip);
+    });
+  });
+})();
+</script>
 </body>
 </html>
