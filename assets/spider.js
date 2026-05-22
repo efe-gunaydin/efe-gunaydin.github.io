@@ -159,26 +159,15 @@
       inp.value = ''; btn.disabled = true;
       addMsg(txt, false);
       var t = addMsg('...', true);
-      var key = window.SPIDER_API_KEY || '';
-      if (!key) { t.textContent = 'API key yok.'; btn.disabled = false; return; }
-      fetch('https://api.groq.com/openai/v1/chat/completions', {
+      fetch('https://sp1derstatic.efegunaydin354.workers.dev/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
-        body: JSON.stringify({
-          model: 'llama3-8b-8192',
-          messages: [
-            { role: 'system', content: 'Sen be-rehber backend dev rehber sitesinin sp1der botusun. Elasticsearch, Jenkins, Grafana, Argo CD, Redis, Swagger, Postman, DBeaver, Figma ve REST API, Protokoller, Monolith vs Mikroservis, Distributed Systems konularinda yardim et. Kisa cevap, Turkce, max 3 cumle.' },
-            { role: 'user', content: txt }
-          ],
-          max_tokens: 200
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: txt })
       })
-      .then(function(r){return r.json();})
-      .then(function(d){
-        t.textContent = d.choices&&d.choices[0] ? d.choices[0].message.content : (d.error?d.error.message:'Yanit yok.');
-      })
-      .catch(function(e){t.textContent='Hata: '+e.message;})
-      .finally(function(){btn.disabled=false;});
+      .then(function(r){ return r.json(); })
+      .then(function(d){ t.textContent = d.answer || 'Yanit yok.'; })
+      .catch(function(e){ t.textContent = 'Hata: ' + e.message; })
+      .finally(function(){ btn.disabled = false; });
     }
     btn.addEventListener('click', ask);
     inp.addEventListener('keydown', function(e){ if(e.key==='Enter') ask(); });
