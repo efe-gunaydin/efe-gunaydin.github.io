@@ -1,8 +1,8 @@
 (function () {
-  var C = '#ffffff', SW = '6';
+  var C = 'currentColor', SW = '6';
 
   function svg(w, h) {
-    var s = '<svg width="'+w+'" height="'+h+'" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">';
+    var s = '<svg width="'+w+'" height="'+h+'" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" style="color:inherit;">';
     var L = function(p){ return '<polyline points="'+p+'" stroke="'+C+'" stroke-width="'+SW+'" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'; };
     s += L('122,92 95,72 68,55 42,32 22,16');
     s += L('115,106 85,96 55,85 28,76 8,62');
@@ -27,10 +27,8 @@
   }
 
   function init() {
-    /* Nav sembolü */
-    var sym = document.querySelector('.brand-symbol');
-    if (sym) sym.innerHTML = svg(40, 40);
-
+    /* Nav sembolü artık HTML'deki Skyrim/Dragonborn sembolü olarak kalır,
+       JS tarafından ezilmez. Sağ üstteki örümcek bot ise duruyor. */
     /* ── SCROLL-FOLLOW: örümcek scroll ile birlikte hareket eder ──
        position: absolute (değil fixed!) + JS ile top güncellenir    */
     var wrap = document.createElement('div');
@@ -43,16 +41,18 @@
       flexDirection: 'column',
       alignItems: 'center',
       pointerEvents: 'none',
-      filter: 'drop-shadow(0 0 10px rgba(192,57,43,0.7))'
+      color: 'var(--text-secondary)',
+      opacity: '0.7'
     });
 
     var thread = document.createElement('div');
     Object.assign(thread.style, {
-      width: '2px',
+      width: '1px',
       height: '20px',
-      background: 'linear-gradient(to bottom,rgba(255,255,255,0.8),rgba(255,255,255,0.1))',
+      background: 'linear-gradient(to bottom,currentColor,transparent)',
       margin: '0 auto',
-      flexShrink: '0'
+      flexShrink: '0',
+      opacity: '0.5'
     });
 
     var spBody = document.createElement('div');
@@ -84,34 +84,18 @@
 
     /* ── Chatbox ── */
     var chat = document.createElement('div');
-    Object.assign(chat.style, {
-      position: 'absolute',
-      top: '110px',
-      right: '20px',
-      width: '300px',
-      maxHeight: '380px',
-      background: '#0d0d0d',
-      border: '1px solid #1e1e1e',
-      borderTop: '2px solid #c0392b',
-      borderRadius: '12px',
-      boxShadow: '0 12px 40px rgba(0,0,0,.9)',
-      display: 'none',
-      flexDirection: 'column',
-      zIndex: '99998',
-      overflow: 'hidden',
-      fontFamily: "'JetBrains Mono',monospace"
-    });
+    chat.id = 'sp1der-chat';
     chat.innerHTML = ''
-      + '<div style="background:#111;padding:10px 14px;border-bottom:1px solid #1e1e1e;font-size:12px;font-weight:700;color:#c0392b;display:flex;align-items:center;justify-content:space-between;">'
-      + '<span>&#x1F577; sp1der</span>'
-      + '<span id="sp-x" style="cursor:pointer;color:#555;font-size:14px;">&#x2715;</span>'
+      + '<div class="sp-chat-header">'
+      + '<span>&#x25C6; sp1der</span>'
+      + '<span id="sp-x" class="sp-close">&#x2715;</span>'
       + '</div>'
-      + '<div id="sp-msgs" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#080808;">'
-      + '<div style="padding:8px 12px;border-radius:8px;font-size:12px;line-height:1.55;background:#111;color:#bbb;border:1px solid #1e1e1e;">Selam. Backend rehberinde takildigin bir yer var mi?</div>'
+      + '<div id="sp-msgs" class="sp-chat-messages">'
+      + '<div class="sp-msg bot">Selam. Backend rehberinde takildigin bir yer var mi?</div>'
       + '</div>'
-      + '<div style="display:flex;padding:8px 10px;gap:8px;background:#0d0d0d;border-top:1px solid #1a1a1a;">'
-      + '<input id="sp-in" type="text" placeholder="Sor bana..." style="flex:1;background:#111;border:1px solid #1e1e1e;border-radius:7px;padding:7px 10px;font-size:12px;color:#ddd;font-family:inherit;outline:none;"/>'
-      + '<button id="sp-btn" style="background:#c0392b;border:none;border-radius:7px;padding:7px 12px;font-size:11px;font-weight:700;color:#fff;cursor:pointer;">Sor</button>'
+      + '<div class="sp-chat-input-row">'
+      + '<input id="sp-in" type="text" placeholder="Sor bana..."/>'
+      + '<button id="sp-btn">Sor</button>'
       + '</div>';
     container.appendChild(chat);
 
@@ -145,15 +129,14 @@
     /* ── Tıklama ── */
     spBody.addEventListener('click', function(e) {
       e.stopPropagation();
-      var open = chat.style.display === 'flex';
-      chat.style.display = open ? 'none' : 'flex';
+      chat.classList.toggle('open');
     });
     document.getElementById('sp-x').addEventListener('click', function(){
-      chat.style.display = 'none';
+      chat.classList.remove('open');
     });
     document.addEventListener('click', function(e){
       if (!chat.contains(e.target) && !spBody.contains(e.target))
-        chat.style.display = 'none';
+        chat.classList.remove('open');
     });
 
     /* ── Groq API ── */
@@ -163,9 +146,7 @@
 
     function addMsg(txt, bot) {
       var d = document.createElement('div');
-      d.style.cssText = 'padding:8px 12px;border-radius:8px;font-size:12px;line-height:1.55;max-width:90%;word-break:break-word;'
-        + (bot ? 'background:#111;color:#bbb;border:1px solid #1e1e1e;'
-               : 'background:#c0392b;color:#fff;font-weight:600;align-self:flex-end;');
+      d.className = 'sp-msg ' + (bot ? 'bot' : 'user');
       d.textContent = txt;
       msgs.appendChild(d);
       msgs.scrollTop = msgs.scrollHeight;

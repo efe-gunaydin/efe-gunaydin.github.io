@@ -111,26 +111,20 @@
 <nav class="topnav">
   <div class="topnav-inner">
     <a class="brand" href="index.html">
-      <!-- Phantom Troupe ilhamlı sembol -->
-      <div class="brand-symbol"><svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <filter id="neon-r">
-      <feGaussianBlur stdDeviation="2" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-  </defs>
-  <!-- Dış çerçeve — Skyrim elmas/shield şekli -->
+      <!-- Skyrim/Dragonborn ilhamlı sembol — currentColor kullanır, theme'e uyar -->
+      <div class="brand-symbol" style="color:var(--accent-amber);"><svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dış elmas/kalkan çerçevesi -->
   <polygon points="50,5 95,30 95,70 50,95 5,70 5,30"
-    fill="none" stroke="#ff3333" stroke-width="2" opacity="0.6" filter="url(#neon-r)"/>
-  <!-- İç üçgen — Dragonborn işareti -->
+    fill="none" stroke="currentColor" stroke-width="2" opacity="0.55"/>
+  <!-- İç üçgen — Dragonborn -->
   <polygon points="50,20 80,72 20,72"
-    fill="none" stroke="#ff3333" stroke-width="2.5" filter="url(#neon-r)"/>
+    fill="none" stroke="currentColor" stroke-width="2.5"/>
   <!-- Merkez nokta -->
-  <circle cx="50" cy="50" r="4" fill="#ff3333" filter="url(#neon-r)"/>
+  <circle cx="50" cy="50" r="4" fill="currentColor"/>
   <!-- Üçgen iç çizgiler — rune hissi -->
-  <line x1="50" y1="20" x2="50" y2="72" stroke="#ff3333" stroke-width="1" opacity="0.5"/>
-  <line x1="50" y1="50" x2="80" y2="72" stroke="#ff3333" stroke-width="1" opacity="0.5"/>
-  <line x1="50" y1="50" x2="20" y2="72" stroke="#ff3333" stroke-width="1" opacity="0.5"/>
+  <line x1="50" y1="20" x2="50" y2="72" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+  <line x1="50" y1="50" x2="80" y2="72" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+  <line x1="50" y1="50" x2="20" y2="72" stroke="currentColor" stroke-width="1" opacity="0.5"/>
 </svg></div>
       <div class="brand-name">
         <span class="brand-text">be-rehber</span>
@@ -149,62 +143,35 @@
 
 <div class="container">
 
-  <header class="hero fade-in" style="position:relative;overflow:hidden;padding:100px 0 72px;">
-
-    <!-- Cobweb + arka plan efekti -->
-    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;">
-      <!-- Neon grid çizgileri -->
-      <svg width="100%" height="100%" style="opacity:0.04;" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-            <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#ff3333" stroke-width="0.5"/>
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#grid)"/>
-      </svg>
-      <!-- Köşe ağı -->
-      <svg width="100%" height="100%" style="opacity:0.12;position:absolute;inset:0;" xmlns="http://www.w3.org/2000/svg">
-        <line x1="100%" y1="0" x2="60%" y2="40%" stroke="#ff3333" stroke-width="0.8"/>
-        <line x1="100%" y1="0" x2="75%" y2="55%" stroke="#ff3333" stroke-width="0.6"/>
-        <line x1="100%" y1="0" x2="85%" y2="30%" stroke="#ff3333" stroke-width="0.6"/>
-        <line x1="100%" y1="0" x2="50%" y2="25%" stroke="#ff3333" stroke-width="0.5"/>
-        <path d="M95%,2% Q80%,20% 70%,35% Q60%,50% 55%,55%" stroke="#ff3333" stroke-width="0.5" fill="none"/>
-        <path d="M88%,1% Q72%,25% 62%,45% Q55%,60% 50%,65%" stroke="#ff3333" stroke-width="0.4" fill="none"/>
-      </svg>
-      <!-- Sol alt glow -->
-      <div style="position:absolute;bottom:0;left:0;width:40%;height:60%;background:radial-gradient(ellipse at 0% 100%, rgba(0,255,136,0.04) 0%, transparent 60%);"></div>
-      <!-- Sağ üst glow -->
-      <div style="position:absolute;top:0;right:0;width:50%;height:70%;background:radial-gradient(ellipse at 100% 0%, rgba(255,51,51,0.06) 0%, transparent 55%);"></div>
-    </div>
+  <header class="hero fade-in" style="position:relative;padding:100px 0 72px;">
 
     <div style="position:relative;z-index:1;">
 
       <!-- Üst tag -->
       <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent-amber);
                   letter-spacing:.2em;text-transform:uppercase;margin-bottom:28px;
-                  display:flex;align-items:center;gap:12px;opacity:0.85;">
+                  display:flex;align-items:center;gap:12px;">
         <svg width="14" height="14" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="50,5 95,30 95,70 50,95 5,70 5,30" fill="none" stroke="#ff3333" stroke-width="8"/>
-          <polygon points="50,25 78,60 22,60" fill="none" stroke="#ff3333" stroke-width="6"/>
+          <polygon points="50,5 95,30 95,70 50,95 5,70 5,30" fill="none" stroke="currentColor" stroke-width="8"/>
+          <polygon points="50,25 78,60 22,60" fill="none" stroke="currentColor" stroke-width="6"/>
         </svg>
-        Backend Developer Guide &nbsp;·&nbsp; v2
+        Backend Developer Guide &nbsp;&middot;&nbsp; v2
       </div>
 
       <!-- Ana başlık -->
-      <h1 style="font-size:clamp(42px,6vw,72px);font-weight:900;line-height:1.0;
-                 letter-spacing:-.04em;margin-bottom:24px;
-                 text-shadow:0 0 40px rgba(255,51,51,0.2);">
+      <h1 style="font-size:clamp(40px,5.5vw,64px);font-weight:700;line-height:1.05;
+                 letter-spacing:-.02em;margin-bottom:24px;
+                 font-family:var(--font-mono);">
         Stajda karşılaşacağın<br>
-        <span style="color:var(--accent-amber);font-style:italic;
-                     text-shadow:0 0 30px rgba(255,51,51,0.5),0 0 60px rgba(255,51,51,0.2);">
+        <span style="color:var(--accent-amber);font-weight:700;">
           her şey
         </span>
         tek bir yerde.
       </h1>
 
       <!-- Alt açıklama -->
-      <p style="font-size:16px;color:var(--text-muted);max-width:520px;
-                line-height:1.75;margin-bottom:36px;font-family:var(--font-mono);">
+      <p style="font-size:14px;color:var(--text-muted);max-width:520px;
+                line-height:1.85;margin-bottom:36px;font-family:var(--font-mono);">
         // araçlar, kavramlar, mimari şemalar<br>
         // gerçek kullanım örnekleriyle büyüyor
       </p>
@@ -220,7 +187,7 @@
           <span style="color:var(--text-muted);">kavram</span>
         </div>
         <div style="padding:10px 20px;border:1px solid var(--border-soft);border-left:none;font-family:var(--font-mono);font-size:12px;">
-          <span style="color:var(--accent-violet);font-weight:700;font-size:20px;display:block;">∞</span>
+          <span style="color:var(--accent-violet);font-weight:700;font-size:20px;display:block;">&#8734;</span>
           <span style="color:var(--text-muted);">büyüyor</span>
         </div>
       </div>
@@ -230,52 +197,52 @@
 
   <!-- ── DEV TOOLS ── -->
   <div class="cat-header fade-in">
-    <span class="cat-label" style="color:#3498db;">⚙ Dev Tools</span>
+    <span class="cat-label" style="color:var(--accent-amber);">&#x25C6; Dev Tools</span>
     <div class="cat-line"></div>
     <span class="cat-count">9 araç</span>
   </div>
   <div class="card-grid">
-    <a href="tools/elastic.html"  class="card" style="--cc:var(--c-elastic)"><div class="card-num">01</div><div class="card-icon">ES</div><h3>Elasticsearch</h3><div class="card-tagline">Milisaniyelerde arama yapan dağıtık arama motoru.</div><div class="card-meta">search</div><div class="card-badge">🚧 soon</div></a>
-    <a href="tools/jenkins.html"  class="card" style="--cc:var(--c-redis)"><div class="card-num">02</div><div class="card-icon">J</div><h3>Jenkins</h3><div class="card-tagline">Push'tan production'a otomatik test ve deploy.</div><div class="card-meta">ci/cd</div><div class="card-badge">🚧 soon</div></a>
-    <a href="tools/grafana.html"  class="card" style="--cc:var(--c-postman)"><div class="card-num">03</div><div class="card-icon">G</div><h3>Grafana</h3><div class="card-tagline">Production'a takılan gözlük — dashboard ve alert.</div><div class="card-meta">monitoring</div><div class="card-badge">🚧 soon</div></a>
-    <a href="tools/argocd.html"   class="card" style="--cc:var(--c-figma)"><div class="card-num">04</div><div class="card-icon">A</div><h3>Argo CD</h3><div class="card-tagline">Git'i izleyip cluster'ı otomatik senkron eden GitOps aracı.</div><div class="card-meta">deploy</div><div class="card-badge">🚧 soon</div></a>
-    <a href="tools/redis.html"    class="card" style="--cc:var(--c-redis)"><div class="card-num">05</div><div class="card-icon">R</div><h3>Redis</h3><div class="card-tagline">RAM hızında key-value store — cache, session, rate limit.</div><div class="card-meta">cache</div><div class="card-badge">🚧 soon</div></a>
-    <a href="tools/swagger.html"  class="card" style="--cc:var(--c-swagger)"><div class="card-num">06</div><div class="card-icon">{}</div><h3>Swagger</h3><div class="card-tagline">API'n için otomatik üretilen interaktif döküman.</div><div class="card-meta">api docs</div><div class="card-badge">🚧 soon</div></a>
-    <a href="tools/postman.html"  class="card" style="--cc:var(--c-postman)"><div class="card-num">07</div><div class="card-icon">P</div><h3>Postman</h3><div class="card-tagline">Frontend olmadan API'ni denemek için GUI istemci.</div><div class="card-meta">api test</div><div class="card-badge">🚧 soon</div></a>
-    <a href="tools/dbeaver.html"  class="card" style="--cc:var(--c-dbeaver)"><div class="card-num">08</div><div class="card-icon">DB</div><h3>DBeaver</h3><div class="card-tagline">Hangi DB olursa olsun tek arayüzden bağlan ve sorgula.</div><div class="card-meta">db client</div><div class="card-badge">🚧 soon</div></a>
-    <a href="tools/figma.html"    class="card" style="--cc:var(--c-figma)"><div class="card-num">09</div><div class="card-icon">F</div><h3>Figma</h3><div class="card-tagline">BE dev neden Figma açar? Ekrandan endpoint çıkarır.</div><div class="card-meta">design</div><div class="card-badge">🚧 soon</div></a>
+    <a href="tools/elastic.html"  class="card" style="--cc:var(--c-elastic)"><div class="card-num">01</div><div class="card-icon">ES</div><h3>Elasticsearch</h3><div class="card-tagline">Milisaniyelerde arama yapan dağıtık arama motoru.</div><div class="card-meta">search</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/jenkins.html"  class="card" style="--cc:var(--c-redis)"><div class="card-num">02</div><div class="card-icon">J</div><h3>Jenkins</h3><div class="card-tagline">Push'tan production'a otomatik test ve deploy.</div><div class="card-meta">ci/cd</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/grafana.html"  class="card" style="--cc:var(--c-postman)"><div class="card-num">03</div><div class="card-icon">G</div><h3>Grafana</h3><div class="card-tagline">Production'a takılan gözlük — dashboard ve alert.</div><div class="card-meta">monitoring</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/argocd.html"   class="card" style="--cc:var(--c-figma)"><div class="card-num">04</div><div class="card-icon">A</div><h3>Argo CD</h3><div class="card-tagline">Git'i izleyip cluster'ı otomatik senkron eden GitOps aracı.</div><div class="card-meta">deploy</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/redis.html"    class="card" style="--cc:var(--c-redis)"><div class="card-num">05</div><div class="card-icon">R</div><h3>Redis</h3><div class="card-tagline">RAM hızında key-value store — cache, session, rate limit.</div><div class="card-meta">cache</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/swagger.html"  class="card" style="--cc:var(--c-swagger)"><div class="card-num">06</div><div class="card-icon">{}</div><h3>Swagger</h3><div class="card-tagline">API'n için otomatik üretilen interaktif döküman.</div><div class="card-meta">api docs</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/postman.html"  class="card" style="--cc:var(--c-postman)"><div class="card-num">07</div><div class="card-icon">P</div><h3>Postman</h3><div class="card-tagline">Frontend olmadan API'ni denemek için GUI istemci.</div><div class="card-meta">api test</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/dbeaver.html"  class="card" style="--cc:var(--c-dbeaver)"><div class="card-num">08</div><div class="card-icon">DB</div><h3>DBeaver</h3><div class="card-tagline">Hangi DB olursa olsun tek arayüzden bağlan ve sorgula.</div><div class="card-meta">db client</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/figma.html"    class="card" style="--cc:var(--c-figma)"><div class="card-num">09</div><div class="card-icon">F</div><h3>Figma</h3><div class="card-tagline">BE dev neden Figma açar? Ekrandan endpoint çıkarır.</div><div class="card-meta">design</div><div class="card-badge">◆ soon</div></a>
   </div>
 
   <!-- ── GENEL KAVRAMLAR ── -->
   <div class="cat-header fade-in">
-    <span class="cat-label" style="color:#27ae60;">◈ Genel Kavramlar</span>
+    <span class="cat-label" style="color:var(--accent-sage);">&#x25C8; Genel Kavramlar</span>
     <div class="cat-line"></div>
     <span class="cat-count">4 konu</span>
   </div>
   <div class="card-grid">
-    <a href="concepts/rest-api.html"     class="card" style="--cc:#27ae60"><div class="card-num">★ 01</div><div class="card-icon">REST</div><h3>REST API</h3><div class="card-tagline">HTTP metotları, status code'lar ve RESTful tasarım ilkeleri.</div><div class="card-meta">teori</div><div class="card-arrow">→</div></a>
-    <a href="concepts/protocols.html"    class="card" style="--cc:#2980b9"><div class="card-num">★ 02</div><div class="card-icon">⇄</div><h3>Haberleşme Protokolleri</h3><div class="card-tagline">HTTP, WebSocket, gRPC, Kafka — hangisi ne zaman?</div><div class="card-meta">teori</div><div class="card-arrow">→</div></a>
-    <a href="concepts/architecture.html" class="card" style="--cc:#c0392b"><div class="card-num">★ 03</div><div class="card-icon">⊞</div><h3>Monolith vs Mikroservis</h3><div class="card-tagline">Tek büyük uygulama mı, bağımsız servisler mi?</div><div class="card-meta">teori</div><div class="card-arrow">→</div></a>
+    <a href="concepts/rest-api.html"     class="card" style="--cc:#4ec9b0"><div class="card-num">★ 01</div><div class="card-icon">REST</div><h3>REST API</h3><div class="card-tagline">HTTP metotları, status code'lar ve RESTful tasarım ilkeleri.</div><div class="card-meta">teori</div><div class="card-arrow">→</div></a>
+    <a href="concepts/protocols.html"    class="card" style="--cc:#4fc1ff"><div class="card-num">★ 02</div><div class="card-icon">⇄</div><h3>Haberleşme Protokolleri</h3><div class="card-tagline">HTTP, WebSocket, gRPC, Kafka — hangisi ne zaman?</div><div class="card-meta">teori</div><div class="card-arrow">→</div></a>
+    <a href="concepts/architecture.html" class="card" style="--cc:#4fc1ff"><div class="card-num">★ 03</div><div class="card-icon">⊞</div><h3>Monolith vs Mikroservis</h3><div class="card-tagline">Tek büyük uygulama mı, bağımsız servisler mi?</div><div class="card-meta">teori</div><div class="card-arrow">→</div></a>
     <a href="concepts/distributed.html"  class="card" style="--cc:var(--c-redis)"><div class="card-num">★ 04</div><div class="card-icon">◇</div><h3>Distributed Systems</h3><div class="card-tagline">8 yalan, CAP teoremi ve dağıtık sistem dertleri.</div><div class="card-meta">teori</div><div class="card-arrow">→</div></a>
   </div>
 
   <!-- ── MİMARİ & ŞEMALAR ── -->
   <div class="cat-header fade-in">
-    <span class="cat-label" style="color:#9b59b6;">⬡ Mimari &amp; Şemalar</span>
+    <span class="cat-label" style="color:var(--accent-violet);">&#x2B22; Mimari &amp; Şemalar</span>
     <div class="cat-line"></div>
     <span class="cat-count">3 konu</span>
   </div>
   <div class="card-grid">
-    <a href="deep/ecosystem.html"   class="card" style="--cc:#27ae60"><div class="card-num">◉ 01</div><div class="card-icon">↗</div><h3>Hepsi Birlikte</h3><div class="card-tagline">9 aracın bir feature'ın hayatında nasıl birlikte çalıştığı.</div><div class="card-meta">ekosistem</div><div class="card-arrow">→</div></a>
-    <a href="deep/bigpicture.html"  class="card" style="--cc:#c0392b"><div class="card-num">◉ 02</div><div class="card-icon">⊕</div><h3>Devasa Şema</h3><div class="card-tagline">28 kutuluk interaktif mimari harita. Hover'da detay, 5 akış senaryosu.</div><div class="card-meta">big picture</div><div class="card-arrow">→</div></a>
-    <a href="deep/bff.html"         class="card" style="--cc:var(--c-figma)"><div class="card-num">◉ 03</div><div class="card-icon">BFF</div><h3>BFF Mimarisi</h3><div class="card-tagline">Mobile → Gateway → BFF → Core → Fiba Bank. Correlation ID, Multi-threading.</div><div class="card-meta">mimari</div><div class="card-badge">🚧 soon</div></a>
+    <a href="deep/ecosystem.html"   class="card" style="--cc:#4ec9b0"><div class="card-num">◉ 01</div><div class="card-icon">↗</div><h3>Hepsi Birlikte</h3><div class="card-tagline">9 aracın bir feature'ın hayatında nasıl birlikte çalıştığı.</div><div class="card-meta">ekosistem</div><div class="card-arrow">→</div></a>
+    <a href="deep/bigpicture.html"  class="card" style="--cc:#4fc1ff"><div class="card-num">◉ 02</div><div class="card-icon">⊕</div><h3>Devasa Şema</h3><div class="card-tagline">28 kutuluk interaktif mimari harita. Hover'da detay, 5 akış senaryosu.</div><div class="card-meta">big picture</div><div class="card-arrow">→</div></a>
+    <a href="deep/bff.html"         class="card" style="--cc:var(--c-figma)"><div class="card-num">◉ 03</div><div class="card-icon">BFF</div><h3>BFF Mimarisi</h3><div class="card-tagline">Mobile → Gateway → BFF → Core → Fiba Bank. Correlation ID, Multi-threading.</div><div class="card-meta">mimari</div><div class="card-badge">◆ soon</div></a>
   </div>
 
 </div>
 
 <footer class="site-footer">
-  <p>be-rehber · backend developer guide · v2</p>
-  <p style="margin-top:6px; opacity:.5;">büyümeye devam ediyor 🌱</p>
+  <p>be-rehber &middot; backend developer guide &middot; v2</p>
+  <p style="margin-top:6px; opacity:.5;">// büyümeye devam ediyor</p>
 </footer>
 
 <script>window.SPIDER_API_KEY = "GROQ_KEY_BURAYA";</script>

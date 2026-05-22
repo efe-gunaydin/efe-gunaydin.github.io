@@ -182,28 +182,20 @@
 <nav class="topnav">
   <div class="topnav-inner">
     <a class="brand" href="../index.html">
-      <div class="brand-symbol">
-        <svg width="40" height="40" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-          <polyline points="122,92 95,72 68,55 42,32 22,16" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="115,106 85,96 55,85 28,76 8,62" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="113,126 82,124 52,130 26,142 10,158" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="118,144 90,156 68,175 50,202 42,228" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="178,92 205,72 232,55 258,32 278,16" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="185,106 215,96 245,85 272,76 292,62" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="187,126 218,124 248,130 274,142 290,158" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="182,144 210,156 232,175 250,202 258,228" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="150" cy="86" r="22" fill="transparent" stroke="#c0392b" stroke-width="3.5"/>
-          <path d="M 141,106 L 138,116 L 141,124 L 144,116 Z" fill="#c0392b"/>
-          <path d="M 159,106 L 162,116 L 159,124 L 156,116 Z" fill="#c0392b"/>
-          <path d="M 150,116 C 124,116 108,130 105,150 C 101,175 110,204 124,220 C 133,230 150,238 150,238 C 150,238 167,230 176,220 C 190,204 199,175 195,150 C 192,130 176,116 150,116 Z" fill="transparent" stroke="#c0392b" stroke-width="3.5"/>
-          <line x1="150" y1="148" x2="150" y2="200" stroke="#c0392b" stroke-width="2.5"/>
-          <line x1="124" y1="174" x2="176" y2="174" stroke="#c0392b" stroke-width="2.5"/>
-          <polygon points="150,148 144,160 156,160" fill="#c0392b"/>
-          <polygon points="150,200 144,188 156,188" fill="#c0392b"/>
-          <polygon points="124,174 136,168 136,180" fill="#c0392b"/>
-          <polygon points="176,174 164,168 164,180" fill="#c0392b"/>
-        </svg>
-      </div>
+      <div class="brand-symbol" style="color:var(--accent-amber);"><svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dış elmas/kalkan çerçevesi -->
+  <polygon points="50,5 95,30 95,70 50,95 5,70 5,30"
+    fill="none" stroke="currentColor" stroke-width="2" opacity="0.55"/>
+  <!-- İç üçgen — Dragonborn -->
+  <polygon points="50,20 80,72 20,72"
+    fill="none" stroke="currentColor" stroke-width="2.5"/>
+  <!-- Merkez nokta -->
+  <circle cx="50" cy="50" r="4" fill="currentColor"/>
+  <!-- Üçgen iç çizgiler — rune hissi -->
+  <line x1="50" y1="20" x2="50" y2="72" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+  <line x1="50" y1="50" x2="80" y2="72" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+  <line x1="50" y1="50" x2="20" y2="72" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+</svg></div>
       <div class="brand-name">
         <span class="brand-text">be-rehber</span>
         <span class="brand-sub">backend dev guide</span>
@@ -223,7 +215,7 @@
   <div class="breadcrumb fade-in">
     <a href="../index.html">← Ana Sayfa</a>
     <span class="sep">/</span>
-    <span class="cat" style="color:#c0392b;">Mimari &amp; Şemalar</span>
+    <span class="cat" style="color:#4fc1ff;">Mimari &amp; Şemalar</span>
     <span class="sep">/</span>
     <span class="cur">Devasa Şema</span>
   </div>
@@ -240,16 +232,16 @@
     <!-- KATMAN 1: DEVELOPMENT -->
     <div class="schema-layer" style="background:linear-gradient(135deg, rgba(212,165,116,.04) 0%, transparent 60%);">
       <div class="layer-header">
-        <span class="layer-badge" style="background:rgba(212,165,116,.15); color:#c0392b;">① Development</span>
+        <span class="layer-badge" style="background:rgba(212,165,116,.15); color:#4fc1ff;">① Development</span>
         <span class="layer-title-text">kod fikirden image registry'ye · developer'ın günlük akışı</span>
       </div>
 
       <div class="nodes-row">
 
-        <div class="node" style="--node-color:#c0392b;">
+        <div class="node" style="--node-color:#4fc1ff;">
           <div class="node-pulse"></div>
           <div class="node-num">01</div>
-          <div class="node-icon">👤</div>
+          <div class="node-icon">◉</div>
           <div class="node-name">Developer</div>
           <div class="node-role">kod yazar</div>
           <div class="node-tooltip">
@@ -258,7 +250,7 @@
           </div>
         </div>
 
-        <div class="node" style="--node-color:#9b59b6;">
+        <div class="node" style="--node-color:#c586c0;">
           <div class="node-num">02</div>
           <div class="node-icon">F</div>
           <div class="node-name">Figma</div>
@@ -269,7 +261,7 @@
           </div>
         </div>
 
-        <div class="node" style="--node-color:#2ecc71;">
+        <div class="node" style="--node-color:#4ec9b0;">
           <div class="node-num">03</div>
           <div class="node-icon">{}</div>
           <div class="node-name">Swagger</div>
@@ -280,7 +272,7 @@
           </div>
         </div>
 
-        <div class="node" style="--node-color:#f39c12;">
+        <div class="node" style="--node-color:#dcdcaa;">
           <div class="node-num">04</div>
           <div class="node-icon">DB</div>
           <div class="node-name">DBeaver</div>
@@ -291,7 +283,7 @@
           </div>
         </div>
 
-        <div class="node" style="--node-color:#e67e22;">
+        <div class="node" style="--node-color:#ce9178;">
           <div class="node-num">05</div>
           <div class="node-icon">P</div>
           <div class="node-name">Postman</div>
@@ -302,7 +294,7 @@
           </div>
         </div>
 
-        <div class="node" style="--node-color:#e74c3c;">
+        <div class="node" style="--node-color:#4fc1ff;">
           <div class="node-pulse"></div>
           <div class="node-num">06</div>
           <div class="node-icon">J</div>
@@ -316,7 +308,7 @@
 
         <div class="node" style="--node-color:#807d78;">
           <div class="node-num">07</div>
-          <div class="node-icon">📦</div>
+          <div class="node-icon">◫</div>
           <div class="node-name">Registry</div>
           <div class="node-role">image saklar</div>
           <div class="node-tooltip">
@@ -327,7 +319,7 @@
 
         <div class="node" style="--node-color:#807d78;">
           <div class="node-num">08</div>
-          <div class="node-icon">📋</div>
+          <div class="node-icon">▤</div>
           <div class="node-name">Git Manifest</div>
           <div class="node-role">k8s yaml repo</div>
           <div class="node-tooltip">
@@ -336,7 +328,7 @@
           </div>
         </div>
 
-        <div class="node" style="--node-color:#9b59b6;">
+        <div class="node" style="--node-color:#c586c0;">
           <div class="node-pulse"></div>
           <div class="node-num">09</div>
           <div class="node-icon">A</div>
@@ -348,7 +340,7 @@
           </div>
         </div>
 
-        <div class="node" style="--node-color:#27ae60;">
+        <div class="node" style="--node-color:#4ec9b0;">
           <div class="node-pulse"></div>
           <div class="node-num">10</div>
           <div class="node-icon">☸️</div>
@@ -366,7 +358,7 @@
     <!-- KATMAN 2: PRODUCTION -->
     <div class="schema-layer" style="background:linear-gradient(135deg, rgba(155,181,155,.04) 0%, transparent 60%);">
       <div class="layer-header">
-        <span class="layer-badge" style="background:rgba(155,181,155,.15); color:#27ae60;">② Production — Runtime</span>
+        <span class="layer-badge" style="background:rgba(155,181,155,.15); color:#4ec9b0;">② Production — Runtime</span>
         <span class="layer-title-text">kullanıcının isteğinin gezdiği yer · mikroservisler · data katmanı · dış servisler</span>
       </div>
 
@@ -374,13 +366,13 @@
 
         <!-- İstek girişi + Edge + Servisler -->
         <div>
-          <div class="group-label" style="color:#27ae60;">İstek Girişi &amp; Edge</div>
+          <div class="group-label" style="color:#4ec9b0;">İstek Girişi &amp; Edge</div>
           <div style="display:flex; flex-direction:column; gap:8px;">
 
-            <div class="node" style="--node-color:#27ae60;">
+            <div class="node" style="--node-color:#4ec9b0;">
               <div class="node-pulse"></div>
               <div class="node-num">11</div>
-              <div class="node-icon">🧑</div>
+              <div class="node-icon">◉</div>
               <div class="node-name">End User</div>
               <div class="node-role">mobile · web · HTTPS</div>
               <div class="node-tooltip">
@@ -389,7 +381,7 @@
               </div>
             </div>
 
-            <div class="node" style="--node-color:#27ae60;">
+            <div class="node" style="--node-color:#4ec9b0;">
               <div class="node-pulse"></div>
               <div class="node-num">12</div>
               <div class="node-icon">⛩</div>
@@ -406,13 +398,13 @@
 
         <!-- Mikroservisler -->
         <div>
-          <div class="group-label" style="color:#27ae60;">Mikroservisler</div>
+          <div class="group-label" style="color:#4ec9b0;">Mikroservisler</div>
           <div style="display:flex; flex-direction:column; gap:8px;">
 
-            <div class="node" style="--node-color:#27ae60;">
+            <div class="node" style="--node-color:#4ec9b0;">
               <div class="node-pulse"></div>
               <div class="node-num">13</div>
-              <div class="node-icon">🟢</div>
+              <div class="node-icon">●</div>
               <div class="node-name">order-svc</div>
               <div class="node-role">Spring Boot · /orders</div>
               <div class="node-tooltip">
@@ -421,9 +413,9 @@
               </div>
             </div>
 
-            <div class="node" style="--node-color:#27ae60;">
+            <div class="node" style="--node-color:#4ec9b0;">
               <div class="node-num">14</div>
-              <div class="node-icon">🟢</div>
+              <div class="node-icon">●</div>
               <div class="node-name">user-svc</div>
               <div class="node-role">Spring Boot · /users</div>
               <div class="node-tooltip">
@@ -432,9 +424,9 @@
               </div>
             </div>
 
-            <div class="node" style="--node-color:#27ae60;">
+            <div class="node" style="--node-color:#4ec9b0;">
               <div class="node-num">15</div>
-              <div class="node-icon">🟢</div>
+              <div class="node-icon">●</div>
               <div class="node-name">payment-svc</div>
               <div class="node-role">Spring Boot · /payments</div>
               <div class="node-tooltip">
@@ -443,9 +435,9 @@
               </div>
             </div>
 
-            <div class="node" style="--node-color:#27ae60;">
+            <div class="node" style="--node-color:#4ec9b0;">
               <div class="node-num">16</div>
-              <div class="node-icon">🟢</div>
+              <div class="node-icon">●</div>
               <div class="node-name">notification-svc</div>
               <div class="node-role">Python · async worker</div>
               <div class="node-tooltip">
@@ -461,13 +453,13 @@
         <div style="display:flex; flex-direction:column; gap:14px;">
 
           <div>
-            <div class="group-label" style="color:#2980b9;">Data Katmanı</div>
+            <div class="group-label" style="color:#4fc1ff;">Data Katmanı</div>
             <div style="display:flex; flex-direction:column; gap:8px;">
 
-              <div class="node" style="--node-color:#2980b9;">
+              <div class="node" style="--node-color:#4fc1ff;">
                 <div class="node-pulse"></div>
                 <div class="node-num">17</div>
-                <div class="node-icon">🐘</div>
+                <div class="node-icon">◍</div>
                 <div class="node-name">PostgreSQL</div>
                 <div class="node-role">source of truth</div>
                 <div class="node-tooltip">
@@ -476,7 +468,7 @@
                 </div>
               </div>
 
-              <div class="node" style="--node-color:#e74c3c;">
+              <div class="node" style="--node-color:#4fc1ff;">
                 <div class="node-pulse"></div>
                 <div class="node-num">18</div>
                 <div class="node-icon">R</div>
@@ -488,7 +480,7 @@
                 </div>
               </div>
 
-              <div class="node" style="--node-color:#3498db;">
+              <div class="node" style="--node-color:#4fc1ff;">
                 <div class="node-num">19</div>
                 <div class="node-icon">ES</div>
                 <div class="node-name">Elasticsearch</div>
@@ -499,10 +491,10 @@
                 </div>
               </div>
 
-              <div class="node" style="--node-color:#9b59b6;">
+              <div class="node" style="--node-color:#c586c0;">
                 <div class="node-pulse"></div>
                 <div class="node-num">20</div>
-                <div class="node-icon">📬</div>
+                <div class="node-icon">▥</div>
                 <div class="node-name">Kafka</div>
                 <div class="node-role">event bus · pub/sub · async</div>
                 <div class="node-tooltip">
@@ -515,12 +507,12 @@
           </div>
 
           <div>
-            <div class="group-label" style="color:#9b59b6;">3rd Party</div>
+            <div class="group-label" style="color:#c586c0;">3rd Party</div>
             <div style="display:flex; flex-direction:column; gap:8px;">
 
-              <div class="node" style="--node-color:#9b59b6;">
+              <div class="node" style="--node-color:#c586c0;">
                 <div class="node-num">21</div>
-                <div class="node-icon">💳</div>
+                <div class="node-icon">◆</div>
                 <div class="node-name">Stripe</div>
                 <div class="node-role">payment provider</div>
                 <div class="node-tooltip">
@@ -529,9 +521,9 @@
                 </div>
               </div>
 
-              <div class="node" style="--node-color:#9b59b6;">
+              <div class="node" style="--node-color:#c586c0;">
                 <div class="node-num">22</div>
-                <div class="node-icon">📧</div>
+                <div class="node-icon">▧</div>
                 <div class="node-name">SendGrid</div>
                 <div class="node-role">email · sms</div>
                 <div class="node-tooltip">
@@ -550,16 +542,16 @@
     <!-- KATMAN 3: OBSERVABILITY -->
     <div class="schema-layer" style="background:linear-gradient(135deg, rgba(244,162,97,.04) 0%, transparent 60%);">
       <div class="layer-header">
-        <span class="layer-badge" style="background:rgba(244,162,97,.15); color:#e67e22;">③ Observability</span>
+        <span class="layer-badge" style="background:rgba(244,162,97,.15); color:#ce9178;">③ Observability</span>
         <span class="layer-title-text">production'da olan biteni gör · 3 sinyal: metric + log + trace</span>
       </div>
 
       <div class="nodes-row">
 
-        <div class="node" style="--node-color:#e67e22;">
+        <div class="node" style="--node-color:#ce9178;">
           <div class="node-pulse"></div>
           <div class="node-num">24</div>
-          <div class="node-icon">🔥</div>
+          <div class="node-icon">▲</div>
           <div class="node-name">Prometheus</div>
           <div class="node-role">metric scrape · 15sn</div>
           <div class="node-tooltip">
@@ -568,9 +560,9 @@
           </div>
         </div>
 
-        <div class="node" style="--node-color:#e67e22;">
+        <div class="node" style="--node-color:#ce9178;">
           <div class="node-num">25</div>
-          <div class="node-icon">📄</div>
+          <div class="node-icon">▦</div>
           <div class="node-name">Loki</div>
           <div class="node-role">log aggregation</div>
           <div class="node-tooltip">
@@ -579,9 +571,9 @@
           </div>
         </div>
 
-        <div class="node" style="--node-color:#e67e22;">
+        <div class="node" style="--node-color:#ce9178;">
           <div class="node-num">26</div>
-          <div class="node-icon">🔍</div>
+          <div class="node-icon">◇</div>
           <div class="node-name">Tempo</div>
           <div class="node-role">distributed tracing</div>
           <div class="node-tooltip">
@@ -590,7 +582,7 @@
           </div>
         </div>
 
-        <div class="node" style="--node-color:#e67e22; min-width:180px;">
+        <div class="node" style="--node-color:#ce9178; min-width:180px;">
           <div class="node-pulse"></div>
           <div class="node-num">27</div>
           <div class="node-icon">G</div>
@@ -604,7 +596,7 @@
 
         <div class="node" style="--node-color:#807d78;">
           <div class="node-num">28</div>
-          <div class="node-icon">📟</div>
+          <div class="node-icon">▣</div>
           <div class="node-name">On-call</div>
           <div class="node-role">PagerDuty · Slack alarm</div>
           <div class="node-tooltip">
@@ -624,31 +616,31 @@
     <p class="flows-sub">Kutulara baktın, numaraları gördün. Şimdi her akışı takip et — hangi numara ne zaman devreye giriyor:</p>
 
     <!-- AKIŞ 1 -->
-    <div class="flow-card fade-in" style="border-left-color:#c0392b;">
+    <div class="flow-card fade-in" style="border-left-color:#4fc1ff;">
       <div class="flow-header">
-        <span class="flow-dot" style="background:#c0392b;"></span>
-        <span class="flow-name" style="color:#c0392b;">Akış 1 — Kod → Production (Deploy Zinciri)</span>
+        <span class="flow-dot" style="background:#4fc1ff;"></span>
+        <span class="flow-name" style="color:#4fc1ff;">Akış 1 — Kod → Production (Deploy Zinciri)</span>
       </div>
       <div class="flow-chain">
-        <span class="flow-node" style="color:#c0392b; border-color:#c0392b;">01 Dev</span>
+        <span class="flow-node" style="color:#4fc1ff; border-color:#4fc1ff;">01 Dev</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#9b59b6;">02 Figma</span>
+        <span class="flow-node" style="color:#c586c0;">02 Figma</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#2ecc71;">03 Swagger</span>
+        <span class="flow-node" style="color:#4ec9b0;">03 Swagger</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#f39c12;">04 DBeaver</span>
+        <span class="flow-node" style="color:#dcdcaa;">04 DBeaver</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#e67e22;">05 Postman</span>
+        <span class="flow-node" style="color:#ce9178;">05 Postman</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#e74c3c;">06 Jenkins</span>
+        <span class="flow-node" style="color:#4fc1ff;">06 Jenkins</span>
         <span class="flow-arrow">→</span>
         <span class="flow-node">07 Registry</span>
         <span class="flow-arrow">→</span>
         <span class="flow-node">08 Manifest</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#9b59b6;">09 Argo CD</span>
+        <span class="flow-node" style="color:#c586c0;">09 Argo CD</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#27ae60;">10 Cluster</span>
+        <span class="flow-node" style="color:#4ec9b0;">10 Cluster</span>
       </div>
       <p class="flow-desc">
         Tasarımdan başlar: Figma'da ekran incelenir, Swagger'da API kontratı çıkarılır, DBeaver'da şema kararlaştırılır. Kod yazılırken Postman'de test edilir. <code>git push</code> Jenkins'i tetikler — build alınır, testler koşulur, Docker image registry'ye gönderilir. Jenkins manifest repo'daki image tag'ini günceller. Argo CD değişikliği yakalar, cluster'ı sync eder. <strong>Kötü kod production'a giremez — Jenkins fail olursa zincir kırılır.</strong>
@@ -656,26 +648,26 @@
     </div>
 
     <!-- AKIŞ 2 -->
-    <div class="flow-card fade-in" style="border-left-color:#27ae60;">
+    <div class="flow-card fade-in" style="border-left-color:#4ec9b0;">
       <div class="flow-header">
-        <span class="flow-dot" style="background:#27ae60;"></span>
-        <span class="flow-name" style="color:#27ae60;">Akış 2 — Kullanıcı İsteği (Sipariş Oluştur)</span>
+        <span class="flow-dot" style="background:#4ec9b0;"></span>
+        <span class="flow-name" style="color:#4ec9b0;">Akış 2 — Kullanıcı İsteği (Sipariş Oluştur)</span>
       </div>
       <div class="flow-chain">
-        <span class="flow-node" style="color:#27ae60;">11 User</span>
+        <span class="flow-node" style="color:#4ec9b0;">11 User</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#27ae60;">12 Gateway</span>
+        <span class="flow-node" style="color:#4ec9b0;">12 Gateway</span>
         <span class="flow-note">(auth + rate limit)</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#27ae60;">13 order-svc</span>
+        <span class="flow-node" style="color:#4ec9b0;">13 order-svc</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#e74c3c;">18 Redis</span>
+        <span class="flow-node" style="color:#4fc1ff;">18 Redis</span>
         <span class="flow-note">(cart cache)</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#2980b9;">17 Postgres</span>
+        <span class="flow-node" style="color:#4fc1ff;">17 Postgres</span>
         <span class="flow-note">(yeni kayıt)</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#9b59b6;">20 Kafka</span>
+        <span class="flow-node" style="color:#c586c0;">20 Kafka</span>
         <span class="flow-note">(event yay)</span>
       </div>
       <p class="flow-desc">
@@ -684,25 +676,25 @@
     </div>
 
     <!-- AKIŞ 3 -->
-    <div class="flow-card fade-in" style="border-left-color:#9b59b6;">
+    <div class="flow-card fade-in" style="border-left-color:#c586c0;">
       <div class="flow-header">
-        <span class="flow-dot" style="background:#9b59b6;"></span>
-        <span class="flow-name" style="color:#9b59b6;">Akış 3 — Async Event Zinciri (Ödeme + Bildirim)</span>
+        <span class="flow-dot" style="background:#c586c0;"></span>
+        <span class="flow-name" style="color:#c586c0;">Akış 3 — Async Event Zinciri (Ödeme + Bildirim)</span>
       </div>
       <div class="flow-chain">
-        <span class="flow-node" style="color:#9b59b6;">20 Kafka</span>
+        <span class="flow-node" style="color:#c586c0;">20 Kafka</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#27ae60;">15 payment-svc</span>
+        <span class="flow-node" style="color:#4ec9b0;">15 payment-svc</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#9b59b6;">21 Stripe</span>
+        <span class="flow-node" style="color:#c586c0;">21 Stripe</span>
         <span class="flow-note">(ödeme al)</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#9b59b6;">20 Kafka</span>
+        <span class="flow-node" style="color:#c586c0;">20 Kafka</span>
         <span class="flow-note">(PaymentSucceeded)</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#27ae60;">16 notification-svc</span>
+        <span class="flow-node" style="color:#4ec9b0;">16 notification-svc</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#9b59b6;">22 SendGrid</span>
+        <span class="flow-node" style="color:#c586c0;">22 SendGrid</span>
       </div>
       <p class="flow-desc">
         Kullanıcı çoktan cevabı aldı — işler perde arkasında devam ediyor. Payment servisi Kafka'dan event'i tüketir, Stripe'a ödeme isteği atar. Başarılı olursa <code>PaymentSucceeded</code> event'i yayar. Notification servisi bunu tüketir, SendGrid ile "ödemeniz alındı" maili gönderir. <strong>Kimse kimseyi beklemez — async, decoupled.</strong>
@@ -710,19 +702,19 @@
     </div>
 
     <!-- AKIŞ 4 -->
-    <div class="flow-card fade-in" style="border-left-color:#3498db;">
+    <div class="flow-card fade-in" style="border-left-color:#4fc1ff;">
       <div class="flow-header">
-        <span class="flow-dot" style="background:#3498db;"></span>
-        <span class="flow-name" style="color:#3498db;">Akış 4 — Arama (Full-text)</span>
+        <span class="flow-dot" style="background:#4fc1ff;"></span>
+        <span class="flow-name" style="color:#4fc1ff;">Akış 4 — Arama (Full-text)</span>
       </div>
       <div class="flow-chain">
-        <span class="flow-node" style="color:#27ae60;">11 User</span>
+        <span class="flow-node" style="color:#4ec9b0;">11 User</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#27ae60;">12 Gateway</span>
+        <span class="flow-node" style="color:#4ec9b0;">12 Gateway</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#27ae60;">13 order-svc</span>
+        <span class="flow-node" style="color:#4ec9b0;">13 order-svc</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#3498db;">19 Elasticsearch</span>
+        <span class="flow-node" style="color:#4fc1ff;">19 Elasticsearch</span>
         <span class="flow-note">(inverted index sorgusu)</span>
       </div>
       <p class="flow-desc">
@@ -731,26 +723,26 @@
     </div>
 
     <!-- AKIŞ 5 -->
-    <div class="flow-card fade-in" style="border-left-color:#e67e22;">
+    <div class="flow-card fade-in" style="border-left-color:#ce9178;">
       <div class="flow-header">
-        <span class="flow-dot" style="background:#e67e22;"></span>
-        <span class="flow-name" style="color:#e67e22;">Akış 5 — Observability (Alarm Geldi mi?)</span>
+        <span class="flow-dot" style="background:#ce9178;"></span>
+        <span class="flow-name" style="color:#ce9178;">Akış 5 — Observability (Alarm Geldi mi?)</span>
       </div>
       <div class="flow-chain">
-        <span class="flow-node" style="color:#27ae60;">13–16 Servisler</span>
+        <span class="flow-node" style="color:#4ec9b0;">13–16 Servisler</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#e67e22;">24 Prometheus</span>
+        <span class="flow-node" style="color:#ce9178;">24 Prometheus</span>
         <span class="flow-note">+ metric</span>
-        <span class="flow-node" style="color:#e67e22;">25 Loki</span>
+        <span class="flow-node" style="color:#ce9178;">25 Loki</span>
         <span class="flow-note">+ log</span>
-        <span class="flow-node" style="color:#e67e22;">26 Tempo</span>
+        <span class="flow-node" style="color:#ce9178;">26 Tempo</span>
         <span class="flow-note">+ trace</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-node" style="color:#e67e22;">27 Grafana</span>
+        <span class="flow-node" style="color:#ce9178;">27 Grafana</span>
         <span class="flow-arrow">→</span>
         <span class="flow-node">28 On-call</span>
         <span class="flow-arrow">↻</span>
-        <span class="flow-node" style="color:#c0392b;">01 Developer</span>
+        <span class="flow-node" style="color:#4fc1ff;">01 Developer</span>
       </div>
       <p class="flow-desc">
         Her servis sürekli 3 sinyal yayar: Spring Actuator → Prometheus (metric), stdout → Loki (log), OpenTelemetry → Tempo (trace). Grafana üçünü birleştirir, alert kuralı tetiklenince Slack/PagerDuty'ye atar. On-call müdahale eder — gerekirse developer'ı uyandırır. <strong>Döngü başa sarar (Akış 1'e).</strong>

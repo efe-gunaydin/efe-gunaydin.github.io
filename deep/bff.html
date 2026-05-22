@@ -10,136 +10,11 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 
-    :root {
-      /* Ana arka plan - sıcak koyu, göz yormayan */
-      --bg-base: #1a1b1e;
-      --bg-elevated: #232428;
-      --bg-card: #2a2b30;
-      --bg-soft: #303137;
-      --topnav-bg: rgba(26, 27, 30, 0.85);
 
-      /* Metin */
-      --text-primary: #e8e6e3;
-      --text-secondary: #b4b1ac;
-      --text-muted: #807d78;
-      --text-dim: #5a5853;
+    /* Tema değişkenleri shared.css'ten gelir — burada ezilmez.
+       (Önceki :root, body.light-mode ve body.getir-mode override'ları kaldırıldı —
+        TÜM site high-contrast paletine uysun diye.) */
 
-      /* Çizgiler */
-      --border-soft: #3a3b40;
-      --border-medium: #45464c;
-
-      /* Aksanlar - sıcak ve göz yormayan */
-      --accent-amber: #c0392b;
-      --accent-sage: #27ae60;
-      --accent-rust: #e74c3c;
-      --accent-sky: #2980b9;
-      --accent-violet: #9b59b6;
-
-      /* Uygulamaların kendi renkleri (markaya yakın ama soft) */
-      --c-elastic: #3498db;
-      --c-jenkins: #e74c3c;
-      --c-grafana: #e67e22;
-      --c-argo: #9b59b6;
-      --c-redis: #e74c3c;
-      --c-swagger: #2ecc71;
-      --c-postman: #e67e22;
-      --c-dbeaver: #f39c12;
-      --c-figma: #9b59b6;
-
-      /* Font ailesi */
-      --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
-      --font-sans: 'Manrope', system-ui, -apple-system, sans-serif;
-
-      /* Spacing */
-      --container-max: 1100px;
-    }
-
-    body.light-mode {
-      /* Ana arka plan - açık, ferah */
-      --bg-base: #e2e4e8;
-      --bg-elevated: #ffffff;
-      --bg-card: #f1f3f5;
-      --bg-soft: #d1d5db;
-      --topnav-bg: rgba(240, 242, 245, 0.85);
-
-      /* Metin */
-      --text-primary: #212529;
-      --text-secondary: #495057;
-      --text-muted: #6c757d;
-      --text-dim: #adb5bd;
-
-      /* Çizgiler */
-      --border-soft: #dee2e6;
-      --border-medium: #ced4da;
-    }
-
-    body.light-mode::before {
-      background-image:
-        radial-gradient(circle at 20% 10%, rgba(212, 165, 116, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(155, 181, 155, 0.08) 0%, transparent 40%);
-    }
-
-    /* =====================================================
-       GETIR MODE — sarı/mor Getir renk teması
-       Hem dark hem light'a uygulanabilir.
-       ===================================================== */
-    body.getir-mode {
-      --accent-amber: #ffd300;
-      /* Getir sarı — birincil aksan */
-      --accent-sage: #5d3ebc;
-      /* Getir mor — ikincil aksan */
-      --accent-rust: #ff8a3d;
-      /* turuncu vurgu */
-      --accent-sky: #4fc3f7;
-      --accent-violet: #7c4dff;
-
-      /* Tool renkleri Getir paletine kayıyor */
-      --c-elastic: #4fc3f7;
-      --c-jenkins: #ff7a8a;
-      --c-grafana: #ff8a3d;
-      --c-argo: #7c4dff;
-      --c-redis: #ff5722;
-      --c-swagger: #5d3ebc;
-      --c-postman: #ff8a3d;
-      --c-dbeaver: #ffd300;
-      --c-figma: #d63384;
-    }
-
-    /* Getir + Dark — koyu zemine sarı/mor */
-    body.getir-mode:not(.light-mode) {
-      --bg-base: #1a1525;
-      /* hafif mor tonlu siyah */
-      --bg-elevated: #251c38;
-      --bg-card: #2d2342;
-      --bg-soft: #38294f;
-      --topnav-bg: rgba(26, 21, 37, 0.85);
-      --border-soft: #3a2f50;
-      --border-medium: #4a3f60;
-    }
-
-    body.getir-mode:not(.light-mode)::before {
-      background-image:
-        radial-gradient(circle at 20% 10%, rgba(255, 211, 0, 0.06) 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(93, 62, 188, 0.10) 0%, transparent 40%);
-    }
-
-    /* Getir + Light — sarı vurgulu beyaz */
-    body.getir-mode.light-mode {
-      --bg-base: #fffbe6;
-      /* hafif sarımsı beyaz */
-      --bg-elevated: #ffffff;
-      --bg-card: #fff7d1;
-      --bg-soft: #ffe699;
-      --topnav-bg: rgba(255, 251, 230, 0.9);
-      --border-soft: #f0e0a0;
-      --border-medium: #d4c068;
-    }
-
-    body.getir-mode.light-mode::before {
-      background-image:
-        radial-gradient(circle at 20% 10%, rgba(255, 211, 0, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(93, 62, 188, 0.10) 0%, transparent 40%);
-    }
 
     /* =====================================================
        SVG COLOR FIXES — light mode'da kara kalan SVG'ler
@@ -221,12 +96,12 @@
        NOT: SVG'nin kendi <style> etiketi spesifik olduğu için !important şart. */
     body.light-mode svg .mm-box-mono {
       fill: #fafbfc !important;
-      stroke: #c0392b !important;
+      stroke: #4fc1ff !important;
     }
 
     body.light-mode svg .mm-box-ms {
       fill: #ffffff !important;
-      stroke: #9b59b6 !important;
+      stroke: #c586c0 !important;
     }
 
     body.light-mode svg .mm-module {
@@ -241,7 +116,7 @@
     }
 
     body.light-mode svg .bff-box-hi {
-      fill: #fcf0f6 !important;
+      fill: #f5f0ff !important;
     }
 
     body.light-mode svg .bff-box-gw {
@@ -340,137 +215,9 @@
       fill: #212529;
     }
 
-    /* =====================================================
-       NAV BUTTONS — Light/Dark ve Getir butonları
-       ===================================================== */
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    
+    /* NAV BUTTONS — shared.css'ten high-contrast versiyonu uygulanır */
 
-    .theme-btn {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-soft);
-      color: var(--text-secondary);
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .theme-btn:hover {
-      background: var(--bg-card);
-      border-color: var(--border-medium);
-      transform: translateY(-1px);
-    }
-
-    .theme-btn svg {
-      width: 22px;
-      height: 22px;
-      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .theme-btn:hover svg {
-      transform: rotate(20deg);
-    }
-
-    /* GÜNEŞ — light mode iken görünür (mevcut tema dark'sa kullanıcıya "light'a geç" diyor) */
-    .icon-sun {
-      color: #ffd54f;
-      filter: drop-shadow(0 0 6px rgba(255, 213, 79, 0.7));
-      animation: sun-pulse 3s ease-in-out infinite;
-    }
-
-    @keyframes sun-pulse {
-
-      0%,
-      100% {
-        filter: drop-shadow(0 0 6px rgba(255, 213, 79, 0.6));
-      }
-
-      50% {
-        filter: drop-shadow(0 0 14px rgba(255, 213, 79, 0.95));
-      }
-    }
-
-    /* AY — dark mode iken görünür (mevcut tema light'sa "dark'a geç") */
-    .icon-moon {
-      color: #c5cae9;
-      filter: drop-shadow(0 0 6px rgba(197, 202, 233, 0.7));
-      animation: moon-glow 3s ease-in-out infinite;
-    }
-
-    @keyframes moon-glow {
-
-      0%,
-      100% {
-        filter: drop-shadow(0 0 6px rgba(197, 202, 233, 0.6));
-      }
-
-      50% {
-        filter: drop-shadow(0 0 14px rgba(197, 202, 233, 0.95));
-      }
-    }
-
-    /* İki ikon arasında geçiş — hangisi aktif modu temsil ediyor */
-    .theme-btn .icon-sun {
-      display: none;
-    }
-
-    .theme-btn .icon-moon {
-      display: block;
-    }
-
-    body.light-mode .theme-btn .icon-sun {
-      display: block;
-    }
-
-    body.light-mode .theme-btn .icon-moon {
-      display: none;
-    }
-
-    /* GETIR BUTONU — minimalist, mor "GF" */
-    .getir-btn {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-soft);
-      color: #9b59b6;
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .getir-btn:hover {
-      transform: translateY(-1px);
-      border-color: #9b59b6;
-      color: #b8a8d4;
-    }
-
-    /* Getir aktifken — sarı zemin mor yazı */
-    body.getir-mode .getir-btn {
-      background: #ffd300;
-      border-color: #ffd300;
-      color: #5d3ebc;
-    }
-
-    body.getir-mode .getir-btn:hover {
-      background: #ffdc33;
-    }
 
     * {
       margin: 0;
@@ -494,16 +241,7 @@
     }
 
     /* Arka plan deseni - çok hafif */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        radial-gradient(circle at 20% 10%, rgba(212, 165, 116, 0.04) 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(155, 181, 155, 0.04) 0%, transparent 40%);
-      pointer-events: none;
-      z-index: 0;
-    }
+    /* body::before gradient kaldırıldı — düz, sade high-contrast zemin */
 
     /* Üst nav */
     .topnav {
@@ -1091,13 +829,13 @@
     .tool-resources a.primary {
       background: var(--tool-color, var(--accent-amber));
       border-color: var(--tool-color, var(--accent-amber));
-      color: #1a1b1e;
+      color: var(--bg-base);
       font-weight: 600;
     }
 
     .tool-resources a.primary:hover {
       opacity: 0.85;
-      color: #1a1b1e;
+      color: var(--bg-base);
     }
 
     .tool-resources .ext-icon {
@@ -1190,28 +928,20 @@ function toggleGetir() {
 <nav class="topnav">
   <div class="topnav-inner">
     <a class="brand" href="../index.html" style="text-decoration:none;">
-      <div class="brand-symbol">
-        <svg width="40" height="40" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-          <polyline points="122,92 95,72 68,55 42,32 22,16" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="115,106 85,96 55,85 28,76 8,62" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="113,126 82,124 52,130 26,142 10,158" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="118,144 90,156 68,175 50,202 42,228" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="178,92 205,72 232,55 258,32 278,16" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="185,106 215,96 245,85 272,76 292,62" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="187,126 218,124 248,130 274,142 290,158" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <polyline points="182,144 210,156 232,175 250,202 258,228" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="150" cy="86" r="22" fill="transparent" stroke="#c0392b" stroke-width="3.5"/>
-          <path d="M 141,106 L 138,116 L 141,124 L 144,116 Z" fill="#c0392b"/>
-          <path d="M 159,106 L 162,116 L 159,124 L 156,116 Z" fill="#c0392b"/>
-          <path d="M 150,116 C 124,116 108,130 105,150 C 101,175 110,204 124,220 C 133,230 150,238 150,238 C 150,238 167,230 176,220 C 190,204 199,175 195,150 C 192,130 176,116 150,116 Z" fill="transparent" stroke="#c0392b" stroke-width="3.5"/>
-          <line x1="150" y1="148" x2="150" y2="200" stroke="#c0392b" stroke-width="2.5"/>
-          <line x1="124" y1="174" x2="176" y2="174" stroke="#c0392b" stroke-width="2.5"/>
-          <polygon points="150,148 144,160 156,160" fill="#c0392b"/>
-          <polygon points="150,200 144,188 156,188" fill="#c0392b"/>
-          <polygon points="124,174 136,168 136,180" fill="#c0392b"/>
-          <polygon points="176,174 164,168 164,180" fill="#c0392b"/>
-        </svg>
-      </div>
+      <div class="brand-symbol" style="color:var(--accent-amber);"><svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dış elmas/kalkan çerçevesi -->
+  <polygon points="50,5 95,30 95,70 50,95 5,70 5,30"
+    fill="none" stroke="currentColor" stroke-width="2" opacity="0.55"/>
+  <!-- İç üçgen — Dragonborn -->
+  <polygon points="50,20 80,72 20,72"
+    fill="none" stroke="currentColor" stroke-width="2.5"/>
+  <!-- Merkez nokta -->
+  <circle cx="50" cy="50" r="4" fill="currentColor"/>
+  <!-- Üçgen iç çizgiler — rune hissi -->
+  <line x1="50" y1="20" x2="50" y2="72" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+  <line x1="50" y1="50" x2="80" y2="72" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+  <line x1="50" y1="50" x2="20" y2="72" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+</svg></div>
       <div class="brand-name">
         <span class="brand-text">be-rehber</span>
         <span class="brand-sub">backend dev guide</span>
@@ -1238,7 +968,7 @@ function toggleGetir() {
       ← Ana Sayfa
     </a>
     <span style="opacity:.4;">/</span>
-    <span style="color:#9b59b6; font-weight:600;">Mimari & Şemalar</span>
+    <span style="color:#c586c0; font-weight:600;">Mimari & Şemalar</span>
     <span style="opacity:.4;">/</span>
     <span style="color:var(--text-secondary);">BFF Mimarisi</span>
   </div>
@@ -1271,7 +1001,7 @@ function toggleGetir() {
       <!-- İNDİR LİNKLERİ -->
       <div class="tool-resources" style="margin-top:-16px; margin-bottom:32px;">
         <a href="https://microservices.io/patterns/apigateway.html" target="_blank" rel="noopener"
-          style="border-color:var(--accent-violet); color:var(--accent-violet);">📖 BFF Pattern
+          style="border-color:var(--accent-violet); color:var(--accent-violet);">❯ BFF Pattern
           <svg class="ext-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
@@ -1280,7 +1010,7 @@ function toggleGetir() {
           </svg>
         </a>
         <a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/backends-for-frontends" target="_blank"
-          rel="noopener">📖 Microsoft Docs
+          rel="noopener">❯ Microsoft Docs
           <svg class="ext-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
@@ -1309,24 +1039,24 @@ function toggleGetir() {
 
             .bff-box-gw {
               fill: var(--bg-card, #2a2b30);
-              stroke: #c0392b;
+              stroke: #4fc1ff;
               stroke-width: 2;
             }
 
             .bff-box-co {
               fill: var(--bg-card, #2a2b30);
-              stroke: #27ae60;
+              stroke: #4ec9b0;
               stroke-width: 2;
             }
 
             .bff-box-bk {
               fill: var(--bg-card, #2a2b30);
-              stroke: #2980b9;
+              stroke: #4fc1ff;
               stroke-width: 2;
             }
 
             .bff-title {
-              font: 700 15px 'Manrope', sans-serif;
+              font: 700 15px 'JetBrains Mono', monospace;
               fill: #e8e6e3;
             }
 
@@ -1354,17 +1084,17 @@ function toggleGetir() {
 
             .bff-detail {
               font: 400 11px 'JetBrains Mono', monospace;
-              fill: #27ae60;
+              fill: #4ec9b0;
             }
 
             .arr-main {
-              stroke: #c494b2;
+              stroke: #8023a0;
               stroke-width: 2.5;
               fill: none;
             }
 
             .arr-side {
-              stroke: #c0392b;
+              stroke: #4fc1ff;
               stroke-width: 1.5;
               fill: none;
               stroke-dasharray: 5 3;
@@ -1372,7 +1102,7 @@ function toggleGetir() {
 
             .arr-label {
               font: 500 10px 'JetBrains Mono', monospace;
-              fill: #c0392b;
+              fill: #4fc1ff;
             }
           </style>
 
@@ -1381,7 +1111,7 @@ function toggleGetir() {
               <polygon points="0 0, 10 3, 0 6" fill="var(--accent-violet)" />
             </marker>
             <marker id="bff-as" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-              <polygon points="0 0, 10 3, 0 6" fill="#c0392b" />
+              <polygon points="0 0, 10 3, 0 6" fill="#4fc1ff" />
             </marker>
           </defs>
 
@@ -1400,7 +1130,7 @@ function toggleGetir() {
 
           <!-- Kavram 2: Correlation ID -->
           <rect x="36" y="188" width="248" height="100" rx="10" class="bff-box" />
-          <rect x="48" y="200" width="4" height="76" rx="2" fill="#e67e22" />
+          <rect x="48" y="200" width="4" height="76" rx="2" fill="#ce9178" />
           <text x="62" y="220" class="bff-title">Correlation ID</text>
           <text x="62" y="238" class="bff-sub">her isteğe UUID eklenir</text>
           <text x="62" y="256" class="bff-sub">X-Correlation-ID: abc-123</text>
@@ -1408,7 +1138,7 @@ function toggleGetir() {
 
           <!-- Kavram 3: Multi Threading -->
           <rect x="36" y="300" width="248" height="100" rx="10" class="bff-box" />
-          <rect x="48" y="312" width="4" height="76" rx="2" fill="#27ae60" />
+          <rect x="48" y="312" width="4" height="76" rx="2" fill="#4ec9b0" />
           <text x="62" y="332" class="bff-title">Multi Threading</text>
           <text x="62" y="350" class="bff-sub">her request → ayrı thread</text>
           <text x="62" y="368" class="bff-sub">Spring Boot: ThreadPoolExecutor</text>
@@ -1416,7 +1146,7 @@ function toggleGetir() {
 
           <!-- Kavram 4: Concurrency vs Parallelism -->
           <rect x="36" y="412" width="248" height="116" rx="10" class="bff-box" />
-          <rect x="48" y="424" width="4" height="92" rx="2" fill="#3498db" />
+          <rect x="48" y="424" width="4" height="92" rx="2" fill="#4fc1ff" />
           <text x="62" y="444" class="bff-title">Concurrency vs Parallelism</text>
           <text x="62" y="464" class="bff-sub">Concurrency: tek core,</text>
           <text x="62" y="480" class="bff-sub"> context-switch ile sırayla</text>
@@ -1425,7 +1155,7 @@ function toggleGetir() {
 
           <!-- Kavram 5: Request Aggregation -->
           <rect x="36" y="540" width="248" height="100" rx="10" class="bff-box" />
-          <rect x="48" y="552" width="4" height="76" rx="2" fill="#e74c3c" />
+          <rect x="48" y="552" width="4" height="76" rx="2" fill="#4fc1ff" />
           <text x="62" y="572" class="bff-title">Request Aggregation</text>
           <text x="62" y="590" class="bff-sub">birden fazla downstream çağrısı</text>
           <text x="62" y="608" class="bff-sub">CompletableFuture ile paralel</text>
@@ -1436,7 +1166,7 @@ function toggleGetir() {
           <!-- 1. Mobile Client -->
           <rect x="570" y="30" width="280" height="80" rx="14" class="bff-box" />
           <rect x="582" y="42" width="36" height="56" rx="6" fill="#303137" stroke="#45464c" />
-          <text x="600" y="74" text-anchor="middle" class="bff-sub">📱</text>
+          <text x="600" y="74" text-anchor="middle" class="bff-sub">▢</text>
           <text x="640" y="62" class="bff-title">Mobile Client</text>
           <text x="640" y="80" class="bff-sub">iOS / Android</text>
           <text x="640" y="96" class="bff-sub">HTTPS isteği atar</text>
@@ -1446,8 +1176,8 @@ function toggleGetir() {
 
           <!-- 2. API Gateway (karar noktası - diamond) -->
           <polygon points="710,150 780,210 710,270 640,210" class="bff-box-gw" />
-          <text x="710" y="203" text-anchor="middle" class="bff-title" fill="#c0392b">API</text>
-          <text x="710" y="222" text-anchor="middle" class="bff-sub" fill="#c0392b">Gateway</text>
+          <text x="710" y="203" text-anchor="middle" class="bff-title" fill="#4fc1ff">API</text>
+          <text x="710" y="222" text-anchor="middle" class="bff-sub" fill="#4fc1ff">Gateway</text>
 
           <!-- gateway etiketleri -->
           <text x="800" y="198" class="bff-tag">• auth kontrolü</text>
@@ -1479,8 +1209,8 @@ function toggleGetir() {
 
           <!-- 4. Core E -->
           <rect x="570" y="500" width="280" height="90" rx="14" class="bff-box-co" />
-          <rect x="582" y="512" width="44" height="66" rx="8" fill="#303137" stroke="#27ae60" />
-          <text x="604" y="552" text-anchor="middle" class="bff-title" fill="#27ae60">CORE</text>
+          <rect x="582" y="512" width="44" height="66" rx="8" fill="#303137" stroke="#4ec9b0" />
+          <text x="604" y="552" text-anchor="middle" class="bff-title" fill="#4ec9b0">CORE</text>
           <text x="642" y="535" class="bff-sub" fill="#b4b1ac">Core Banking Engine</text>
           <text x="642" y="553" class="bff-sub">iş mantığı, hesap işlemleri</text>
           <text x="642" y="571" class="bff-sub">transaction yönetimi</text>
@@ -1490,8 +1220,8 @@ function toggleGetir() {
 
           <!-- 5. Fiba Bank -->
           <rect x="570" y="640" width="280" height="90" rx="14" class="bff-box-bk" />
-          <rect x="582" y="652" width="44" height="66" rx="8" fill="#303137" stroke="#2980b9" />
-          <text x="604" y="689" text-anchor="middle" class="bff-title" fill="#2980b9">FIBA</text>
+          <rect x="582" y="652" width="44" height="66" rx="8" fill="#303137" stroke="#4fc1ff" />
+          <text x="604" y="689" text-anchor="middle" class="bff-title" fill="#4fc1ff">FIBA</text>
           <text x="642" y="675" class="bff-sub" fill="#b4b1ac">Fiba Bank Core</text>
           <text x="642" y="693" class="bff-sub">harici bankacılık sistemi</text>
           <text x="642" y="711" class="bff-sub">entegrasyon katmanı</text>
@@ -1631,7 +1361,7 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
               <li>Java: <code>ExecutorService</code>, <code>Thread</code></li>
             </ul>
           </div>
-          <div class="compare-card" style="--tool-color: #27ae60;">
+          <div class="compare-card" style="--tool-color: #4ec9b0;">
             <h4>Parallelism (Paralellik)</h4>
             <ul>
               <li>Birden fazla CPU core</li>
@@ -1667,7 +1397,7 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
       <div style="display:flex; align-items:center; gap:20px; padding:24px 28px;
                   background:var(--bg-elevated); border:1.5px dashed var(--border-medium);
                   border-radius:14px;">
-        <span style="font-size:36px; flex-shrink:0;">🚧</span>
+        <span style="font-size:36px; flex-shrink:0;">◆</span>
         <div>
           <div style="font-family:var(--font-mono); font-size:12px; font-weight:700;
                       color:var(--accent-amber); text-transform:uppercase;
