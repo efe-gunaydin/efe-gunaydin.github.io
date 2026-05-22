@@ -1,5 +1,5 @@
 (function () {
-  var C = 'currentColor', SW = '6';
+  var C = 'currentColor', SW = '7';
 
   function svg(w, h) {
     var s = '<svg width="'+w+'" height="'+h+'" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" style="color:inherit;">';
@@ -32,6 +32,7 @@
 
     /* ── 1. WRAP (örümcek + ip) ── */
     var wrap = document.createElement('div');
+    wrap.id = 'sp1der-wrap';
     Object.assign(wrap.style, {
       position: 'absolute',
       top: '10px',

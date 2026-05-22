@@ -1182,26 +1182,184 @@ function toggleGetir() {
 
   <section style="padding:48px 0 32px; border-top:1px solid var(--border-soft); margin-top:40px;">
     <div class="container">
-      <div style="display:flex; align-items:center; gap:20px; padding:24px 28px;
-                  background:var(--bg-elevated); border:1.5px dashed var(--border-medium);
-                  border-radius:14px;">
-        <span style="font-size:36px; flex-shrink:0;">◆</span>
-        <div>
-          <div style="font-family:var(--font-mono); font-size:12px; font-weight:700;
-                      color:var(--accent-amber); text-transform:uppercase;
-                      letter-spacing:.1em; margin-bottom:8px;">Coming Soon</div>
-          <div style="font-size:14px; color:var(--text-secondary); line-height:1.7;">
-            Gerçek kullanım örnekleri, ekran görüntüleri ve adım adım rehberler
-            yakında burada. Bu aracı gerçek projede nasıl kullandığımı,
-            hangi ayarları yaptığımı ve öğrenirken aldığım notları ekliyor olacağım.
-            <span style="display:inline-block; margin-left:6px; font-family:var(--font-mono);
-                         font-size:11px; background:var(--bg-soft); color:var(--text-muted);
-                         padding:2px 8px; border-radius:4px; border:1px solid var(--border-soft);">
-              under construction
-            </span>
-          </div>
+
+      <!-- Başlık -->
+      <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-amber);
+                  letter-spacing:.15em; text-transform:uppercase; margin-bottom:12px;">
+        ◆ Gerçek Proje — Student API
+      </div>
+      <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">Spring Boot + PostgreSQL CRUD</h3>
+      <p style="color:var(--text-muted); font-size:13px; margin-bottom:32px; max-width:620px;">
+        Aşağıdaki örnekler gerçekten çalıştırılan bir projeden alındı.
+        3 kolonlu öğrenci tablosu: <code>studentNumber</code>, <code>fullName</code>, <code>gpa</code>.
+        Her endpoint için istek, yanıt ve ne öğrendik var.
+      </p>
+
+      <!-- Setup -->
+      <div style="background:var(--bg-elevated); border:1px solid var(--border-soft);
+                  border-left:3px solid var(--accent-sage); border-radius:8px;
+                  padding:20px 24px; margin-bottom:32px;">
+        <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-sage);
+                    font-weight:700; margin-bottom:12px; text-transform:uppercase;">// Kurulum</div>
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">
+          PostgreSQL Docker ile ayağa kaldırıldı, Spring Boot otomatik tabloyu oluşturdu
+          (<code>ddl-auto=update</code>).
+        </p>
+        <pre style="background:var(--bg-base); border:1px solid var(--border-soft); border-radius:6px;
+                    padding:14px 16px; font-size:12px; color:var(--text-secondary);
+                    overflow-x:auto; margin:0; font-family:var(--font-mono);"># PostgreSQL başlat
+docker run --name student-db \
+  -e POSTGRES_DB=student_db \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=1234 \
+  -p 5432:5432 -d postgres
+
+# Spring Boot başlat
+./mvnw spring-boot:run</pre>
+      </div>
+
+      <!-- GET ALL -->
+      <div style="margin-bottom:40px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+          <span style="background:#006d5b; color:#fff; font-family:var(--font-mono);
+                       font-size:11px; font-weight:700; padding:4px 10px; border-radius:4px;">GET</span>
+          <code style="font-size:14px; color:var(--text-primary);">/api/students</code>
+          <span style="font-size:12px; color:var(--text-muted);">— tüm öğrencileri listele</span>
+        </div>
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">
+          Parametresiz, body yok. DB'deki tüm kayıtları array olarak döner.
+        </p>
+        <pre style="background:var(--bg-base); border:1px solid var(--border-soft); border-radius:6px;
+                    padding:14px 16px; font-size:12px; color:var(--text-secondary);
+                    overflow-x:auto; margin:0 0 12px; font-family:var(--font-mono);">// Response — 200 OK
+[
+  { "id": 3, "studentNumber": "1002", "fullName": "Zeynep Arslan", "gpa": 3.75 },
+  { "id": 7, "studentNumber": "1006", "fullName": "Selin Yildiz",  "gpa": 3.20 },
+  ...
+]</pre>
+        <div style="background:var(--bg-elevated); border:1px solid var(--border-soft);
+                    border-radius:6px; padding:14px 16px; margin-bottom:12px;">
+          <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-sage);
+                      margin-bottom:8px;">// Test Script</div>
+          <pre style="font-size:12px; color:var(--text-secondary); margin:0; font-family:var(--font-mono);">pm.test("Status 200 dönmeli", () => pm.response.to.have.status(200));
+pm.test("Response array olmalı", () => pm.expect(pm.response.json()).to.be.an('array'));
+pm.test("Response süresi 500ms altında", () => pm.expect(pm.response.responseTime).to.be.below(500));</pre>
+        </div>
+        <div style="font-size:12px; color:var(--accent-sage); font-family:var(--font-mono);">
+          ✓ 3/3 — 114ms — Test Results geçti
         </div>
       </div>
+
+      <!-- POST -->
+      <div style="margin-bottom:40px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+          <span style="background:#ce9178; color:#0a0a0a; font-family:var(--font-mono);
+                       font-size:11px; font-weight:700; padding:4px 10px; border-radius:4px;">POST</span>
+          <code style="font-size:14px; color:var(--text-primary);">/api/students</code>
+          <span style="font-size:12px; color:var(--text-muted);">— yeni öğrenci ekle</span>
+        </div>
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">
+          Body'de JSON gönder, DB'ye kaydedilmiş hali (id ile birlikte) döner.
+        </p>
+        <pre style="background:var(--bg-base); border:1px solid var(--border-soft); border-radius:6px;
+                    padding:14px 16px; font-size:12px; color:var(--text-secondary);
+                    overflow-x:auto; margin:0 0 12px; font-family:var(--font-mono);">// Request Body
+{
+  "studentNumber": "1001",
+  "fullName": "Ahmet Yilmaz",
+  "gpa": 3.50
+}
+
+// Response — 200 OK
+{
+  "id": 12,
+  "studentNumber": "1001",
+  "fullName": "Ahmet Yilmaz",
+  "gpa": 3.50
+}</pre>
+        <!-- Error case -->
+        <div style="background:var(--bg-elevated); border:1px solid #f48771;
+                    border-radius:6px; padding:14px 16px; margin-bottom:8px;">
+          <div style="font-family:var(--font-mono); font-size:11px; color:#f48771;
+                      margin-bottom:8px;">// Hata Senaryosu — aynı studentNumber tekrar gönderilince</div>
+          <pre style="font-size:12px; color:var(--text-secondary); margin:0; font-family:var(--font-mono);">// Response — 409 Conflict
+"Bu öğrenci numarası zaten kayıtlı."</pre>
+        </div>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
+          İlk deneme 500 döndü — Spring DB constraint hatasını yakalamıyordu.
+          <code>@ExceptionHandler(DataIntegrityViolationException.class)</code> ekleyince
+          500 → 409'a düştü. <strong>500 = sunucu patladı, 409 = iş kuralı ihlali.</strong>
+        </p>
+        <div style="background:var(--bg-elevated); border:1px solid var(--border-soft);
+                    border-radius:6px; padding:14px 16px;">
+          <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-sage);
+                      margin-bottom:8px;">// Test Script</div>
+          <pre style="font-size:12px; color:var(--text-secondary); margin:0; font-family:var(--font-mono);">// Duplicate için:
+pm.test("Duplicate studentNumber 409 dönmeli", () => pm.expect(pm.response.code).to.equal(409));
+pm.test("Hata mesajı doğru", () => pm.expect(pm.response.text()).to.include("zaten kayıtlı"));</pre>
+        </div>
+      </div>
+
+      <!-- PUT -->
+      <div style="margin-bottom:40px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+          <span style="background:#4fc1ff; color:#0a0a0a; font-family:var(--font-mono);
+                       font-size:11px; font-weight:700; padding:4px 10px; border-radius:4px;">PUT</span>
+          <code style="font-size:14px; color:var(--text-primary);">/api/students/{id}</code>
+          <span style="font-size:12px; color:var(--text-muted);">— öğrenci güncelle</span>
+        </div>
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">
+          Path'te ID, body'de yeni değerler. Tüm alanı günceller (PATCH değil PUT — fark önemli).
+        </p>
+        <pre style="background:var(--bg-base); border:1px solid var(--border-soft); border-radius:6px;
+                    padding:14px 16px; font-size:12px; color:var(--text-secondary);
+                    overflow-x:auto; margin:0 0 12px; font-family:var(--font-mono);">// PUT /api/students/12
+{
+  "studentNumber": "1001",
+  "fullName": "Ahmet Yilmaz",
+  "gpa": 3.80
+}
+
+// Response — 200 OK
+{
+  "id": 12,
+  "studentNumber": "1001",
+  "fullName": "Ahmet Yilmaz",
+  "gpa": 3.80
+}</pre>
+      </div>
+
+      <!-- DELETE -->
+      <div style="margin-bottom:40px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+          <span style="background:#f48771; color:#0a0a0a; font-family:var(--font-mono);
+                       font-size:11px; font-weight:700; padding:4px 10px; border-radius:4px;">DEL</span>
+          <code style="font-size:14px; color:var(--text-primary);">/api/students/{id}</code>
+          <span style="font-size:12px; color:var(--text-muted);">— öğrenci sil</span>
+        </div>
+        <pre style="background:var(--bg-base); border:1px solid var(--border-soft); border-radius:6px;
+                    padding:14px 16px; font-size:12px; color:var(--text-secondary);
+                    overflow-x:auto; margin:0 0 12px; font-family:var(--font-mono);">// DELETE /api/students/12
+
+// Response — 200 OK
+"12 ID'li öğrenci başarıyla silindi."</pre>
+      </div>
+
+      <!-- Öğrenilenler -->
+      <div style="background:var(--bg-elevated); border:1px solid var(--border-soft);
+                  border-left:3px solid var(--accent-amber);
+                  border-radius:8px; padding:20px 24px;">
+        <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-amber);
+                    font-weight:700; margin-bottom:14px; text-transform:uppercase;">// Bu Projede Öğrenilenler</div>
+        <ul style="font-size:13px; color:var(--text-secondary); line-height:2; margin:0; padding-left:18px;">
+          <li><strong>pm.test()</strong> ile otomatik assertion — her Send'de manuel kontrol yok</li>
+          <li><strong>500 vs 409</strong> — sunucu hatası ile iş kuralı ihlali aynı şey değil</li>
+          <li><strong>@ExceptionHandler</strong> — Spring'de global hata yönetimi</li>
+          <li><strong>Happy path yetmez</strong> — aynı veriyi iki kez göndermek, olmayan ID silmek test edilmeli</li>
+          <li><strong>Response time</strong> da bir metrik — 500ms sınırı koyunca fark edilir</li>
+        </ul>
+      </div>
+
     </div>
   </section>
 
