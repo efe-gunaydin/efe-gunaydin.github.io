@@ -27,13 +27,13 @@
   }
 
   function init() {
-    /* Nav sembolü artık HTML'deki Skyrim/Dragonborn sembolü olarak kalır,
-       JS tarafından ezilmez. Sağ üstteki örümcek bot ise duruyor. */
-    /* ── SCROLL-FOLLOW: örümcek scroll ile birlikte hareket eder ──
-       position: absolute (değil fixed!) + JS ile top güncellenir    */
+    var container = document.body;
+    container.style.position = container.style.position || 'relative';
+
+    /* ── 1. WRAP (örümcek + ip) ── */
     var wrap = document.createElement('div');
     Object.assign(wrap.style, {
-      position: 'absolute',   /* scroll ile hareket eder */
+      position: 'absolute',
       top: '10px',
       right: '18px',
       zIndex: '99999',
@@ -42,7 +42,8 @@
       alignItems: 'center',
       pointerEvents: 'none',
       color: 'var(--text-secondary)',
-      opacity: '0.7'
+      opacity: '0.7',
+      transition: 'opacity 0.25s ease, filter 0.25s ease'
     });
 
     var thread = document.createElement('div');
@@ -66,23 +67,33 @@
 
     wrap.appendChild(thread);
     wrap.appendChild(spBody);
-
-    /* body'nin en dış wrapper'ına ekle — scroll ile hareket etsin */
-    var container = document.body;
-    container.style.position = container.style.position || 'relative';
     container.appendChild(wrap);
 
-    /* ── SCROLL TAKIBI: her scroll'da top güncelle ── */
-    function updatePos() {
-      var scrollY = window.scrollY || window.pageYOffset;
-      wrap.style.top = (scrollY + 10) + 'px';
-      bubble.style.top = (scrollY + 18) + 'px';
-      if (chat) chat.style.top = (scrollY + 110) + 'px';
-    }
-    window.addEventListener('scroll', updatePos, { passive: true });
-    updatePos(); /* ilk yükleme */
+    /* ── 2. SORU BALONU ── */
+    var bubble = document.createElement('div');
+    Object.assign(bubble.style, {
+      position: 'absolute',
+      right: '10px',
+      top: '95px',
+      background: 'var(--bg-elevated)',
+      border: '1px solid var(--accent-amber)',
+      borderRadius: '8px',
+      padding: '7px 12px',
+      fontFamily: 'var(--font-mono)',
+      fontSize: '11px',
+      color: 'var(--accent-amber)',
+      whiteSpace: 'nowrap',
+      opacity: '0',
+      pointerEvents: 'none',
+      transition: 'opacity 0.4s ease, transform 0.4s ease',
+      transform: 'translateY(-4px)',
+      zIndex: '99998',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.4)'
+    });
+    bubble.textContent = 'Yardım lazım mı?';
+    container.appendChild(bubble);
 
-    /* ── Chatbox ── */
+    /* ── 3. CHATBOX ── */
     var chat = document.createElement('div');
     chat.id = 'sp1der-chat';
     chat.innerHTML = ''
@@ -99,31 +110,19 @@
       + '</div>';
     container.appendChild(chat);
 
-    /* ── Soru balonu ── */
-    var bubble = document.createElement('div');
-    Object.assign(bubble.style, {
-      position: 'absolute',
-      right: '90px',
-      top: '18px',
-      background: 'var(--bg-elevated)',
-      border: '1px solid var(--border-medium)',
-      borderRadius: '8px',
-      padding: '7px 12px',
-      fontFamily: 'var(--font-mono)',
-      fontSize: '11px',
-      color: 'var(--text-secondary)',
-      whiteSpace: 'nowrap',
-      opacity: '0',
-      pointerEvents: 'none',
-      transition: 'opacity 0.4s ease',
-      zIndex: '99998'
-    });
-    bubble.textContent = 'Yardım lazım mı? ◆';
-    container.appendChild(bubble);
+    /* ── 4. SCROLL TAKİBİ — tüm elementler hazır olduktan sonra ── */
+    function updatePos() {
+      var scrollY = window.scrollY || window.pageYOffset;
+      wrap.style.top = (scrollY + 10) + 'px';
+      bubble.style.top = (scrollY + 95) + 'px';
+      chat.style.top = (scrollY + 110) + 'px';
+    }
+    window.addEventListener('scroll', updatePos, { passive: true });
+    updatePos();
 
-    /* ── Sallanma animasyonu ── */
+    /* ── 5. ANİMASYONLAR ── */
     var angle = 0, dir = 1;
-    var introStart = null, introDone = false;
+    var introStart = null;
 
     function swing() {
       angle += 0.025 * dir;
@@ -138,17 +137,19 @@
       var x = 70 * Math.pow(1 - t, 3);
       thread.style.height = (20 + 60 * Math.sin(t * Math.PI)) + 'px';
       spBody.style.transform = 'translateX(' + x + 'px)';
-      if (t < 1) { requestAnimationFrame(intro); }
-      else {
+      if (t < 1) {
+        requestAnimationFrame(intro);
+      } else {
         spBody.style.transform = 'none';
         thread.style.height = '20px';
         requestAnimationFrame(swing);
-        /* Animasyon bitince balonu göster */
+        /* Animasyon bitince balon */
         setTimeout(function() {
           bubble.style.opacity = '1';
-          /* 4 saniye sonra kaybol */
+          bubble.style.transform = 'translateY(0)';
           setTimeout(function() {
             bubble.style.opacity = '0';
+            bubble.style.transform = 'translateY(-4px)';
           }, 4000);
         }, 300);
       }
@@ -156,7 +157,7 @@
 
     setTimeout(function(){ requestAnimationFrame(intro); }, 500);
 
-    /* ── Hover parlama ── */
+    /* ── 6. HOVER PARLAMA ── */
     spBody.addEventListener('mouseenter', function() {
       wrap.style.opacity = '1';
       wrap.style.filter = 'drop-shadow(0 0 8px var(--accent-amber))';
@@ -166,10 +167,10 @@
       wrap.style.filter = 'none';
     });
 
-    /* ── Tıklama ── */
+    /* ── 7. TIKLAMA ── */
     spBody.addEventListener('click', function(e) {
       e.stopPropagation();
-      bubble.style.opacity = '0'; /* balon tıklamada kapansın */
+      bubble.style.opacity = '0';
       chat.classList.toggle('open');
     });
     document.getElementById('sp-x').addEventListener('click', function(){
@@ -180,7 +181,7 @@
         chat.classList.remove('open');
     });
 
-    /* ── Groq API ── */
+    /* ── 8. CHAT API ── */
     var btn = document.getElementById('sp-btn');
     var inp = document.getElementById('sp-in');
     var msgs = document.getElementById('sp-msgs');
