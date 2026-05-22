@@ -76,7 +76,7 @@
     function updatePos() {
       var scrollY = window.scrollY || window.pageYOffset;
       wrap.style.top = (scrollY + 10) + 'px';
-      /* Chatbox da güncelle */
+      bubble.style.top = (scrollY + 18) + 'px';
       if (chat) chat.style.top = (scrollY + 110) + 'px';
     }
     window.addEventListener('scroll', updatePos, { passive: true });
@@ -98,6 +98,28 @@
       + '<button id="sp-btn">Sor</button>'
       + '</div>';
     container.appendChild(chat);
+
+    /* ── Soru balonu ── */
+    var bubble = document.createElement('div');
+    Object.assign(bubble.style, {
+      position: 'absolute',
+      right: '90px',
+      top: '18px',
+      background: 'var(--bg-elevated)',
+      border: '1px solid var(--border-medium)',
+      borderRadius: '8px',
+      padding: '7px 12px',
+      fontFamily: 'var(--font-mono)',
+      fontSize: '11px',
+      color: 'var(--text-secondary)',
+      whiteSpace: 'nowrap',
+      opacity: '0',
+      pointerEvents: 'none',
+      transition: 'opacity 0.4s ease',
+      zIndex: '99998'
+    });
+    bubble.textContent = 'Yardım lazım mı? ◆';
+    container.appendChild(bubble);
 
     /* ── Sallanma animasyonu ── */
     var angle = 0, dir = 1;
@@ -121,14 +143,33 @@
         spBody.style.transform = 'none';
         thread.style.height = '20px';
         requestAnimationFrame(swing);
+        /* Animasyon bitince balonu göster */
+        setTimeout(function() {
+          bubble.style.opacity = '1';
+          /* 4 saniye sonra kaybol */
+          setTimeout(function() {
+            bubble.style.opacity = '0';
+          }, 4000);
+        }, 300);
       }
     }
 
     setTimeout(function(){ requestAnimationFrame(intro); }, 500);
 
+    /* ── Hover parlama ── */
+    spBody.addEventListener('mouseenter', function() {
+      wrap.style.opacity = '1';
+      wrap.style.filter = 'drop-shadow(0 0 8px var(--accent-amber))';
+    });
+    spBody.addEventListener('mouseleave', function() {
+      wrap.style.opacity = '0.7';
+      wrap.style.filter = 'none';
+    });
+
     /* ── Tıklama ── */
     spBody.addEventListener('click', function(e) {
       e.stopPropagation();
+      bubble.style.opacity = '0'; /* balon tıklamada kapansın */
       chat.classList.toggle('open');
     });
     document.getElementById('sp-x').addEventListener('click', function(){
