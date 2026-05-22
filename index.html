@@ -179,11 +179,11 @@
       <!-- Sayaçlar -->
       <div style="display:flex;gap:0;flex-wrap:wrap;">
         <div style="padding:10px 20px;border:1px solid var(--border-soft);font-family:var(--font-mono);font-size:12px;">
-          <span style="color:var(--accent-amber);font-weight:700;font-size:20px;display:block;">9</span>
+          <span style="color:var(--accent-amber);font-weight:700;font-size:20px;display:block;">10</span>
           <span style="color:var(--text-muted);">dev tool</span>
         </div>
         <div style="padding:10px 20px;border:1px solid var(--border-soft);border-left:none;font-family:var(--font-mono);font-size:12px;">
-          <span style="color:var(--accent-sage);font-weight:700;font-size:20px;display:block;">4</span>
+          <span style="color:var(--accent-sage);font-weight:700;font-size:20px;display:block;">5</span>
           <span style="color:var(--text-muted);">kavram</span>
         </div>
         <div style="padding:10px 20px;border:1px solid var(--border-soft);border-left:none;font-family:var(--font-mono);font-size:12px;">
@@ -195,35 +195,46 @@
     </div>
   </header>
 
-  <!-- ── DEV TOOLS ── -->
+  <!-- ── DEV TOOLS & OBSERVABİLİTY ── -->
   <div class="cat-header fade-in">
-    <span class="cat-label" style="color:var(--accent-amber);">&#x25C6; Dev Tools</span>
+    <span class="cat-label" style="color:var(--accent-amber);">&#x25C6; Geliştirme Araçları &amp; İzleme</span>
     <div class="cat-line"></div>
-    <span class="cat-count">9 araç</span>
+    <span class="cat-count">7 araç</span>
   </div>
   <div class="card-grid">
-    <a href="tools/elastic.html"  class="card" style="--cc:var(--c-elastic)"><div class="card-num">01</div><div class="card-icon">ES</div><h3>Elasticsearch</h3><div class="card-tagline">Milisaniyelerde arama yapan dağıtık arama motoru.</div><div class="card-meta">search</div><div class="card-badge">◆ soon</div></a>
-    <a href="tools/jenkins.html"  class="card" style="--cc:var(--c-redis)"><div class="card-num">02</div><div class="card-icon">J</div><h3>Jenkins</h3><div class="card-tagline">Push'tan production'a otomatik test ve deploy.</div><div class="card-meta">ci/cd</div><div class="card-badge">◆ soon</div></a>
-    <a href="tools/grafana.html"  class="card" style="--cc:var(--c-postman)"><div class="card-num">03</div><div class="card-icon">G</div><h3>Grafana</h3><div class="card-tagline">Production'a takılan gözlük — dashboard ve alert.</div><div class="card-meta">monitoring</div><div class="card-badge">◆ soon</div></a>
-    <a href="tools/argocd.html"   class="card" style="--cc:var(--c-figma)"><div class="card-num">04</div><div class="card-icon">A</div><h3>Argo CD</h3><div class="card-tagline">Git'i izleyip cluster'ı otomatik senkron eden GitOps aracı.</div><div class="card-meta">deploy</div><div class="card-badge">◆ soon</div></a>
-    <a href="tools/redis.html"    class="card" style="--cc:var(--c-redis)"><div class="card-num">05</div><div class="card-icon">R</div><h3>Redis</h3><div class="card-tagline">RAM hızında key-value store — cache, session, rate limit.</div><div class="card-meta">cache</div><div class="card-badge">◆ soon</div></a>
-    <a href="tools/swagger.html"  class="card" style="--cc:var(--c-swagger)"><div class="card-num">06</div><div class="card-icon">{}</div><h3>Swagger</h3><div class="card-tagline">API'n için otomatik üretilen interaktif döküman.</div><div class="card-meta">api docs</div><div class="card-badge">◆ soon</div></a>
-    <a href="tools/postman.html"  class="card" style="--cc:var(--c-postman)"><div class="card-num">07</div><div class="card-icon">P</div><h3>Postman</h3><div class="card-tagline">Frontend olmadan API'ni denemek için GUI istemci.</div><div class="card-meta">api test</div><div class="card-badge">◆ soon</div></a>
-    <a href="tools/dbeaver.html"  class="card" style="--cc:var(--c-dbeaver)"><div class="card-num">08</div><div class="card-icon">DB</div><h3>DBeaver</h3><div class="card-tagline">Hangi DB olursa olsun tek arayüzden bağlan ve sorgula.</div><div class="card-meta">db client</div><div class="card-badge">◆ soon</div></a>
-    <a href="tools/figma.html"    class="card" style="--cc:var(--c-figma)"><div class="card-num">09</div><div class="card-icon">F</div><h3>Figma</h3><div class="card-tagline">BE dev neden Figma açar? Ekrandan endpoint çıkarır.</div><div class="card-meta">design</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/postman.html"  class="card" style="--cc:var(--c-postman)"><div class="card-num">01</div><div class="card-icon">P</div><h3>Postman</h3><div class="card-tagline">Frontend olmadan API'ni denemek için GUI istemci.</div><div class="card-meta">api test</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/dbeaver.html"  class="card" style="--cc:var(--c-dbeaver)"><div class="card-num">02</div><div class="card-icon">DB</div><h3>DBeaver</h3><div class="card-tagline">Hangi DB olursa olsun tek arayüzden bağlan ve sorgula.</div><div class="card-meta">db client</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/figma.html"    class="card" style="--cc:var(--c-figma)"><div class="card-num">03</div><div class="card-icon">F</div><h3>Figma</h3><div class="card-tagline">BE dev neden Figma açar? Ekrandan endpoint çıkarır.</div><div class="card-meta">design</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/swagger.html"  class="card" style="--cc:var(--c-swagger)"><div class="card-num">04</div><div class="card-icon">{}</div><h3>Swagger</h3><div class="card-tagline">API'n için otomatik üretilen interaktif döküman.</div><div class="card-meta">api docs</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/jenkins.html"  class="card" style="--cc:var(--c-jenkins)"><div class="card-num">05</div><div class="card-icon">J</div><h3>Jenkins</h3><div class="card-tagline">Push'tan production'a otomatik test ve deploy.</div><div class="card-meta">ci/cd</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/argocd.html"   class="card" style="--cc:var(--c-argo)"><div class="card-num">06</div><div class="card-icon">A</div><h3>Argo CD</h3><div class="card-tagline">Git'i izleyip cluster'ı otomatik senkron eden GitOps aracı.</div><div class="card-meta">deploy</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/grafana.html"  class="card" style="--cc:var(--c-grafana)"><div class="card-num">07</div><div class="card-icon">G</div><h3>Grafana</h3><div class="card-tagline">Production'a takılan gözlük — dashboard ve alert.</div><div class="card-meta">monitoring</div><div class="card-badge">◆ soon</div></a>
   </div>
 
-  <!-- ── GENEL KAVRAMLAR ── -->
+  <!-- ── VERİ & MESAJLAŞMA ── -->
   <div class="cat-header fade-in">
-    <span class="cat-label" style="color:var(--accent-sage);">&#x25C8; Genel Kavramlar</span>
+    <span class="cat-label" style="color:var(--accent-sage);">&#x25A0; Veri &amp; Mesajlaşma Katmanı</span>
     <div class="cat-line"></div>
-    <span class="cat-count">4 konu</span>
+    <span class="cat-count">3 araç</span>
+  </div>
+  <div class="card-grid">
+    <a href="tools/elastic.html"  class="card" style="--cc:var(--c-elastic)"><div class="card-num">01</div><div class="card-icon">ES</div><h3>Elasticsearch</h3><div class="card-tagline">Milisaniyelerde arama yapan dağıtık full-text arama motoru.</div><div class="card-meta">search</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/redis.html"    class="card" style="--cc:var(--c-redis)"><div class="card-num">02</div><div class="card-icon">R</div><h3>Redis</h3><div class="card-tagline">RAM hızında key-value store — cache, session, rate limit.</div><div class="card-meta">cache</div><div class="card-badge">◆ soon</div></a>
+    <a href="tools/kafka.html"    class="card" style="--cc:var(--c-kafka)"><div class="card-num">03</div><div class="card-icon">K</div><h3>Kafka</h3><div class="card-tagline">Milyonlarca eventi saniyede işleyen dağıtık mesaj kuyruğu.</div><div class="card-meta">messaging</div><div class="card-badge">◆ soon</div></a>
+  </div>
+
+  <!-- ── KAVRAMLAR & PATTERN'LER ── -->
+  <div class="cat-header fade-in">
+    <span class="cat-label" style="color:var(--accent-sage);">&#x25C8; Temel &amp; İleri Kavramlar</span>
+    <div class="cat-line"></div>
+    <span class="cat-count">5 konu</span>
   </div>
   <div class="card-grid">
     <a href="concepts/rest-api.html"     class="card" style="--cc:#4ec9b0"><div class="card-num">★ 01</div><div class="card-icon">REST</div><h3>REST API</h3><div class="card-tagline">HTTP metotları, status code'lar ve RESTful tasarım ilkeleri.</div><div class="card-meta">teori</div><div class="card-arrow">→</div></a>
     <a href="concepts/protocols.html"    class="card" style="--cc:#4fc1ff"><div class="card-num">★ 02</div><div class="card-icon">⇄</div><h3>Haberleşme Protokolleri</h3><div class="card-tagline">HTTP, WebSocket, gRPC, Kafka — hangisi ne zaman?</div><div class="card-meta">teori</div><div class="card-arrow">→</div></a>
     <a href="concepts/architecture.html" class="card" style="--cc:#4fc1ff"><div class="card-num">★ 03</div><div class="card-icon">⊞</div><h3>Monolith vs Mikroservis</h3><div class="card-tagline">Tek büyük uygulama mı, bağımsız servisler mi?</div><div class="card-meta">teori</div><div class="card-arrow">→</div></a>
     <a href="concepts/distributed.html"  class="card" style="--cc:var(--c-redis)"><div class="card-num">★ 04</div><div class="card-icon">◇</div><h3>Distributed Systems</h3><div class="card-tagline">8 yalan, CAP teoremi ve dağıtık sistem dertleri.</div><div class="card-meta">teori</div><div class="card-arrow">→</div></a>
+    <a href="concepts/cqrs.html"         class="card" style="--cc:var(--c-figma)"><div class="card-num">★ 05</div><div class="card-icon">CQ</div><h3>CQRS</h3><div class="card-tagline">Okuma ve yazma sorumluluklarını ayır — ölçeklenebilir mimari için.</div><div class="card-meta">pattern</div><div class="card-badge">◆ soon</div></a>
   </div>
 
   <!-- ── MİMARİ & ŞEMALAR ── -->
@@ -233,7 +244,7 @@
     <span class="cat-count">3 konu</span>
   </div>
   <div class="card-grid">
-    <a href="deep/ecosystem.html"   class="card" style="--cc:#4ec9b0"><div class="card-num">◉ 01</div><div class="card-icon">↗</div><h3>Hepsi Birlikte</h3><div class="card-tagline">9 aracın bir feature'ın hayatında nasıl birlikte çalıştığı.</div><div class="card-meta">ekosistem</div><div class="card-arrow">→</div></a>
+    <a href="deep/ecosystem.html"   class="card" style="--cc:#4ec9b0"><div class="card-num">◉ 01</div><div class="card-icon">↗</div><h3>Hepsi Birlikte</h3><div class="card-tagline">Araçların bir feature'ın hayatında nasıl birlikte çalıştığı.</div><div class="card-meta">ekosistem</div><div class="card-arrow">→</div></a>
     <a href="deep/bigpicture.html"  class="card" style="--cc:#4fc1ff"><div class="card-num">◉ 02</div><div class="card-icon">⊕</div><h3>Devasa Şema</h3><div class="card-tagline">28 kutuluk interaktif mimari harita. Hover'da detay, 5 akış senaryosu.</div><div class="card-meta">big picture</div><div class="card-arrow">→</div></a>
     <a href="deep/bff.html"         class="card" style="--cc:var(--c-figma)"><div class="card-num">◉ 03</div><div class="card-icon">BFF</div><h3>BFF Mimarisi</h3><div class="card-tagline">Mobile → Gateway → BFF → Core → Fiba Bank. Correlation ID, Multi-threading.</div><div class="card-meta">mimari</div><div class="card-badge">◆ soon</div></a>
   </div>
