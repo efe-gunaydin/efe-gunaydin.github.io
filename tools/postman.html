@@ -1363,7 +1363,550 @@ pm.test("Hata mesajı doğru", () => pm.expect(pm.response.text()).to.include("z
     </div>
   </section>
 
-<footer style="border-top:1px solid var(--border-soft); margin-top:60px; padding:40px 0; text-align:center;">
+  <section style="padding:48px 0 32px; border-top:1px solid var(--border-soft); margin-top:40px;">
+    <div class="container">
+      <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-violet);
+                  letter-spacing:.15em; text-transform:uppercase; margin-bottom:12px;">
+        ◆ İnteraktif Demo
+      </div>
+      <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">MessageBox Simulator</h3>
+      <p style="color:var(--text-muted); font-size:13px; margin-bottom:28px;">
+        Postman'den dönen JSON'ı sol tarafa yapıştır → sağda telefon ekranında görürsün.
+      </p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;">
+
+        <!-- SOL — JSON INPUT -->
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">
+            // Postman'den kopyaladığın JSON'ı buraya yapıştır
+          </div>
+          <textarea id="sim-json" rows="20" oninput="simParse()" placeholder='{
+  "messageBoxes": [
+    {
+      "title": "Kayıt Hatası",
+      "subTitle": "Bu öğrenci numarası zaten kayıtlı.",
+      "message": "Lütfen farklı bir numara deneyin.",
+      "messageType": "ERROR",
+      "screenType": "FULLSCREEN",
+      "cancellable": false,
+      "messageBoxAction": [
+        {
+          "text": "Tamam",
+          "actionType": "NONE",
+          "uiStyle": "BUTTON"
+        }
+      ]
+    }
+  ]
+}'
+            style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                   border-radius:6px; padding:14px; font-family:var(--font-mono); font-size:11px;
+                   color:var(--text-secondary); outline:none; resize:vertical; box-sizing:border-box;
+                   line-height:1.6;"></textarea>
+
+          <div id="sim-error" style="display:none; font-family:var(--font-mono); font-size:11px;
+                                      color:#f48771; padding:8px 12px; background:var(--bg-elevated);
+                                      border:1px solid #f48771; border-radius:4px;">
+          </div>
+
+          <!-- Hızlı örnekler -->
+          <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted); margin-top:4px;">
+            // hızlı örnekler:
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button onclick="simExample('error')"
+              style="background:var(--bg-elevated); border:1px solid #f48771; color:#f48771;
+                     font-family:var(--font-mono); font-size:10px; padding:5px 10px;
+                     border-radius:4px; cursor:pointer;">ERROR FULLSCREEN</button>
+            <button onclick="simExample('success')"
+              style="background:var(--bg-elevated); border:1px solid #4ec9b0; color:#4ec9b0;
+                     font-family:var(--font-mono); font-size:10px; padding:5px 10px;
+                     border-radius:4px; cursor:pointer;">SUCCESS DRAWER</button>
+            <button onclick="simExample('warning')"
+              style="background:var(--bg-elevated); border:1px solid #dcdcaa; color:#dcdcaa;
+                     font-family:var(--font-mono); font-size:10px; padding:5px 10px;
+                     border-radius:4px; cursor:pointer;">WARNING SMALL</button>
+          </div>
+        </div>
+
+        <!-- SAĞ — TELEFON -->
+        <div>
+          <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                      margin-bottom:10px;">// önizleme</div>
+
+          <!-- Telefon -->
+          <div style="background:#111; border-radius:40px; padding:14px;
+                      border:2px solid var(--border-medium); max-width:280px; margin:0 auto;
+                      box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+            <!-- Notch -->
+            <div style="background:#000; width:80px; height:20px; border-radius:10px;
+                        margin:0 auto 8px;"></div>
+            <!-- Ekran -->
+            <div id="sim-screen-wrap" style="background:#f5f5f5; border-radius:24px;
+                                              overflow:hidden; position:relative; height:500px;">
+              <!-- App arka plan -->
+              <div style="background:#f5f5f5; padding:16px;">
+                <div style="font-size:10px; color:#aaa; font-family:monospace; margin-bottom:10px;
+                            display:flex; justify-content:space-between;">
+                  <span>GetirFinans</span>
+                  <span>9:41</span>
+                </div>
+                <div style="height:36px; background:#eee; border-radius:8px; margin-bottom:6px;"></div>
+                <div style="height:36px; background:#eee; border-radius:8px; margin-bottom:6px;"></div>
+                <div style="height:80px; background:#eee; border-radius:8px;"></div>
+              </div>
+
+              <!-- Overlay -->
+              <div id="sim-overlay" style="position:absolute; inset:0; background:rgba(0,0,0,0.5);
+                                            display:none; align-items:flex-end; justify-content:center;">
+                <!-- MessageBox -->
+                <div id="sim-box" style="width:100%; background:#fff; border-radius:20px 20px 0 0;
+                                          padding:20px 16px 24px; position:relative; max-height:90%;
+                                          overflow-y:auto;">
+                  <!-- Handle -->
+                  <div id="sim-handle" style="width:36px; height:4px; background:#ddd;
+                                               border-radius:2px; margin:0 auto 14px;"></div>
+                  <!-- X -->
+                  <div id="sim-x-btn" style="position:absolute; top:14px; right:14px;
+                                              width:24px; height:24px; background:#f5f5f5;
+                                              border-radius:50%; display:flex; align-items:center;
+                                              justify-content:center; font-size:12px; color:#999;
+                                              cursor:pointer;">✕</div>
+                  <!-- İkon -->
+                  <div id="sim-icon" style="text-align:center; font-size:36px; margin-bottom:10px;"></div>
+                  <!-- Texts -->
+                  <div id="sim-title-el" style="font-weight:700; font-size:15px; color:#111;
+                                                  text-align:center; margin-bottom:6px; line-height:1.3;"></div>
+                  <div id="sim-subtitle-el" style="font-size:12px; color:#444;
+                                                     text-align:center; margin-bottom:4px; line-height:1.5;"></div>
+                  <div id="sim-message-el" style="font-size:11px; color:#888;
+                                                    text-align:center; margin-bottom:16px; line-height:1.5;"></div>
+                  <!-- Butonlar -->
+                  <div id="sim-buttons" style="display:flex; flex-direction:column; gap:8px;"></div>
+                </div>
+              </div>
+
+              <!-- Boş state -->
+              <div id="sim-empty" style="position:absolute; inset:0; display:flex;
+                                          align-items:center; justify-content:center;
+                                          font-family:var(--font-mono); font-size:11px; color:#bbb;
+                                          text-align:center; padding:20px;">
+                JSON yapıştır<br>↑
+              </div>
+
+            </div>
+            <!-- Home bar -->
+            <div style="width:80px; height:4px; background:#333; border-radius:2px;
+                        margin:10px auto 0;"></div>
+          </div>
+
+          <!-- screenType badge -->
+          <div id="sim-badge" style="display:none; text-align:center; margin-top:12px;
+                                      font-family:var(--font-mono); font-size:11px;"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <script>
+  var EXAMPLES = {
+    error: JSON.stringify({
+      messageBoxes: [{
+        title: "Kayıt Hatası",
+        subTitle: "Bu öğrenci numarası zaten kayıtlı.",
+        message: "Lütfen farklı bir öğrenci numarası deneyin.",
+        messageType: "ERROR",
+        screenType: "FULLSCREEN",
+        cancellable: false,
+        messageBoxAction: [
+          { text: "Tamam", actionType: "NONE", uiStyle: "BUTTON" }
+        ]
+      }]
+    }, null, 2),
+
+    success: JSON.stringify({
+      messageBoxes: [{
+        title: "Öğrenci Eklendi",
+        subTitle: "Ahmet Yilmaz başarıyla kaydedildi.",
+        messageType: "SUCCESS",
+        screenType: "DRAWER",
+        cancellable: true,
+        messageBoxAction: [
+          { text: "Tamam", actionType: "NONE", uiStyle: "BUTTON" },
+          { text: "İptal", actionType: "NONE", uiStyle: "TEXT" }
+        ]
+      }]
+    }, null, 2),
+
+    warning: JSON.stringify({
+      messageBoxes: [{
+        title: "Uyarı",
+        subTitle: "GPA değeri 0-4 arasında olmalıdır.",
+        messageType: "WARNING",
+        screenType: "SMALLINAPPMESSAGE",
+        cancellable: true,
+        messageBoxAction: [
+          { text: "Anladım", actionType: "NONE", uiStyle: "BUTTON" }
+        ]
+      }]
+    }, null, 2)
+  };
+
+  var TYPE_CONFIG = {
+    ERROR:       { icon: '✕', iconBg: '#fee2e2', iconColor: '#dc2626', btnColor: '#dc2626' },
+    WARNING:     { icon: '⚠', iconBg: '#fef3c7', iconColor: '#d97706', btnColor: '#d97706' },
+    SUCCESS:     { icon: '✓', iconBg: '#d1fae5', iconColor: '#059669', btnColor: '#059669' },
+    INFORMATION: { icon: 'i', iconBg: '#dbeafe', iconColor: '#2563eb', btnColor: '#2563eb' },
+    NONE:        { icon: '',  iconBg: 'transparent', iconColor: '#666', btnColor: '#5d3ebc' },
+  };
+
+  function simExample(key) {
+    document.getElementById('sim-json').value = EXAMPLES[key];
+    simParse();
+  }
+
+  function simParse() {
+    var raw = document.getElementById('sim-json').value.trim();
+    var errEl = document.getElementById('sim-error');
+    var overlay = document.getElementById('sim-overlay');
+    var empty = document.getElementById('sim-empty');
+    var badge = document.getElementById('sim-badge');
+
+    if (!raw) {
+      overlay.style.display = 'none';
+      empty.style.display = 'flex';
+      badge.style.display = 'none';
+      errEl.style.display = 'none';
+      return;
+    }
+
+    var data;
+    try {
+      data = JSON.parse(raw);
+      errEl.style.display = 'none';
+    } catch(e) {
+      errEl.textContent = '// JSON parse hatası: ' + e.message;
+      errEl.style.display = 'block';
+      return;
+    }
+
+    // messageBoxes array'inden ilk elemanı al
+    var mb = null;
+    if (data.messageBoxes && data.messageBoxes.length > 0) {
+      mb = data.messageBoxes[0];
+    } else if (data.title || data.messageType) {
+      mb = data; // direkt MessageBox objesi yapıştırılmış
+    }
+
+    if (!mb) {
+      errEl.textContent = '// messageBoxes bulunamadı';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    var screenType  = (mb.screenType  || 'DRAWER').toUpperCase();
+    var messageType = (mb.messageType || 'INFORMATION').toUpperCase();
+    var cfg = TYPE_CONFIG[messageType] || TYPE_CONFIG.INFORMATION;
+
+    // Texts
+    document.getElementById('sim-title-el').textContent    = mb.title    || '';
+    document.getElementById('sim-subtitle-el').textContent = mb.subTitle || '';
+    document.getElementById('sim-message-el').textContent  = mb.message  || '';
+
+    // İkon
+    var iconEl = document.getElementById('sim-icon');
+    if (cfg.icon) {
+      iconEl.style.display = 'block';
+      iconEl.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;'
+        + 'width:48px;height:48px;border-radius:50%;background:' + cfg.iconBg + ';'
+        + 'color:' + cfg.iconColor + ';font-size:22px;font-weight:700;">' + cfg.icon + '</span>';
+    } else {
+      iconEl.style.display = 'none';
+    }
+
+    // X butonu
+    var xBtn = document.getElementById('sim-x-btn');
+    xBtn.style.display = mb.cancellable ? 'flex' : 'none';
+
+    // Butonlar
+    var btnsEl = document.getElementById('sim-buttons');
+    btnsEl.innerHTML = '';
+    var actions = mb.messageBoxAction || mb.messageBoxDynamicActions && mb.messageBoxDynamicActions[0] || [];
+    actions.forEach(function(action) {
+      var style = (action.uiStyle || 'BUTTON').toUpperCase();
+      var btn = document.createElement('div');
+      btn.textContent = action.text || action.textKey || '';
+      btn.style.cssText = 'text-align:center;padding:12px;border-radius:10px;'
+        + 'font-weight:700;font-size:13px;cursor:pointer;';
+      if (style === 'BUTTON') {
+        btn.style.background = cfg.btnColor;
+        btn.style.color = '#fff';
+      } else if (style === 'TEXT') {
+        btn.style.background = 'transparent';
+        btn.style.color = cfg.btnColor;
+        btn.style.fontWeight = '600';
+      } else if (style === 'UNDERLINETEXT') {
+        btn.style.background = 'transparent';
+        btn.style.color = cfg.btnColor;
+        btn.style.textDecoration = 'underline';
+      }
+      btnsEl.appendChild(btn);
+    });
+
+    // screenType layout
+    var box    = document.getElementById('sim-box');
+    var handle = document.getElementById('sim-handle');
+
+    if (screenType === 'FULLSCREEN') {
+      overlay.style.alignItems = 'stretch';
+      box.style.borderRadius   = '0';
+      box.style.maxHeight      = '100%';
+      handle.style.display     = 'none';
+      document.getElementById('sim-screen-wrap').style.background = '#fff';
+    } else if (screenType === 'SMALLINAPPMESSAGE') {
+      overlay.style.alignItems = 'flex-start';
+      box.style.borderRadius   = '0 0 20px 20px';
+      box.style.maxHeight      = '50%';
+      handle.style.display     = 'none';
+      document.getElementById('sim-screen-wrap').style.background = '#f5f5f5';
+    } else {
+      // DRAWER
+      overlay.style.alignItems = 'flex-end';
+      box.style.borderRadius   = '20px 20px 0 0';
+      box.style.maxHeight      = '70%';
+      handle.style.display     = 'block';
+      document.getElementById('sim-screen-wrap').style.background = '#f5f5f5';
+    }
+
+    overlay.style.display = 'flex';
+    empty.style.display   = 'none';
+
+    // Badge
+    badge.style.display = 'block';
+    var badgeColors = { ERROR:'#f48771', WARNING:'#dcdcaa', SUCCESS:'#4ec9b0', INFORMATION:'#4fc1ff', NONE:'#858585' };
+    badge.innerHTML = '<span style="background:var(--bg-elevated);border:1px solid '
+      + (badgeColors[messageType]||'#858585') + ';color:' + (badgeColors[messageType]||'#858585')
+      + ';padding:4px 10px;border-radius:4px;font-family:var(--font-mono);font-size:10px;">'
+      + screenType + ' · ' + messageType + '</span>';
+  }
+  </script>
+
+
+
+
+
+  <div class="container">
+    <p style="font-family:var(--font-mono); font-size:12px; color:var(--text-muted);">
+      // be-rehber &nbsp;·&nbsp;
+      <a href="../index.html" style="color:var(--accent-amber); text-decoration:none;">← Ana Sayfaya Dön</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
+
+          <div>
+            <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                          display:block; margin-bottom:6px;">screenType</label>
+            <select id="sim-screen" onchange="simUpdate()"
+              style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                     border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                     font-size:12px; color:var(--text-primary); outline:none;">
+              <option value="DRAWER">DRAWER</option>
+              <option value="FULLSCREEN">FULLSCREEN</option>
+              <option value="SMALLINAPPMESSAGE">SMALLINAPPMESSAGE</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                          display:block; margin-bottom:6px;">messageType</label>
+            <select id="sim-type" onchange="simUpdate()"
+              style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                     border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                     font-size:12px; color:var(--text-primary); outline:none;">
+              <option value="ERROR">ERROR</option>
+              <option value="WARNING">WARNING</option>
+              <option value="SUCCESS">SUCCESS</option>
+              <option value="INFORMATION">INFORMATION</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                          display:block; margin-bottom:6px;">title</label>
+            <input id="sim-title" type="text" value="Kayıt Hatası" oninput="simUpdate()"
+              style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                     border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                     font-size:12px; color:var(--text-primary); outline:none; box-sizing:border-box;"/>
+          </div>
+
+          <div>
+            <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                          display:block; margin-bottom:6px;">subTitle</label>
+            <input id="sim-subtitle" type="text" value="Bu öğrenci numarası zaten kayıtlı." oninput="simUpdate()"
+              style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                     border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                     font-size:12px; color:var(--text-primary); outline:none; box-sizing:border-box;"/>
+          </div>
+
+          <div>
+            <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                          display:block; margin-bottom:6px;">message</label>
+            <input id="sim-message" type="text" value="Lütfen farklı bir numara deneyin." oninput="simUpdate()"
+              style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                     border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                     font-size:12px; color:var(--text-primary); outline:none; box-sizing:border-box;"/>
+          </div>
+
+          <div>
+            <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                          display:block; margin-bottom:6px;">buton metni</label>
+            <input id="sim-btn" type="text" value="Tamam" oninput="simUpdate()"
+              style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                     border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                     font-size:12px; color:var(--text-primary); outline:none; box-sizing:border-box;"/>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:10px;">
+            <input id="sim-cancel" type="checkbox" checked onchange="simUpdate()"
+              style="width:16px; height:16px; cursor:pointer;"/>
+            <label for="sim-cancel" style="font-family:var(--font-mono); font-size:12px;
+                                           color:var(--text-secondary); cursor:pointer;">
+              cancellable
+            </label>
+          </div>
+
+        </div>
+
+        <!-- SAĞ — ÖNİZLEME -->
+        <div style="position:relative;">
+          <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                      margin-bottom:10px;">// önizleme</div>
+
+          <!-- Telefon çerçevesi -->
+          <div style="background:#111; border-radius:32px; padding:12px;
+                      border:2px solid var(--border-medium); max-width:280px; margin:0 auto;
+                      box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+            <!-- Ekran -->
+            <div id="sim-screen-wrap" style="background:#1a1a2e; border-radius:22px;
+                                              overflow:hidden; position:relative; height:480px;">
+
+              <!-- Uygulama arka planı -->
+              <div style="padding:20px 16px;">
+                <div style="font-size:11px; color:#888; font-family:monospace; margin-bottom:12px;">
+                  GetirFinans App
+                </div>
+                <div style="height:40px; background:#ffffff10; border-radius:8px; margin-bottom:8px;"></div>
+                <div style="height:40px; background:#ffffff10; border-radius:8px; margin-bottom:8px;"></div>
+                <div style="height:40px; background:#ffffff08; border-radius:8px;"></div>
+              </div>
+
+              <!-- MessageBox overlay -->
+              <div id="sim-overlay" style="position:absolute; inset:0; background:rgba(0,0,0,0.5);
+                                            display:flex; align-items:flex-end; justify-content:center;">
+                <div id="sim-box" style="width:100%; background:#fff; border-radius:16px 16px 0 0;
+                                          padding:20px 16px; transition:all 0.3s;">
+
+                  <!-- Drag handle (drawer için) -->
+                  <div id="sim-handle" style="width:36px; height:4px; background:#ddd;
+                                               border-radius:2px; margin:0 auto 16px;"></div>
+
+                  <!-- X butonu -->
+                  <div id="sim-x" style="position:absolute; top:14px; right:14px;
+                                          font-size:16px; color:#999; cursor:pointer;">✕</div>
+
+                  <!-- İkon -->
+                  <div id="sim-icon" style="text-align:center; margin-bottom:12px; font-size:32px;">⚠</div>
+
+                  <!-- İçerik -->
+                  <div id="sim-title-el" style="font-weight:700; font-size:15px; color:#111;
+                                                  text-align:center; margin-bottom:6px;"></div>
+                  <div id="sim-subtitle-el" style="font-size:13px; color:#333;
+                                                     text-align:center; margin-bottom:6px;"></div>
+                  <div id="sim-message-el" style="font-size:12px; color:#666;
+                                                    text-align:center; margin-bottom:16px;"></div>
+
+                  <!-- Buton -->
+                  <div id="sim-btn-el" style="background:#5d3ebc; color:#fff; border-radius:10px;
+                                               padding:12px; text-align:center; font-weight:700;
+                                               font-size:13px; cursor:pointer; margin-bottom:8px;"></div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function simUpdate() {
+      var screen   = document.getElementById('sim-screen').value;
+      var type     = document.getElementById('sim-type').value;
+      var title    = document.getElementById('sim-title').value;
+      var subtitle = document.getElementById('sim-subtitle').value;
+      var message  = document.getElementById('sim-message').value;
+      var btnText  = document.getElementById('sim-btn').value;
+      var cancel   = document.getElementById('sim-cancel').checked;
+
+      // İçerik
+      document.getElementById('sim-title-el').textContent   = title;
+      document.getElementById('sim-subtitle-el').textContent = subtitle;
+      document.getElementById('sim-message-el').textContent  = message;
+      document.getElementById('sim-btn-el').textContent      = btnText;
+
+      // X butonu
+      document.getElementById('sim-x').style.display = cancel ? 'block' : 'none';
+
+      // Renk + ikon — messageType'a göre
+      var colors = {
+        ERROR:       { icon:'✕', bg:'#fff0f0', iconColor:'#e53e3e', btn:'#e53e3e' },
+        WARNING:     { icon:'⚠', bg:'#fffbf0', iconColor:'#d97706', btn:'#d97706' },
+        SUCCESS:     { icon:'✓', bg:'#f0fff4', iconColor:'#38a169', btn:'#38a169' },
+        INFORMATION: { icon:'ℹ', bg:'#f0f8ff', iconColor:'#3182ce', btn:'#3182ce' },
+      };
+      var c = colors[type] || colors.ERROR;
+      document.getElementById('sim-icon').textContent = c.icon;
+      document.getElementById('sim-icon').style.color = c.iconColor;
+      document.getElementById('sim-btn-el').style.background = c.btn;
+
+      // screenType'a göre layout
+      var box     = document.getElementById('sim-box');
+      var handle  = document.getElementById('sim-handle');
+      var overlay = document.getElementById('sim-overlay');
+
+      if (screen === 'FULLSCREEN') {
+        overlay.style.alignItems = 'stretch';
+        box.style.borderRadius   = '0';
+        box.style.height         = '100%';
+        box.style.background     = c.bg;
+        handle.style.display     = 'none';
+      } else if (screen === 'SMALLINAPPMESSAGE') {
+        overlay.style.alignItems = 'flex-start';
+        box.style.borderRadius   = '0 0 16px 16px';
+        box.style.height         = 'auto';
+        box.style.background     = '#fff';
+        handle.style.display     = 'none';
+      } else {
+        // DRAWER
+        overlay.style.alignItems = 'flex-end';
+        box.style.borderRadius   = '16px 16px 0 0';
+        box.style.height         = 'auto';
+        box.style.background     = '#fff';
+        handle.style.display     = 'block';
+      }
+    }
+    simUpdate();
+  </script>
+
+
   <div class="container">
     <p style="font-family:var(--font-mono); font-size:12px; color:var(--text-muted);">
       // be-rehber &nbsp;·&nbsp;
