@@ -401,7 +401,36 @@
       // Nasıl Çalıştırılır
     </div>
 
-    <div class="step">
+    <!-- Git clone kutusu -->
+    <div style="background:var(--bg-base); border:1px solid var(--accent-amber);
+                border-radius:8px; padding:20px; margin-bottom:28px;">
+      <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-amber);
+                  font-weight:700; margin-bottom:4px;">◆ Projeyi İndir</div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:14px; font-family:var(--font-mono);">
+        // Bu simülatörü denemek için student-api projesine ihtiyacın var
+      </div>
+      <div style="position:relative;">
+        <pre id="clone-cmd" style="background:var(--bg-soft); border:1px solid var(--border-soft);
+                    border-radius:6px; padding:14px 48px 14px 16px; font-family:var(--font-mono);
+                    font-size:12px; color:var(--text-secondary); margin:0; overflow-x:auto;">git clone https://github.com/efe-gunaydin/student-api.git
+cd student-api
+./mvnw spring-boot:run</pre>
+        <button onclick="copyClone()" id="clone-btn"
+          style="position:absolute; top:8px; right:8px; background:var(--bg-elevated);
+                 border:1px solid var(--border-soft); border-radius:4px; padding:4px 10px;
+                 font-family:var(--font-mono); font-size:10px; color:var(--text-muted);
+                 cursor:pointer;">
+          kopyala
+        </button>
+      </div>
+      <div style="margin-top:10px; font-size:12px; color:var(--text-muted); font-family:var(--font-mono);">
+        // Kaynak kod →
+        <a href="https://github.com/efe-gunaydin/student-api" target="_blank"
+          style="color:var(--accent-amber); text-decoration:none;">
+          github.com/efe-gunaydin/student-api ↗
+        </a>
+      </div>
+    </div>
       <div class="step-num">01</div>
       <div class="step-content">
         <div class="step-title">PostgreSQL'i Docker ile başlat</div>
@@ -670,6 +699,21 @@ MessageBox.builder()
 <script src="../assets/spider.js"></script>
 <script>
 var BASE_URL = 'http://localhost:8080';
+
+  function copyClone() {
+    var text = document.getElementById('clone-cmd').textContent;
+    navigator.clipboard.writeText(text).then(function() {
+      var btn = document.getElementById('clone-btn');
+      btn.textContent = '✓ kopyalandı';
+      btn.style.color = 'var(--accent-sage)';
+      btn.style.borderColor = 'var(--accent-sage)';
+      setTimeout(function() {
+        btn.textContent = 'kopyala';
+        btn.style.color = 'var(--text-muted)';
+        btn.style.borderColor = 'var(--border-soft)';
+      }, 2000);
+    });
+  }
 
 var TYPE_CFG = {
   ERROR:       { icon:'✕', iconBg:'#fee2e2', iconColor:'#dc2626', btn:'#dc2626' },
