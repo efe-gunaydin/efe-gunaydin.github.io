@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulations — be-rehber</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="../assets/shared.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Tema shared.css'ten gelir */
+
+  .sim-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 20px 24px;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .sim-card:hover { border-color: var(--accent-amber); }
+  .sim-card.active { border-color: var(--accent-amber); background: var(--bg-card); }
+  .sim-card-icon {
+    width: 48px; height: 48px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+    background: var(--bg-soft); color: var(--accent-amber);
+    font-family: var(--font-mono); font-weight: 700;
+  }
+  .sim-card-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .sim-card-desc  { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+
+  .step {
+    display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start;
+  }
+  .step-num {
+    width: 28px; height: 28px; border-radius: 4px;
+    background: var(--bg-soft); border: 1px solid var(--border-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    color: var(--accent-amber); flex-shrink: 0;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .step-desc  { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
+
+  code {
+    background: var(--bg-soft); border: 1px solid var(--border-soft);
+    border-radius: 3px; padding: 1px 6px; font-family: var(--font-mono);
+    font-size: 11px; color: var(--accent-sage);
+  }
+
+  pre.code-block {
+    background: var(--bg-base); border: 1px solid var(--border-soft);
+    border-radius: 6px; padding: 14px 16px; font-family: var(--font-mono);
+    font-size: 11px; color: var(--text-secondary); overflow-x: auto;
+    line-height: 1.7; margin: 8px 0;
+  }
+
+  .tag {
+    display: inline-block; font-family: var(--font-mono); font-size: 10px;
+    font-weight: 700; padding: 3px 8px; border-radius: 3px; margin-right: 6px;
+  }
+  .tag-req  { background: rgba(79,193,255,.15); color: #4fc1ff; }
+  .tag-opt  { background: rgba(133,133,133,.15); color: #858585; }
+
+  /* ── Telefon ── */
+  .phone-wrap {
+    background: #111; border-radius: 40px; padding: 14px;
+    border: 2px solid var(--border-medium); max-width: 260px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.5); margin: 0 auto;
+  }
+  .phone-notch {
+    background: #000; width: 80px; height: 20px;
+    border-radius: 10px; margin: 0 auto 8px;
+  }
+  .phone-screen {
+    background: #f5f5f5; border-radius: 24px;
+    overflow: hidden; position: relative; height: 480px;
+  }
+  .phone-app-bg { background: #f5f5f5; padding: 14px; }
+  .phone-topbar {
+    font-size: 10px; color: #aaa; font-family: monospace;
+    margin-bottom: 10px; display: flex; justify-content: space-between;
+  }
+  .phone-placeholder {
+    height: 34px; background: #e8e8e8; border-radius: 8px; margin-bottom: 6px;
+  }
+  .phone-home {
+    width: 80px; height: 4px; background: #333;
+    border-radius: 2px; margin: 10px auto 0;
+  }
+
+  /* ── MessageBox overlay ── */
+  #mb-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,.5);
+    display: none; align-items: flex-end; justify-content: center;
+  }
+  #mb-box {
+    width: 100%; background: #fff;
+    border-radius: 20px 20px 0 0;
+    padding: 20px 16px 24px;
+    position: relative; max-height: 90%; overflow-y: auto;
+    transition: border-radius .3s;
+  }
+  #mb-handle {
+    width: 36px; height: 4px; background: #ddd;
+    border-radius: 2px; margin: 0 auto 14px;
+  }
+  #mb-x {
+    position: absolute; top: 14px; right: 14px;
+    width: 24px; height: 24px; background: #f5f5f5;
+    border-radius: 50%; display: none; align-items: center;
+    justify-content: center; font-size: 12px; color: #999; cursor: pointer;
+  }
+  #mb-icon { text-align: center; font-size: 36px; margin-bottom: 10px; }
+  #mb-title { font-weight: 700; font-size: 14px; color: #111; text-align: center; margin-bottom: 5px; line-height: 1.3; }
+  #mb-subtitle { font-size: 12px; color: #444; text-align: center; margin-bottom: 4px; line-height: 1.5; }
+  #mb-message { font-size: 11px; color: #888; text-align: center; margin-bottom: 16px; line-height: 1.5; }
+  #mb-buttons { display: flex; flex-direction: column; gap: 8px; }
+  #mb-empty {
+    position: absolute; inset: 0; display: flex;
+    align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 11px; color: #bbb;
+    text-align: center; padding: 20px; flex-direction: column; gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="nav-brand">
+    <div class="brand-symbol" style="color:var(--accent-amber);">
+      <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="50,5 95,30 95,70 50,95 5,70 5,30" fill="none" stroke="currentColor" stroke-width="2" opacity="0.55"/>
+        <polygon points="50,20 80,72 20,72" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <circle cx="50" cy="50" r="4" fill="currentColor"/>
+        <line x1="50" y1="20" x2="50" y2="72" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="50" y1="50" x2="80" y2="72" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="50" y1="50" x2="20" y2="72" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="nav-title">
+      <span class="brand-name">be-rehber</span>
+      <span class="brand-sub">backend dev guide</span>
+    </div>
+  </div>
+  <div class="nav-actions">
+    <button class="getir-btn" onclick="toggleGetir()" title="Getir tema">GF</button>
+    <button class="theme-btn" onclick="toggleTheme()" title="Tema değiştir">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" fill="currentColor"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="container" style="padding-top:20px;">
+  <div style="display:flex; align-items:center; gap:8px; font-family:var(--font-mono);
+              font-size:12px; color:var(--text-muted); margin-bottom:4px;">
+    <a href="../index.html" style="color:var(--text-muted); text-decoration:none;
+       padding:6px 12px; border:1px solid var(--border-soft); border-radius:8px;
+       transition:all .2s; background:var(--bg-elevated);"
+       onmouseover="this.style.color='var(--text-primary)'"
+       onmouseout="this.style.color='var(--text-muted)'">← Ana Sayfa</a>
+    <span style="opacity:.4;">/</span>
+    <span style="color:var(--accent-violet); font-weight:600;">Simulations</span>
+  </div>
+</div>
+
+<!-- ══ HEADER ══ -->
+<div class="container" style="padding-top:32px; padding-bottom:40px;">
+  <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-violet);
+              letter-spacing:.15em; text-transform:uppercase; margin-bottom:12px;">
+    ◆ Canlı Simülasyonlar
+  </div>
+  <h1 style="font-size:32px; font-weight:700; margin-bottom:10px;">Simulations</h1>
+  <p style="font-size:14px; color:var(--text-muted); max-width:600px; line-height:1.8;">
+    Gerçek backend koduyla çalışan interaktif simülatörler. Spring Boot'u ayağa kaldır,
+    burada test et, telefon ekranında görsel sonucu izle.
+  </p>
+</div>
+
+<!-- ══ SİMÜLATÖR LİSTESİ ══ -->
+<div class="container" style="border-top:1px solid var(--border-soft); padding-top:32px;">
+  <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+              margin-bottom:16px;">// simülatörler</div>
+  <div style="display:flex; flex-direction:column; gap:12px; max-width:640px;">
+
+    <div class="sim-card active" onclick="selectSim('messagebox')" id="card-messagebox">
+      <div class="sim-card-icon">MB</div>
+      <div>
+        <div class="sim-card-title">MessageBox Simulator</div>
+        <div class="sim-card-desc">
+          Spring Boot → MessageBox response → telefon ekranında render
+        </div>
+      </div>
+      <div style="margin-left:auto; font-family:var(--font-mono); font-size:10px;
+                  color:var(--accent-sage); border:1px solid var(--accent-sage);
+                  padding:3px 8px; border-radius:3px; white-space:nowrap;">aktif</div>
+    </div>
+
+    <div class="sim-card" style="opacity:.5; cursor:not-allowed;">
+      <div class="sim-card-icon" style="color:var(--text-muted);">RD</div>
+      <div>
+        <div class="sim-card-title" style="color:var(--text-muted);">Redis Cache Simulator</div>
+        <div class="sim-card-desc">Cache hit/miss görselleştirmesi — yakında</div>
+      </div>
+      <div style="margin-left:auto; font-family:var(--font-mono); font-size:10px;
+                  color:var(--text-muted); border:1px solid var(--border-soft);
+                  padding:3px 8px; border-radius:3px; white-space:nowrap;">◆ soon</div>
+    </div>
+
+    <div class="sim-card" style="opacity:.5; cursor:not-allowed;">
+      <div class="sim-card-icon" style="color:var(--text-muted);">ES</div>
+      <div>
+        <div class="sim-card-title" style="color:var(--text-muted);">Elasticsearch Query Simulator</div>
+        <div class="sim-card-desc">Full-text arama ve inverted index görselleştirmesi — yakında</div>
+      </div>
+      <div style="margin-left:auto; font-family:var(--font-mono); font-size:10px;
+                  color:var(--text-muted); border:1px solid var(--border-soft);
+                  padding:3px 8px; border-radius:3px; white-space:nowrap;">◆ soon</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ MessageBox SİMÜLATÖR ══ -->
+<div id="sim-messagebox" class="container" style="padding-top:40px; border-top:1px solid var(--border-soft); margin-top:32px;">
+
+  <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-amber);
+              letter-spacing:.15em; text-transform:uppercase; margin-bottom:8px;">
+    ◆ MessageBox Simulator
+  </div>
+  <h2 style="font-size:22px; font-weight:700; margin-bottom:6px;">
+    Spring Boot → Telefon Ekranı
+  </h2>
+  <p style="font-size:13px; color:var(--text-muted); margin-bottom:32px; max-width:600px; line-height:1.8;">
+    Backend'den dönen <code>MessageBoxResponse</code>'u gerçek zamanlı olarak
+    telefon ekranında görselleştirir. Tıpkı GetirFinans'ta olduğu gibi —
+    sen backend'i değiştirirsin, burada canlı görürsün.
+  </p>
+
+  <!-- ── Kurulum Adımları ── -->
+  <div style="background:var(--bg-elevated); border:1px solid var(--border-soft);
+              border-left:3px solid var(--accent-sage);
+              border-radius:8px; padding:24px; margin-bottom:36px;">
+    <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-sage);
+                font-weight:700; text-transform:uppercase; letter-spacing:.1em; margin-bottom:20px;">
+      // Nasıl Çalıştırılır
+    </div>
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-content">
+        <div class="step-title">PostgreSQL'i Docker ile başlat</div>
+        <div class="step-desc">
+          Aşağıdaki komutu terminalde çalıştır. Bu komutu sadece bir kez yapman yeterli —
+          Docker container'ı kapanmadan veri kalır.
+        </div>
+        <pre class="code-block">docker run --name student-db \
+  -e POSTGRES_DB=student_db \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=1234 \
+  -p 5432:5432 -d postgres</pre>
+        <div class="step-desc" style="margin-top:6px;">
+          Container daha önce oluşturulmuşsa: <code>docker start student-db</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-content">
+        <div class="step-title">DBeaver ile bağlantıyı doğrula (opsiyonel)</div>
+        <div class="step-desc">
+          DBeaver'ı aç → New Connection → PostgreSQL →
+          <code>localhost:5432</code>, database: <code>student_db</code>,
+          user: <code>postgres</code>, password: <code>1234</code>.
+          Bağlantı başarılıysa <code>student</code> tablosunu göreceksin.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <div class="step-title">IntelliJ'de student-api projesini çalıştır</div>
+        <div class="step-desc">
+          <code>StudentApiApplication.java</code>'yı aç → Run.
+          Spring Boot <code>localhost:8080</code>'de başlayacak.
+          <code>@CrossOrigin(origins = "*")</code> annotation'ının
+          <code>StudentController</code>'da olduğundan emin ol — yoksa tarayıcı isteği bloklar.
+        </div>
+        <pre class="code-block">@CrossOrigin(origins = "*")
+@RestController
+@RequestMapping("/api/students")
+public class StudentController { ... }</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-content">
+        <div class="step-title">Bu sayfayı tarayıcıda aç</div>
+        <div class="step-desc">
+          VSCode'da Live Server ile ya da direkt dosyayı tarayıcıya sürükle.
+          Aşağıdaki simulator, <code>localhost:8080</code>'e direkt istek atar.
+          Postman'e gerek yok.
+        </div>
+      </div>
+    </div>
+
+    <div class="step" style="margin-bottom:0;">
+      <div class="step-num">05</div>
+      <div class="step-content">
+        <div class="step-title">IntelliJ'de MessageBox parametrelerini değiştir, burada izle</div>
+        <div class="step-desc">
+          <code>StudentController.java</code>'da <code>messageType</code>,
+          <code>screenType</code>, <code>cancellable</code> gibi değerleri değiştir →
+          Spring Boot'u restart et → Send bas → telefon ekranında değişimi gör.
+          Tam GetirFinans mantığı: backend doldurur, frontend gösterir.
+        </div>
+        <pre class="code-block">// Bunu değiştirince telefon ekranı değişir:
+MessageBox.builder()
+    .title("Öğrenci Eklendi")
+    .messageType(MessageBoxType.SUCCESS)   // ERROR, WARNING, INFORMATION
+    .screenType(MessageBoxScreenType.DRAWER) // FULLSCREEN, SMALLINAPPMESSAGE
+    .cancellable(true)
+    .build();</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Simulator ── -->
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start;">
+
+    <!-- SOL -->
+    <div style="display:flex; flex-direction:column; gap:16px;">
+
+      <!-- Tab seçici -->
+      <div style="display:flex; gap:0; border-bottom:1px solid var(--border-soft);">
+        <button id="tab-live" onclick="switchTab('live')"
+          style="font-family:var(--font-mono); font-size:12px; padding:10px 16px; cursor:pointer;
+                 border:none; border-bottom:2px solid var(--accent-amber); background:transparent;
+                 color:var(--accent-amber); font-weight:700;">
+          ◆ Canlı API
+        </button>
+        <button id="tab-json" onclick="switchTab('json')"
+          style="font-family:var(--font-mono); font-size:12px; padding:10px 16px; cursor:pointer;
+                 border:none; border-bottom:2px solid transparent; background:transparent;
+                 color:var(--text-muted);">
+          ◈ JSON Yapıştır
+        </button>
+      </div>
+
+      <!-- CANLI API -->
+      <div id="panel-live" style="display:flex; flex-direction:column; gap:12px;">
+        <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">
+          // localhost:8080 çalışıyor olmalı
+        </div>
+
+        <div style="background:var(--bg-elevated); border:1px solid var(--border-soft);
+                    border-radius:8px; padding:18px; display:flex; flex-direction:column; gap:12px;">
+
+          <div>
+            <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                          display:block; margin-bottom:6px;">endpoint</label>
+            <select id="live-method" onchange="liveMethodChange()"
+              style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                     border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                     font-size:12px; color:var(--text-primary); outline:none;">
+              <option value="POST">POST /api/students — öğrenci ekle</option>
+              <option value="GET">GET /api/students — tümünü getir</option>
+              <option value="GET_ID">GET /api/students/{id}</option>
+              <option value="PUT">PUT /api/students/{id} — güncelle</option>
+              <option value="DELETE">DELETE /api/students/{id} — sil</option>
+            </select>
+          </div>
+
+          <div id="live-id-wrap" style="display:none;">
+            <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                          display:block; margin-bottom:6px;">id</label>
+            <input id="live-id" type="number" placeholder="1"
+              style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                     border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                     font-size:12px; color:var(--text-primary); outline:none; box-sizing:border-box;"/>
+          </div>
+
+          <div id="live-body-wrap" style="display:flex; flex-direction:column; gap:10px;">
+            <div>
+              <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                            display:block; margin-bottom:6px;">studentNumber</label>
+              <input id="live-sNum" type="text" placeholder="1001"
+                style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                       border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                       font-size:12px; color:var(--text-primary); outline:none; box-sizing:border-box;"/>
+            </div>
+            <div>
+              <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                            display:block; margin-bottom:6px;">fullName</label>
+              <input id="live-fullName" type="text" placeholder="Ahmet Yilmaz"
+                style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                       border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                       font-size:12px; color:var(--text-primary); outline:none; box-sizing:border-box;"/>
+            </div>
+            <div>
+              <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                            display:block; margin-bottom:6px;">gpa</label>
+              <input id="live-gpa" type="number" step="0.01" placeholder="3.50"
+                style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                       border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                       font-size:12px; color:var(--text-primary); outline:none; box-sizing:border-box;"/>
+            </div>
+          </div>
+
+          <button onclick="liveSend()"
+            style="background:var(--accent-amber); border:none; border-radius:4px;
+                   padding:12px; font-family:var(--font-mono); font-size:13px; font-weight:700;
+                   color:var(--bg-base); cursor:pointer;">
+            ▶ Send
+          </button>
+        </div>
+
+        <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">// response</div>
+        <div id="live-status" style="display:none; font-family:var(--font-mono); font-size:11px;
+                                      padding:6px 10px; border-radius:4px;"></div>
+        <pre id="live-response"
+          style="background:var(--bg-base); border:1px solid var(--border-soft); border-radius:6px;
+                 padding:14px; font-size:11px; color:var(--text-secondary); overflow-x:auto;
+                 margin:0; font-family:var(--font-mono); min-height:80px; white-space:pre-wrap;">// henüz istek atılmadı</pre>
+      </div>
+
+      <!-- JSON YAPISTIR -->
+      <div id="panel-json" style="display:none; flex-direction:column; gap:12px;">
+        <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">
+          // Postman'den kopyaladığın JSON'ı yapıştır
+        </div>
+        <textarea id="sim-json" rows="14" oninput="simParse()"
+          placeholder='{ "messageBoxes": [...] }'
+          style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                 border-radius:6px; padding:14px; font-family:var(--font-mono); font-size:11px;
+                 color:var(--text-secondary); outline:none; resize:vertical; box-sizing:border-box;
+                 line-height:1.6;"></textarea>
+        <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">// hızlı örnekler:</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button onclick="simExample('error')"
+            style="background:var(--bg-elevated); border:1px solid #f48771; color:#f48771;
+                   font-family:var(--font-mono); font-size:10px; padding:5px 10px;
+                   border-radius:4px; cursor:pointer;">ERROR FULLSCREEN</button>
+          <button onclick="simExample('success')"
+            style="background:var(--bg-elevated); border:1px solid #4ec9b0; color:#4ec9b0;
+                   font-family:var(--font-mono); font-size:10px; padding:5px 10px;
+                   border-radius:4px; cursor:pointer;">SUCCESS DRAWER</button>
+          <button onclick="simExample('warning')"
+            style="background:var(--bg-elevated); border:1px solid #dcdcaa; color:#dcdcaa;
+                   font-family:var(--font-mono); font-size:10px; padding:5px 10px;
+                   border-radius:4px; cursor:pointer;">WARNING SMALL</button>
+        </div>
+        <div id="sim-error" style="display:none; font-family:var(--font-mono); font-size:11px;
+                                    color:#f48771; padding:8px 12px; border:1px solid #f48771;
+                                    border-radius:4px; background:var(--bg-elevated);"></div>
+      </div>
+
+    </div>
+
+    <!-- SAĞ — TELEFON -->
+    <div style="position:sticky; top:100px;">
+      <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted); margin-bottom:10px;">// önizleme</div>
+
+      <div class="phone-wrap">
+        <div class="phone-notch"></div>
+        <div class="phone-screen" id="sim-screen-wrap">
+          <div class="phone-app-bg">
+            <div class="phone-topbar"><span>GetirFinans</span><span>9:41</span></div>
+            <div class="phone-placeholder"></div>
+            <div class="phone-placeholder"></div>
+            <div class="phone-placeholder" style="height:80px;"></div>
+          </div>
+
+          <div id="mb-overlay">
+            <div id="mb-box">
+              <div id="mb-handle"></div>
+              <div id="mb-x">✕</div>
+              <div id="mb-icon"></div>
+              <div id="mb-title"></div>
+              <div id="mb-subtitle"></div>
+              <div id="mb-message"></div>
+              <div id="mb-buttons"></div>
+            </div>
+          </div>
+
+          <div id="mb-empty">
+            <span style="font-size:24px; opacity:.3;">◎</span>
+            <span>Send bas<br>telefonda görünsün</span>
+          </div>
+        </div>
+        <div class="phone-home"></div>
+      </div>
+
+      <div id="mb-badge" style="display:none; text-align:center; margin-top:12px;
+                                  font-family:var(--font-mono); font-size:11px;"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer style="border-top:1px solid var(--border-soft); margin-top:80px; padding:40px 0; text-align:center;">
+  <div class="container">
+    <p style="font-family:var(--font-mono); font-size:12px; color:var(--text-muted);">
+      // be-rehber &nbsp;·&nbsp;
+      <a href="../index.html" style="color:var(--accent-amber); text-decoration:none;">← Ana Sayfaya Dön</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/shared.js"></script>
+<script src="../assets/spider.js"></script>
+<script>
+var BASE_URL = 'http://localhost:8080';
+
+var TYPE_CFG = {
+  ERROR:       { icon:'✕', iconBg:'#fee2e2', iconColor:'#dc2626', btn:'#dc2626' },
+  WARNING:     { icon:'⚠', iconBg:'#fef3c7', iconColor:'#d97706', btn:'#d97706' },
+  SUCCESS:     { icon:'✓', iconBg:'#d1fae5', iconColor:'#059669', btn:'#059669' },
+  INFORMATION: { icon:'i', iconBg:'#dbeafe', iconColor:'#2563eb', btn:'#2563eb' },
+  NONE:        { icon:'',  iconBg:'transparent', iconColor:'#666', btn:'#5d3ebc' },
+};
+
+var EXAMPLES = {
+  error: JSON.stringify({ messageBoxes: [{
+    title: "Kayıt Hatası", subTitle: "Bu öğrenci numarası zaten kayıtlı.",
+    message: "Lütfen farklı bir öğrenci numarası deneyin.",
+    messageType: "ERROR", screenType: "FULLSCREEN", cancellable: false,
+    messageBoxAction: [{ text:"Tamam", actionType:"NONE", uiStyle:"BUTTON" }]
+  }]}, null, 2),
+  success: JSON.stringify({ messageBoxes: [{
+    title: "Öğrenci Eklendi", subTitle: "Ahmet Yilmaz başarıyla kaydedildi.",
+    messageType: "SUCCESS", screenType: "DRAWER", cancellable: true,
+    messageBoxAction: [
+      { text:"Tamam", actionType:"NONE", uiStyle:"BUTTON" },
+      { text:"İptal", actionType:"NONE", uiStyle:"TEXT" }
+    ]
+  }]}, null, 2),
+  warning: JSON.stringify({ messageBoxes: [{
+    title: "Uyarı", subTitle: "GPA değeri 0-4 arasında olmalıdır.",
+    messageType: "WARNING", screenType: "SMALLINAPPMESSAGE", cancellable: true,
+    messageBoxAction: [{ text:"Anladım", actionType:"NONE", uiStyle:"BUTTON" }]
+  }]}, null, 2),
+};
+
+/* ── Tab ── */
+function switchTab(tab) {
+  var live = document.getElementById('panel-live');
+  var json = document.getElementById('panel-json');
+  var tbL  = document.getElementById('tab-live');
+  var tbJ  = document.getElementById('tab-json');
+  if (tab === 'live') {
+    live.style.display = 'flex'; json.style.display = 'none';
+    tbL.style.borderBottomColor = 'var(--accent-amber)'; tbL.style.color = 'var(--accent-amber)';
+    tbJ.style.borderBottomColor = 'transparent';         tbJ.style.color = 'var(--text-muted)';
+  } else {
+    live.style.display = 'none'; json.style.display = 'flex';
+    tbJ.style.borderBottomColor = 'var(--accent-amber)'; tbJ.style.color = 'var(--accent-amber)';
+    tbL.style.borderBottomColor = 'transparent';         tbL.style.color = 'var(--text-muted)';
+  }
+}
+
+/* ── Endpoint değiştir ── */
+function liveMethodChange() {
+  var m = document.getElementById('live-method').value;
+  var id = document.getElementById('live-id-wrap');
+  var bd = document.getElementById('live-body-wrap');
+  id.style.display = (m === 'GET_ID' || m === 'DELETE' || m === 'PUT') ? 'block' : 'none';
+  bd.style.display = (m === 'POST' || m === 'PUT') ? 'flex' : 'none';
+}
+
+/* ── Send ── */
+function liveSend() {
+  var m    = document.getElementById('live-method').value;
+  var id   = document.getElementById('live-id').value;
+  var sNum = document.getElementById('live-sNum').value;
+  var fn   = document.getElementById('live-fullName').value;
+  var gpa  = document.getElementById('live-gpa').value;
+  var respEl = document.getElementById('live-response');
+  var statEl = document.getElementById('live-status');
+
+  var url, method, body;
+  if      (m === 'GET')    { url = BASE_URL+'/api/students';      method = 'GET'; }
+  else if (m === 'GET_ID') { url = BASE_URL+'/api/students/'+id;  method = 'GET'; }
+  else if (m === 'DELETE') { url = BASE_URL+'/api/students/'+id;  method = 'DELETE'; }
+  else if (m === 'PUT')    { url = BASE_URL+'/api/students/'+id;  method = 'PUT';
+    body = JSON.stringify({ studentNumber:sNum, fullName:fn, gpa:parseFloat(gpa) }); }
+  else                     { url = BASE_URL+'/api/students';      method = 'POST';
+    body = JSON.stringify({ studentNumber:sNum, fullName:fn, gpa:parseFloat(gpa) }); }
+
+  respEl.textContent = '// istek atılıyor...';
+  statEl.style.display = 'none';
+
+  var opts = { method, headers:{'Content-Type':'application/json'} };
+  if (body) opts.body = body;
+
+  fetch(url, opts)
+    .then(r => {
+      var s = r.status;
+      statEl.style.display = 'block';
+      statEl.textContent = '// ' + method + ' ' + url + ' → ' + s;
+      statEl.style.cssText = 'display:block;font-family:var(--font-mono);font-size:11px;'
+        + 'padding:6px 10px;border-radius:4px;border:1px solid '
+        + (s<300?'#4ec9b0':'#f48771') + ';color:'
+        + (s<300?'#4ec9b0':'#f48771') + ';background:'
+        + (s<300?'rgba(78,201,176,.1)':'rgba(244,135,113,.1)') + ';';
+      return r.text();
+    })
+    .then(text => {
+      try {
+        var data = JSON.parse(text);
+        respEl.textContent = JSON.stringify(data, null, 2);
+        if (data.messageBoxes) mbRender(data);
+        else if (data.messageType) mbRender({ messageBoxes:[data] });
+        else mbClear('✓ Başarılı<br>MessageBox yok');
+      } catch(e) { respEl.textContent = text; }
+    })
+    .catch(e => {
+      statEl.style.cssText = 'display:block;font-family:var(--font-mono);font-size:11px;'
+        +'padding:6px 10px;border-radius:4px;border:1px solid #f48771;'
+        +'color:#f48771;background:rgba(244,135,113,.1);';
+      statEl.textContent = '// Bağlantı hatası — localhost:8080 çalışıyor mu?';
+      respEl.textContent = e.message;
+      mbClear('✕ Bağlantı yok');
+    });
+}
+
+/* ── MessageBox render ── */
+function mbRender(data) {
+  var mb = data.messageBoxes?.[0] || (data.messageType ? data : null);
+  if (!mb) { mbClear('// messageBoxes yok'); return; }
+
+  var st  = (mb.screenType  || 'DRAWER').toUpperCase();
+  var mt  = (mb.messageType || 'INFORMATION').toUpperCase();
+  var cfg = TYPE_CFG[mt] || TYPE_CFG.INFORMATION;
+
+  document.getElementById('mb-title').textContent    = mb.title    || '';
+  document.getElementById('mb-subtitle').textContent = mb.subTitle || '';
+  document.getElementById('mb-message').textContent  = mb.message  || '';
+
+  var iconEl = document.getElementById('mb-icon');
+  iconEl.innerHTML = cfg.icon
+    ? '<span style="display:inline-flex;align-items:center;justify-content:center;'
+      +'width:48px;height:48px;border-radius:50%;background:'+cfg.iconBg+';'
+      +'color:'+cfg.iconColor+';font-size:22px;font-weight:700;">'+cfg.icon+'</span>'
+    : '';
+
+  var xEl = document.getElementById('mb-x');
+  xEl.style.display = mb.cancellable ? 'flex' : 'none';
+
+  var btnsEl = document.getElementById('mb-buttons');
+  btnsEl.innerHTML = '';
+  var actions = mb.messageBoxAction
+    || (mb.messageBoxDynamicActions && mb.messageBoxDynamicActions[0]) || [];
+  actions.forEach(a => {
+    var s = (a.uiStyle||'BUTTON').toUpperCase();
+    var btn = document.createElement('div');
+    btn.textContent = a.text || a.textKey || '';
+    btn.style.cssText = 'text-align:center;padding:12px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;';
+    if (s === 'BUTTON') { btn.style.background = cfg.btn; btn.style.color = '#fff'; }
+    else if (s === 'TEXT') { btn.style.color = cfg.btn; }
+    else if (s === 'UNDERLINETEXT') { btn.style.color = cfg.btn; btn.style.textDecoration = 'underline'; }
+    btnsEl.appendChild(btn);
+  });
+
+  var ov   = document.getElementById('mb-overlay');
+  var box  = document.getElementById('mb-box');
+  var hdl  = document.getElementById('mb-handle');
+  var wrap = document.getElementById('sim-screen-wrap');
+
+  if (st === 'FULLSCREEN') {
+    ov.style.alignItems = 'stretch'; box.style.borderRadius = '0';
+    box.style.maxHeight = '100%'; hdl.style.display = 'none'; wrap.style.background = '#fff';
+  } else if (st === 'SMALLINAPPMESSAGE') {
+    ov.style.alignItems = 'flex-start'; box.style.borderRadius = '0 0 20px 20px';
+    box.style.maxHeight = '50%'; hdl.style.display = 'none'; wrap.style.background = '#f5f5f5';
+  } else {
+    ov.style.alignItems = 'flex-end'; box.style.borderRadius = '20px 20px 0 0';
+    box.style.maxHeight = '70%'; hdl.style.display = 'block'; wrap.style.background = '#f5f5f5';
+  }
+
+  ov.style.display = 'flex';
+  document.getElementById('mb-empty').style.display = 'none';
+
+  var bc = {ERROR:'#f48771',WARNING:'#dcdcaa',SUCCESS:'#4ec9b0',INFORMATION:'#4fc1ff',NONE:'#858585'};
+  var bdg = document.getElementById('mb-badge');
+  bdg.style.display = 'block';
+  bdg.innerHTML = '<span style="background:var(--bg-elevated);border:1px solid '+(bc[mt]||'#858585')
+    +';color:'+(bc[mt]||'#858585')+';padding:4px 10px;border-radius:4px;'
+    +'font-family:var(--font-mono);font-size:10px;">'+st+' · '+mt+'</span>';
+}
+
+function mbClear(msg) {
+  document.getElementById('mb-overlay').style.display = 'none';
+  var e = document.getElementById('mb-empty');
+  e.style.display = 'flex'; e.innerHTML = msg;
+  document.getElementById('mb-badge').style.display = 'none';
+}
+
+/* ── JSON yapıştır ── */
+function simExample(key) {
+  switchTab('json');
+  document.getElementById('sim-json').value = EXAMPLES[key];
+  simParse();
+}
+
+function simParse() {
+  var raw = document.getElementById('sim-json').value.trim();
+  var err = document.getElementById('sim-error');
+  if (!raw) { mbClear('◎<br>JSON yapıştır'); err.style.display='none'; return; }
+  try {
+    mbRender(JSON.parse(raw));
+    err.style.display = 'none';
+  } catch(e) {
+    err.textContent = '// JSON parse hatası: ' + e.message;
+    err.style.display = 'block';
+  }
+}
+
+/* ── Simulator kart seç ── */
+function selectSim(id) {
+  document.querySelectorAll('.sim-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('card-'+id).classList.add('active');
+}
+</script>
+</body>
+</html>
