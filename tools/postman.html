@@ -1370,14 +1370,144 @@ pm.test("Hata mesajı doğru", () => pm.expect(pm.response.text()).to.include("z
         ◆ İnteraktif Demo
       </div>
       <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">MessageBox Simulator</h3>
-      <p style="color:var(--text-muted); font-size:13px; margin-bottom:28px;">
-        Postman'den dönen JSON'ı sol tarafa yapıştır → sağda telefon ekranında görürsün.
-      </p>
+
+      <!-- Tab seçici -->
+      <div style="display:flex; gap:0; margin-bottom:28px; border-bottom:1px solid var(--border-soft);">
+        <button id="tab-live" onclick="switchTab('live')"
+          style="font-family:var(--font-mono); font-size:12px; padding:10px 18px; cursor:pointer;
+                 border:none; border-bottom:2px solid var(--accent-amber); background:transparent;
+                 color:var(--accent-amber); font-weight:700;">
+          ◆ Canlı API
+        </button>
+        <button id="tab-json" onclick="switchTab('json')"
+          style="font-family:var(--font-mono); font-size:12px; padding:10px 18px; cursor:pointer;
+                 border:none; border-bottom:2px solid transparent; background:transparent;
+                 color:var(--text-muted);">
+          ◈ JSON Yapıştır
+        </button>
+      </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;">
 
-        <!-- SOL — JSON INPUT -->
-        <div style="display:flex; flex-direction:column; gap:12px;">
+        <!-- SOL -->
+        <div>
+
+          <!-- CANLI API FORMU -->
+          <div id="panel-live" style="display:flex; flex-direction:column; gap:12px;">
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">
+              // localhost:8080 çalışıyor olmalı
+            </div>
+
+            <div style="background:var(--bg-elevated); border:1px solid var(--border-soft);
+                        border-radius:8px; padding:20px; display:flex; flex-direction:column; gap:14px;">
+
+              <!-- Endpoint seçici -->
+              <div>
+                <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                              display:block; margin-bottom:6px;">endpoint</label>
+                <select id="live-method" onchange="liveMethodChange()"
+                  style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                         border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                         font-size:12px; color:var(--text-primary); outline:none;">
+                  <option value="POST">POST /api/students — öğrenci ekle</option>
+                  <option value="GET">GET /api/students — tümünü getir</option>
+                  <option value="GET_ID">GET /api/students/{id} — ID ile getir</option>
+                  <option value="PUT">PUT /api/students/{id} — güncelle</option>
+                  <option value="DELETE">DELETE /api/students/{id} — sil</option>
+                </select>
+              </div>
+
+              <!-- ID alanı (PUT/DELETE/GET_ID için) -->
+              <div id="live-id-wrap" style="display:none;">
+                <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                              display:block; margin-bottom:6px;">id</label>
+                <input id="live-id" type="number" placeholder="1"
+                  style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                         border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                         font-size:12px; color:var(--text-primary); outline:none; box-sizing:border-box;"/>
+              </div>
+
+              <!-- Body alanları (POST/PUT için) -->
+              <div id="live-body-wrap">
+                <div style="margin-bottom:10px;">
+                  <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                                display:block; margin-bottom:6px;">studentNumber</label>
+                  <input id="live-studentNumber" type="text" placeholder="1001"
+                    style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                           border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                           font-size:12px; color:var(--text-primary); outline:none; box-sizing:border-box;"/>
+                </div>
+                <div style="margin-bottom:10px;">
+                  <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                                display:block; margin-bottom:6px;">fullName</label>
+                  <input id="live-fullName" type="text" placeholder="Ahmet Yilmaz"
+                    style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                           border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                           font-size:12px; color:var(--text-primary); outline:none; box-sizing:border-box;"/>
+                </div>
+                <div>
+                  <label style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+                                display:block; margin-bottom:6px;">gpa</label>
+                  <input id="live-gpa" type="number" step="0.01" placeholder="3.50"
+                    style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                           border-radius:4px; padding:8px 10px; font-family:var(--font-mono);
+                           font-size:12px; color:var(--text-primary); outline:none; box-sizing:border-box;"/>
+                </div>
+              </div>
+
+              <!-- Send butonu -->
+              <button onclick="liveSend()"
+                style="background:var(--accent-amber); border:none; border-radius:4px;
+                       padding:12px; font-family:var(--font-mono); font-size:13px; font-weight:700;
+                       color:var(--bg-base); cursor:pointer; transition:opacity .2s;">
+                ▶ Send
+              </button>
+            </div>
+
+            <!-- Response gösterimi -->
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">// response</div>
+            <div id="live-status" style="display:none; font-family:var(--font-mono); font-size:11px;
+                                          padding:6px 10px; border-radius:4px; margin-bottom:4px;"></div>
+            <pre id="live-response" style="background:var(--bg-base); border:1px solid var(--border-soft);
+                                            border-radius:6px; padding:14px; font-size:11px;
+                                            color:var(--text-secondary); overflow-x:auto; margin:0;
+                                            font-family:var(--font-mono); min-height:80px;
+                                            white-space:pre-wrap;">// henüz istek atılmadı</pre>
+          </div>
+
+          <!-- JSON YAPISTIR -->
+          <div id="panel-json" style="display:none; flex-direction:column; gap:12px;">
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">
+              // Postman'den kopyaladığın JSON'ı buraya yapıştır
+            </div>
+            <textarea id="sim-json" rows="18" oninput="simParse()" placeholder='{
+  "messageBoxes": [...]
+}'
+              style="width:100%; background:var(--bg-base); border:1px solid var(--border-soft);
+                     border-radius:6px; padding:14px; font-family:var(--font-mono); font-size:11px;
+                     color:var(--text-secondary); outline:none; resize:vertical; box-sizing:border-box;
+                     line-height:1.6;"></textarea>
+            <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">// hızlı örnekler:</div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button onclick="simExample('error')"
+                style="background:var(--bg-elevated); border:1px solid #f48771; color:#f48771;
+                       font-family:var(--font-mono); font-size:10px; padding:5px 10px;
+                       border-radius:4px; cursor:pointer;">ERROR FULLSCREEN</button>
+              <button onclick="simExample('success')"
+                style="background:var(--bg-elevated); border:1px solid #4ec9b0; color:#4ec9b0;
+                       font-family:var(--font-mono); font-size:10px; padding:5px 10px;
+                       border-radius:4px; cursor:pointer;">SUCCESS DRAWER</button>
+              <button onclick="simExample('warning')"
+                style="background:var(--bg-elevated); border:1px solid #dcdcaa; color:#dcdcaa;
+                       font-family:var(--font-mono); font-size:10px; padding:5px 10px;
+                       border-radius:4px; cursor:pointer;">WARNING SMALL</button>
+            </div>
+            <div id="sim-error" style="display:none; font-family:var(--font-mono); font-size:11px;
+                                        color:#f48771; padding:8px 12px; background:var(--bg-elevated);
+                                        border:1px solid #f48771; border-radius:4px;"></div>
+          </div>
+
+        </div>
           <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">
             // Postman'den kopyaladığın JSON'ı buraya yapıştır
           </div>
@@ -1511,6 +1641,120 @@ pm.test("Hata mesajı doğru", () => pm.expect(pm.response.text()).to.include("z
   </section>
 
   <script>
+  var BASE_URL = 'http://localhost:8080';
+
+  function switchTab(tab) {
+    var live = document.getElementById('panel-live');
+    var json = document.getElementById('panel-json');
+    var tbLive = document.getElementById('tab-live');
+    var tbJson = document.getElementById('tab-json');
+    if (tab === 'live') {
+      live.style.display = 'flex';
+      json.style.display = 'none';
+      tbLive.style.borderBottomColor = 'var(--accent-amber)';
+      tbLive.style.color = 'var(--accent-amber)';
+      tbJson.style.borderBottomColor = 'transparent';
+      tbJson.style.color = 'var(--text-muted)';
+    } else {
+      live.style.display = 'none';
+      json.style.display = 'flex';
+      tbJson.style.borderBottomColor = 'var(--accent-amber)';
+      tbJson.style.color = 'var(--accent-amber)';
+      tbLive.style.borderBottomColor = 'transparent';
+      tbLive.style.color = 'var(--text-muted)';
+    }
+  }
+
+  function liveMethodChange() {
+    var method   = document.getElementById('live-method').value;
+    var idWrap   = document.getElementById('live-id-wrap');
+    var bodyWrap = document.getElementById('live-body-wrap');
+    if (method === 'GET') {
+      idWrap.style.display   = 'none';
+      bodyWrap.style.display = 'none';
+    } else if (method === 'GET_ID' || method === 'DELETE') {
+      idWrap.style.display   = 'block';
+      bodyWrap.style.display = 'none';
+    } else {
+      idWrap.style.display   = method === 'PUT' ? 'block' : 'none';
+      bodyWrap.style.display = 'block';
+    }
+  }
+
+  function liveSend() {
+    var method   = document.getElementById('live-method').value;
+    var id       = document.getElementById('live-id').value;
+    var sNum     = document.getElementById('live-studentNumber').value;
+    var fullName = document.getElementById('live-fullName').value;
+    var gpa      = document.getElementById('live-gpa').value;
+    var respEl   = document.getElementById('live-response');
+    var statEl   = document.getElementById('live-status');
+
+    var url, httpMethod, body;
+
+    if (method === 'GET') {
+      url = BASE_URL + '/api/students';
+      httpMethod = 'GET';
+    } else if (method === 'GET_ID') {
+      url = BASE_URL + '/api/students/' + id;
+      httpMethod = 'GET';
+    } else if (method === 'DELETE') {
+      url = BASE_URL + '/api/students/' + id;
+      httpMethod = 'DELETE';
+    } else if (method === 'PUT') {
+      url = BASE_URL + '/api/students/' + id;
+      httpMethod = 'PUT';
+      body = JSON.stringify({ studentNumber: sNum, fullName: fullName, gpa: parseFloat(gpa) });
+    } else {
+      url = BASE_URL + '/api/students';
+      httpMethod = 'POST';
+      body = JSON.stringify({ studentNumber: sNum, fullName: fullName, gpa: parseFloat(gpa) });
+    }
+
+    respEl.textContent = '// istek atılıyor...';
+    statEl.style.display = 'none';
+
+    var opts = { method: httpMethod, headers: { 'Content-Type': 'application/json' } };
+    if (body) opts.body = body;
+
+    fetch(url, opts)
+      .then(function(r) {
+        var status = r.status;
+        statEl.style.display = 'block';
+        statEl.textContent = '// ' + httpMethod + ' ' + url + ' → ' + status;
+        statEl.style.background = status < 300 ? 'rgba(78,201,176,0.1)' : 'rgba(244,135,113,0.1)';
+        statEl.style.color      = status < 300 ? '#4ec9b0' : '#f48771';
+        statEl.style.border     = '1px solid ' + (status < 300 ? '#4ec9b0' : '#f48771');
+        return r.text();
+      })
+      .then(function(text) {
+        try {
+          var data = JSON.parse(text);
+          respEl.textContent = JSON.stringify(data, null, 2);
+          if (data.messageBoxes) {
+            simRender(data);
+          } else if (data.messageType) {
+            simRender({ messageBoxes: [data] });
+          } else {
+            document.getElementById('sim-overlay').style.display = 'none';
+            document.getElementById('sim-empty').style.display = 'flex';
+            document.getElementById('sim-empty').innerHTML = '✓ Başarılı<br>MessageBox yok';
+            document.getElementById('sim-badge').style.display = 'none';
+          }
+        } catch(e) {
+          respEl.textContent = text;
+        }
+      })
+      .catch(function(e) {
+        statEl.style.display = 'block';
+        statEl.textContent = '// Bağlantı hatası — localhost:8080 çalışıyor mu?';
+        statEl.style.background = 'rgba(244,135,113,0.1)';
+        statEl.style.color = '#f48771';
+        statEl.style.border = '1px solid #f48771';
+        respEl.textContent = e.message;
+      });
+  }
+
   var EXAMPLES = {
     error: JSON.stringify({
       messageBoxes: [{
@@ -1563,59 +1807,38 @@ pm.test("Hata mesajı doğru", () => pm.expect(pm.response.text()).to.include("z
   };
 
   function simExample(key) {
+    switchTab('json');
     document.getElementById('sim-json').value = EXAMPLES[key];
     simParse();
   }
 
-  function simParse() {
-    var raw = document.getElementById('sim-json').value.trim();
-    var errEl = document.getElementById('sim-error');
+  function simRender(data) {
+    var errEl   = document.getElementById('sim-error');
     var overlay = document.getElementById('sim-overlay');
-    var empty = document.getElementById('sim-empty');
-    var badge = document.getElementById('sim-badge');
+    var empty   = document.getElementById('sim-empty');
+    var badge   = document.getElementById('sim-badge');
 
-    if (!raw) {
-      overlay.style.display = 'none';
-      empty.style.display = 'flex';
-      badge.style.display = 'none';
-      errEl.style.display = 'none';
-      return;
-    }
-
-    var data;
-    try {
-      data = JSON.parse(raw);
-      errEl.style.display = 'none';
-    } catch(e) {
-      errEl.textContent = '// JSON parse hatası: ' + e.message;
-      errEl.style.display = 'block';
-      return;
-    }
-
-    // messageBoxes array'inden ilk elemanı al
     var mb = null;
     if (data.messageBoxes && data.messageBoxes.length > 0) {
       mb = data.messageBoxes[0];
     } else if (data.title || data.messageType) {
-      mb = data; // direkt MessageBox objesi yapıştırılmış
+      mb = data;
     }
 
     if (!mb) {
-      errEl.textContent = '// messageBoxes bulunamadı';
-      errEl.style.display = 'block';
+      if (errEl) { errEl.textContent = '// messageBoxes bulunamadı'; errEl.style.display = 'block'; }
       return;
     }
+    if (errEl) errEl.style.display = 'none';
 
     var screenType  = (mb.screenType  || 'DRAWER').toUpperCase();
     var messageType = (mb.messageType || 'INFORMATION').toUpperCase();
     var cfg = TYPE_CONFIG[messageType] || TYPE_CONFIG.INFORMATION;
 
-    // Texts
     document.getElementById('sim-title-el').textContent    = mb.title    || '';
     document.getElementById('sim-subtitle-el').textContent = mb.subTitle || '';
     document.getElementById('sim-message-el').textContent  = mb.message  || '';
 
-    // İkon
     var iconEl = document.getElementById('sim-icon');
     if (cfg.icon) {
       iconEl.style.display = 'block';
@@ -1626,36 +1849,30 @@ pm.test("Hata mesajı doğru", () => pm.expect(pm.response.text()).to.include("z
       iconEl.style.display = 'none';
     }
 
-    // X butonu
-    var xBtn = document.getElementById('sim-x-btn');
-    xBtn.style.display = mb.cancellable ? 'flex' : 'none';
+    document.getElementById('sim-x-btn').style.display = mb.cancellable ? 'flex' : 'none';
 
-    // Butonlar
     var btnsEl = document.getElementById('sim-buttons');
     btnsEl.innerHTML = '';
-    var actions = mb.messageBoxAction || mb.messageBoxDynamicActions && mb.messageBoxDynamicActions[0] || [];
+    var actions = mb.messageBoxAction
+      || (mb.messageBoxDynamicActions && mb.messageBoxDynamicActions[0])
+      || [];
     actions.forEach(function(action) {
       var style = (action.uiStyle || 'BUTTON').toUpperCase();
       var btn = document.createElement('div');
       btn.textContent = action.text || action.textKey || '';
-      btn.style.cssText = 'text-align:center;padding:12px;border-radius:10px;'
-        + 'font-weight:700;font-size:13px;cursor:pointer;';
+      btn.style.cssText = 'text-align:center;padding:12px;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;';
       if (style === 'BUTTON') {
         btn.style.background = cfg.btnColor;
         btn.style.color = '#fff';
       } else if (style === 'TEXT') {
-        btn.style.background = 'transparent';
         btn.style.color = cfg.btnColor;
-        btn.style.fontWeight = '600';
       } else if (style === 'UNDERLINETEXT') {
-        btn.style.background = 'transparent';
         btn.style.color = cfg.btnColor;
         btn.style.textDecoration = 'underline';
       }
       btnsEl.appendChild(btn);
     });
 
-    // screenType layout
     var box    = document.getElementById('sim-box');
     var handle = document.getElementById('sim-handle');
 
@@ -1672,7 +1889,6 @@ pm.test("Hata mesajı doğru", () => pm.expect(pm.response.text()).to.include("z
       handle.style.display     = 'none';
       document.getElementById('sim-screen-wrap').style.background = '#f5f5f5';
     } else {
-      // DRAWER
       overlay.style.alignItems = 'flex-end';
       box.style.borderRadius   = '20px 20px 0 0';
       box.style.maxHeight      = '70%';
@@ -1683,13 +1899,34 @@ pm.test("Hata mesajı doğru", () => pm.expect(pm.response.text()).to.include("z
     overlay.style.display = 'flex';
     empty.style.display   = 'none';
 
-    // Badge
-    badge.style.display = 'block';
     var badgeColors = { ERROR:'#f48771', WARNING:'#dcdcaa', SUCCESS:'#4ec9b0', INFORMATION:'#4fc1ff', NONE:'#858585' };
+    badge.style.display = 'block';
     badge.innerHTML = '<span style="background:var(--bg-elevated);border:1px solid '
       + (badgeColors[messageType]||'#858585') + ';color:' + (badgeColors[messageType]||'#858585')
       + ';padding:4px 10px;border-radius:4px;font-family:var(--font-mono);font-size:10px;">'
       + screenType + ' · ' + messageType + '</span>';
+  }
+
+  function simParse() {
+    var raw   = document.getElementById('sim-json').value.trim();
+    var errEl = document.getElementById('sim-error');
+    if (!raw) {
+      document.getElementById('sim-overlay').style.display = 'none';
+      document.getElementById('sim-empty').style.display = 'flex';
+      document.getElementById('sim-badge').style.display = 'none';
+      errEl.style.display = 'none';
+      return;
+    }
+    var data;
+    try {
+      data = JSON.parse(raw);
+      errEl.style.display = 'none';
+    } catch(e) {
+      errEl.textContent = '// JSON parse hatası: ' + e.message;
+      errEl.style.display = 'block';
+      return;
+    }
+    simRender(data);
   }
   </script>
 
