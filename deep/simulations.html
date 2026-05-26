@@ -646,15 +646,31 @@ MessageBox.builder()
           <button onclick="simExample('error')"
             style="background:var(--bg-elevated); border:1px solid #f48771; color:#f48771;
                    font-family:var(--font-mono); font-size:10px; padding:5px 10px;
-                   border-radius:4px; cursor:pointer;">ERROR FULLSCREEN</button>
+                   border-radius:4px; cursor:pointer;">ERROR · FULLSCREEN</button>
           <button onclick="simExample('success')"
             style="background:var(--bg-elevated); border:1px solid #4ec9b0; color:#4ec9b0;
                    font-family:var(--font-mono); font-size:10px; padding:5px 10px;
-                   border-radius:4px; cursor:pointer;">SUCCESS DRAWER</button>
+                   border-radius:4px; cursor:pointer;">SUCCESS · DRAWER</button>
           <button onclick="simExample('warning')"
             style="background:var(--bg-elevated); border:1px solid #dcdcaa; color:#dcdcaa;
                    font-family:var(--font-mono); font-size:10px; padding:5px 10px;
-                   border-radius:4px; cursor:pointer;">WARNING SMALL</button>
+                   border-radius:4px; cursor:pointer;">WARNING · SMALL</button>
+          <button onclick="simExample('long')"
+            style="background:var(--bg-elevated); border:1px solid #4fc1ff; color:#4fc1ff;
+                   font-family:var(--font-mono); font-size:10px; padding:5px 10px;
+                   border-radius:4px; cursor:pointer;">INFORMATION · LONG</button>
+          <button onclick="simExample('alert')"
+            style="background:var(--bg-elevated); border:1px solid #f48771; color:#f48771;
+                   font-family:var(--font-mono); font-size:10px; padding:5px 10px;
+                   border-radius:4px; cursor:pointer;">WARNING · ALERT</button>
+          <button onclick="simExample('slideup')"
+            style="background:var(--bg-elevated); border:1px solid #c586c0; color:#c586c0;
+                   font-family:var(--font-mono); font-size:10px; padding:5px 10px;
+                   border-radius:4px; cursor:pointer;">NONE · SLIDEUP</button>
+          <button onclick="simExample('inappmessage')"
+            style="background:var(--bg-elevated); border:1px solid #4ec9b0; color:#4ec9b0;
+                   font-family:var(--font-mono); font-size:10px; padding:5px 10px;
+                   border-radius:4px; cursor:pointer;">SUCCESS · INAPPMESSAGE</button>
         </div>
         <div id="sim-error" style="display:none; font-family:var(--font-mono); font-size:11px;
                                     color:#f48771; padding:8px 12px; border:1px solid #f48771;
@@ -761,6 +777,39 @@ var EXAMPLES = {
     title: "Uyarı", subTitle: "GPA değeri 0-4 arasında olmalıdır.",
     messageType: "WARNING", screenType: "SMALLINAPPMESSAGE", cancellable: true,
     messageBoxAction: [{ text:"Anladım", actionType:"NONE", uiStyle:"BUTTON" }]
+  }]}, null, 2),
+  long: JSON.stringify({ messageBoxes: [{
+    title: "Uzun İçerik", subTitle: "Bu drawer %90 yüksekliğinde açılır.",
+    message: "Çok fazla içerik olduğunda LONG screenType kullanılır. Kullanıcı scroll ederek tüm içeriği görebilir.",
+    messageType: "INFORMATION", screenType: "LONG", cancellable: true,
+    items: ["Birinci madde açıklaması burada yer alır", "İkinci madde açıklaması", "Üçüncü madde"],
+    messageBoxAction: [
+      { text:"Devam Et", actionType:"NONE", uiStyle:"BUTTON" },
+      { text:"Vazgeç", actionType:"NONE", uiStyle:"TEXT" }
+    ]
+  }]}, null, 2),
+  alert: JSON.stringify({ messageBoxes: [{
+    title: "Emin misiniz?", subTitle: "Bu işlem geri alınamaz.",
+    messageType: "WARNING", screenType: "ALERT", cancellable: false,
+    messageBoxAction: [
+      { text:"Sil", actionType:"NONE", uiStyle:"BUTTON" },
+      { text:"İptal", actionType:"NONE", uiStyle:"TEXT" }
+    ]
+  }]}, null, 2),
+  slideup: JSON.stringify({ messageBoxes: [{
+    title: "Kredi Fırsatı", subTitle: "Size özel %0 faizli kredi kampanyası",
+    messageType: "NONE", screenType: "SLIDEUP",
+    backgroundColor: "#251A49", titleColor: "#FFFFFF", subTitleColor: "#CDCBD6",
+    autoCancelInSeconds: 5, cancellable: true,
+    messageBoxAction: [{ text:"İncele", actionType:"DEEPLINK", uiStyle:"BUTTON" }]
+  }]}, null, 2),
+  inappmessage: JSON.stringify({ messageBoxes: [{
+    title: "Doğum günün kutlu olsun! 🎂", subTitle: "Sana özel ₺50 getirpara hesabına yüklendi.",
+    messageType: "SUCCESS", screenType: "INAPPMESSAGE", cancellable: true,
+    messageBoxAction: [
+      { text:"Harcamaya Başla", actionType:"NONE", uiStyle:"BUTTON" },
+      { text:"Kapat", actionType:"NONE", uiStyle:"TEXT" }
+    ]
   }]}, null, 2),
 };
 
@@ -920,15 +969,96 @@ function mbRender(data) {
   var hdl  = document.getElementById('mb-handle');
   var wrap = document.getElementById('sim-screen-wrap');
 
+  // Önce timer varsa temizle
+  if (window._mbTimer) { clearTimeout(window._mbTimer); window._mbTimer = null; }
+
+  // Reset
+  box.style.transition = '';
+  ov.style.background = 'rgba(0,0,0,0.5)';
+  wrap.style.background = '#f5f5f5';
+
   if (st === 'FULLSCREEN') {
-    ov.style.alignItems = 'stretch'; box.style.borderRadius = '0';
-    box.style.maxHeight = '100%'; hdl.style.display = 'none'; wrap.style.background = '#fff';
+    // Tam ekran — arkası görünmüyor
+    ov.style.alignItems = 'stretch';
+    ov.style.background = 'transparent';
+    box.style.borderRadius = '0';
+    box.style.maxHeight = '100%';
+    hdl.style.display = 'none';
+    wrap.style.background = box.style.background || '#fff';
+
+  } else if (st === 'LONG') {
+    // %90 açılan drawer
+    ov.style.alignItems = 'flex-end';
+    box.style.borderRadius = '20px 20px 0 0';
+    box.style.maxHeight = '90%';
+    hdl.style.display = 'block';
+
+  } else if (st === 'ALERT') {
+    // Native alert — ortada küçük kutu
+    ov.style.alignItems = 'center';
+    ov.style.justifyContent = 'center';
+    box.style.borderRadius = '16px';
+    box.style.maxHeight = '70%';
+    box.style.width = '80%';
+    box.style.margin = '0 auto';
+    hdl.style.display = 'none';
+
+  } else if (st === 'INAPPMESSAGE') {
+    // Pop-up — sağ sol marjin ile
+    ov.style.alignItems = 'center';
+    ov.style.justifyContent = 'center';
+    ov.style.padding = '16px';
+    box.style.borderRadius = '16px';
+    box.style.maxHeight = '80%';
+    box.style.width = '88%';
+    hdl.style.display = 'none';
+
   } else if (st === 'SMALLINAPPMESSAGE') {
-    ov.style.alignItems = 'flex-start'; box.style.borderRadius = '0 0 20px 20px';
-    box.style.maxHeight = '50%'; hdl.style.display = 'none'; wrap.style.background = '#f5f5f5';
+    // Üstten düşen banner
+    ov.style.alignItems = 'flex-start';
+    box.style.borderRadius = '0 0 20px 20px';
+    box.style.maxHeight = '50%';
+    hdl.style.display = 'none';
+
+  } else if (st === 'SLIDEUP') {
+    // Alttan kayan ince bildirim — autoCancelInSeconds ile kapanır
+    ov.style.alignItems = 'flex-end';
+    ov.style.background = 'transparent';
+    box.style.borderRadius = '16px 16px 0 0';
+    box.style.maxHeight = '35%';
+    box.style.background = mb.backgroundColor || '#251A49';
+    hdl.style.display = 'none';
+    // isDark override — slideup genelde koyu
+    var slideIsDark = true;
+    document.getElementById('mb-title').style.color    = mb.titleColor    || '#fff';
+    document.getElementById('mb-subtitle').style.color = mb.subTitleColor || 'rgba(255,255,255,.8)';
+    document.getElementById('mb-x').style.background   = 'rgba(255,255,255,.2)';
+    document.getElementById('mb-x').style.color        = '#fff';
+    // autoCancelInSeconds
+    if (mb.autoCancelInSeconds) {
+      window._mbTimer = setTimeout(function() {
+        mbClear('');
+      }, mb.autoCancelInSeconds * 1000);
+    }
+
+  } else if (st === 'NONE') {
+    // Ekranda gösterilmez
+    mbClear('// screenType: NONE<br>Ekranda gösterilmez');
+    return;
+
   } else {
-    ov.style.alignItems = 'flex-end'; box.style.borderRadius = '20px 20px 0 0';
-    box.style.maxHeight = '70%'; hdl.style.display = 'block'; wrap.style.background = '#f5f5f5';
+    // DRAWER (varsayılan)
+    ov.style.alignItems = 'flex-end';
+    box.style.borderRadius = '20px 20px 0 0';
+    box.style.maxHeight = '70%';
+    hdl.style.display = 'block';
+  }
+
+  // ALERT ve INAPPMESSAGE için justify reset
+  if (st !== 'ALERT' && st !== 'INAPPMESSAGE') {
+    ov.style.justifyContent = 'center';
+    if (st !== 'SLIDEUP') box.style.width = '100%';
+    ov.style.padding = '0';
   }
 
   ov.style.display = 'flex';
