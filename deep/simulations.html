@@ -933,8 +933,6 @@ function mbRender(data) {
     : '';
 
   var xEl = document.getElementById('mb-x');
-  xEl.style.display = mb.cancellable ? 'flex' : 'none';
-
   var btnsEl = document.getElementById('mb-buttons');
   btnsEl.innerHTML = '';
   var actions = mb.messageBoxAction
@@ -956,18 +954,22 @@ function mbRender(data) {
   // backgroundColor desteği
   var bgColor = mb.backgroundColor;
   var box  = document.getElementById('mb-box');
+  var ov   = document.getElementById('mb-overlay');
+  var hdl  = document.getElementById('mb-handle');
+  var wrap = document.getElementById('sim-screen-wrap');
+
   box.style.background = bgColor || '#ffffff';
   var isDark = bgColor && bgColor.toLowerCase() !== '#ffffff' && bgColor.toLowerCase() !== '#fff';
   document.getElementById('mb-title').style.color    = isDark ? '#fff'               : '#111';
   document.getElementById('mb-subtitle').style.color = isDark ? 'rgba(255,255,255,.85)' : '#444';
   document.getElementById('mb-message').style.color  = isDark ? 'rgba(255,255,255,.7)'  : '#888';
-  document.getElementById('mb-x').style.background   = isDark ? 'rgba(255,255,255,.2)'  : '#f5f5f5';
-  document.getElementById('mb-x').style.color        = isDark ? '#fff' : '#999';
-
-  var ov   = document.getElementById('mb-overlay');
-  var box  = document.getElementById('mb-box');
-  var hdl  = document.getElementById('mb-handle');
-  var wrap = document.getElementById('sim-screen-wrap');
+  // X butonunu sadece isDark için güncelle — cancellable display'e dokunma
+  if (isDark) {
+    document.getElementById('mb-x').style.background = 'rgba(255,255,255,.2)';
+    document.getElementById('mb-x').style.color = '#fff';
+  }
+  // cancellable — en sona set et ki hiçbir şey ezemesin
+  document.getElementById('mb-x').style.display = mb.cancellable ? 'flex' : 'none';
 
   // Önce timer varsa temizle
   if (window._mbTimer) { clearTimeout(window._mbTimer); window._mbTimer = null; }
@@ -975,6 +977,9 @@ function mbRender(data) {
   // Reset
   box.style.transition = '';
   ov.style.background = 'rgba(0,0,0,0.5)';
+  ov.style.padding = '0';
+  ov.style.justifyContent = 'center';
+  box.style.width = '100%';
   wrap.style.background = '#f5f5f5';
 
   if (st === 'FULLSCREEN') {
@@ -990,7 +995,8 @@ function mbRender(data) {
     // %90 açılan drawer
     ov.style.alignItems = 'flex-end';
     box.style.borderRadius = '20px 20px 0 0';
-    box.style.maxHeight = '90%';
+    box.style.maxHeight = '432px';
+    box.style.height = '432px';
     hdl.style.display = 'block';
 
   } else if (st === 'ALERT') {
@@ -1051,6 +1057,7 @@ function mbRender(data) {
     ov.style.alignItems = 'flex-end';
     box.style.borderRadius = '20px 20px 0 0';
     box.style.maxHeight = '70%';
+    box.style.height = 'auto';
     hdl.style.display = 'block';
   }
 
