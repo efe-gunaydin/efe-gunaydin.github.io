@@ -343,6 +343,19 @@
 
     </div>
 
+    <!-- items -->
+    <div style="background:var(--bg-elevated); border:1px solid var(--border-soft); border-radius:8px; padding:18px; margin-bottom:16px;">
+      <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-sage);
+                  font-weight:700; margin-bottom:14px;">items — bullet point listesi</div>
+      <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px; line-height:1.7;">
+        Madde listesi göstermek için kullan. Her eleman ayrı bir bullet olarak render edilir.
+      </div>
+      <pre class="code-block" style="margin:0;">.items(List.of(
+    "Birinci madde açıklaması",
+    "İkinci madde açıklaması"
+))</pre>
+    </div>
+
     <!-- uiStyle -->
     <div style="background:var(--bg-elevated); border:1px solid var(--border-soft); border-radius:8px; padding:18px; margin-bottom:16px;">
       <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-amber);
@@ -530,7 +543,7 @@ MessageBox.builder()
           style="font-family:var(--font-mono); font-size:12px; padding:10px 16px; cursor:pointer;
                  border:none; border-bottom:2px solid transparent; background:transparent;
                  color:var(--text-muted);">
-          ◈ JSON Yapıştır
+          ◈ Designer / JSON
         </button>
       </div>
 
@@ -613,8 +626,14 @@ MessageBox.builder()
 
       <!-- JSON YAPISTIR -->
       <div id="panel-json" style="display:none; flex-direction:column; gap:12px;">
-        <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">
-          // Postman'den kopyaladığın JSON'ı yapıştır
+        <div style="background:var(--bg-elevated); border:1px solid var(--border-soft);
+                    border-radius:6px; padding:12px 14px;">
+          <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-violet);
+                      font-weight:700; margin-bottom:4px;">◈ MessageBox Designer</div>
+          <div style="font-size:12px; color:var(--text-secondary); line-height:1.6;">
+            Spring Boot'a gerek yok. İstediğin JSON'ı yaz → telefonda canlı görürsün.
+            Tasarımını burada dene, beğenince koda yaz.
+          </div>
         </div>
         <textarea id="sim-json" rows="14" oninput="simParse()"
           placeholder='{ "messageBoxes": [...] }'
@@ -839,6 +858,23 @@ function mbRender(data) {
   document.getElementById('mb-title').textContent    = mb.title    || '';
   document.getElementById('mb-subtitle').textContent = mb.subTitle || '';
   document.getElementById('mb-message').textContent  = mb.message  || '';
+
+  // items — bullet point listesi
+  var msgEl = document.getElementById('mb-message');
+  if (mb.items && mb.items.length > 0) {
+    var listHtml = '<ul style="text-align:left;padding-left:16px;margin:0;list-style:none;">';
+    mb.items.forEach(function(item) {
+      listHtml += '<li style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;font-size:11px;color:#666;line-height:1.5;">'
+        + '<span style="width:6px;height:6px;border-radius:50%;background:#5d3ebc;flex-shrink:0;margin-top:4px;"></span>'
+        + '<span>' + item + '</span></li>';
+    });
+    listHtml += '</ul>';
+    msgEl.innerHTML = listHtml;
+    msgEl.style.textAlign = 'left';
+  } else {
+    msgEl.textContent = mb.message || '';
+    msgEl.style.textAlign = 'center';
+  }
 
   var iconEl = document.getElementById('mb-icon');
   iconEl.innerHTML = cfg.icon
